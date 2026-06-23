@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workspace Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        // Tailwind configuration for dark mode activation via class
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
+                    boxShadow: {
+                        'premium': '0 10px 30px -10px rgba(0, 0, 0, 0.07)',
+                        'premium-dark': '0 10px 30px -10px rgba(0, 0, 0, 0.4)',
+                    }
                 },
             },
         }
     </script>
     <style>
-        /* Smooth transition for theme switching */
         body {
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Hide scrollbars for iframe viewport container */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -31,119 +35,138 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        /* Immersive layout height adjustment */
+        .viewport-height {
+            height: calc(100vh - 4.5rem - 4rem);
+        }
+        @media (max-width: 640px) {
+            .viewport-height {
+                height: calc(100vh - 5rem - 4.5rem);
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 min-h-full flex flex-col font-sans antialiased selection:bg-indigo-500/30">
 
-    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 px-4 lg:px-8 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="showDashboard()">
-            <div class="bg-indigo-600 text-white p-2 rounded-lg shadow-md shadow-indigo-500/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <header class="h-18 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl sticky top-0 z-50 px-4 sm:px-6 lg:px-8 flex items-center justify-between transition-colors duration-300">
+        <div class="flex items-center gap-3.5 group cursor-pointer select-none" onclick="showDashboard()">
+            <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-500/20 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
                 </svg>
             </div>
-            <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-violet-500 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">Central Workspace</h1>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">Central Workspace</h1>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium tracking-wider uppercase -mt-0.5">Management Shell</p>
+            </div>
         </div>
 
-        <div class="flex items-center gap-2">
-            <div id="quickNav" class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg mr-4">
-                <button onclick="loadApp('spawn', 'https://aolmio.github.io/spawn/')" class="nav-tab px-3 py-1.5 text-sm font-medium rounded-md transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Spawn</button>
-                <button onclick="loadApp('gcrm', 'https://aolmio.github.io/gcrm/')" class="nav-tab px-3 py-1.5 text-sm font-medium rounded-md transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">GCRM</button>
-                <button onclick="loadApp('dbread', 'https://aolmio.github.io/dbread/')" class="nav-tab px-3 py-1.5 text-sm font-medium rounded-md transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">DB Read</button>
+        <div class="flex items-center gap-3">
+            <div id="quickNav" class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/90 p-1 rounded-xl border border-slate-200/50 dark:border-slate-800/50">
+                <button onclick="loadApp('spawn', 'https://aolmio.github.io/spawn/')" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Spawn</button>
+                <button onclick="loadApp('gcrm', 'https://aolmio.github.io/gcrm/')" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">GCRM</button>
+                <button onclick="loadApp('dbread', 'https://aolmio.github.io/dbread/')" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">DB Read</button>
             </div>
 
-            <button id="themeToggle" class="p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Toggle Theme">
-                <svg id="themeToggleLightIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                <svg id="themeToggleDarkIcon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800/80 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-all duration-200" aria-label="Toggle Theme">
+                <svg id="themeToggleLightIcon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                <svg id="themeToggleDarkIcon" class="hidden w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col justify-center">
+    <main id="mainContainer" class="flex-1 w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center max-w-7xl transition-all duration-500 ease-in-out">
         
-        <div id="dashboardGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full opacity-100 transition-opacity duration-300">
+        <div id="dashboardGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full opacity-100 scale-100 transition-all duration-300">
             
-            <div onclick="loadApp('spawn', 'https://aolmio.github.io/spawn/')" class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[220px]">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div onclick="loadApp('spawn', 'https://aolmio.github.io/spawn/')" class="group relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 p-6 shadow-premium dark:shadow-premium-dark hover:shadow-2xl hover:border-amber-500/40 dark:hover:border-amber-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[250px]">
+                <div class="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-amber-500/10 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold mb-2 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">Spawn System</h2>
+                    <h2 class="text-xl font-bold mb-2.5 tracking-tight group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-200">Spawn System</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Access pawn asset interactions, evaluation engines, and strategic structural system utilities.</p>
                 </div>
-                <div class="mt-4 flex items-center text-sm font-semibold text-amber-600 dark:text-amber-400 gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                <div class="relative z-10 mt-6 flex items-center text-xs font-bold text-amber-600 dark:text-amber-400 gap-1.5 tracking-wider uppercase opacity-85 group-hover:opacity-100 transition-opacity">
                     Launch Application
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
                 </div>
             </div>
 
-            <div onclick="loadApp('gcrm', 'https://aolmio.github.io/gcrm/')" class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl hover:border-emerald-500/50 dark:hover:border-emerald-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[220px]">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div onclick="loadApp('gcrm', 'https://aolmio.github.io/gcrm/')" class="group relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 p-6 shadow-premium dark:shadow-premium-dark hover:shadow-2xl hover:border-emerald-500/40 dark:hover:border-emerald-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[250px]">
+                <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-emerald-500/10 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold mb-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">GCRM Sales</h2>
+                    <h2 class="text-xl font-bold mb-2.5 tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-200">GCRM Sales</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Track customer pipelines, transactional data streams, sales records, and CRM activity analytics.</p>
                 </div>
-                <div class="mt-4 flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400 gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                <div class="relative z-10 mt-6 flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 gap-1.5 tracking-wider uppercase opacity-85 group-hover:opacity-100 transition-opacity">
                     Launch Application
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
                 </div>
             </div>
 
-            <div onclick="loadApp('dbread', 'https://aolmio.github.io/dbread/')" class="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm hover:shadow-xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[220px]">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div onclick="loadApp('dbread', 'https://aolmio.github.io/dbread/')" class="group relative bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800/80 p-6 shadow-premium dark:shadow-premium-dark hover:shadow-2xl hover:border-indigo-500/40 dark:hover:border-indigo-500/40 transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[250px]">
+                <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 rounded-3xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-indigo-500/10 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s8-1.79 8-4" />
                         </svg>
                     </div>
-                    <h2 class="text-xl font-bold mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">DB Read</h2>
+                    <h2 class="text-xl font-bold mb-2.5 tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">DB Read</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Query real-time product stock levels, inventory manifests, databases, and structured CSV records.</p>
                 </div>
-                <div class="mt-4 flex items-center text-sm font-semibold text-indigo-600 dark:text-indigo-400 gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                <div class="relative z-10 mt-6 flex items-center text-xs font-bold text-indigo-600 dark:text-indigo-400 gap-1.5 tracking-wider uppercase opacity-85 group-hover:opacity-100 transition-opacity">
                     Launch Application
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
                 </div>
             </div>
 
         </div>
 
-        <div id="appViewport" class="hidden flex-1 flex flex-col h-full w-full opacity-0 transition-opacity duration-300">
-            <div class="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-t-xl gap-2">
-                <div class="flex items-center gap-2">
-                    <button onclick="showDashboard()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors text-slate-700 dark:text-slate-200">
+        <div id="appViewport" class="hidden flex-1 flex flex-col w-full h-full opacity-0 scale-[0.99] transition-all duration-300 ease-out">
+            
+            <div class="flex items-center justify-between bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-3 rounded-t-2xl gap-2 shadow-sm transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                    <button onclick="showDashboard()" class="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 active:scale-95 rounded-xl transition-all text-slate-700 dark:text-slate-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
                         Dashboard
                     </button>
-                    <span id="activeAppBadge" class="text-xs px-2.5 py-1 rounded-full font-bold bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 uppercase tracking-wider">App</span>
+                    <div class="w-px h-5 bg-slate-200 dark:bg-slate-800"></div>
+                    <span id="activeAppBadge" class="text-[10px] px-3 py-1 rounded-lg font-extrabold uppercase tracking-widest shadow-sm">App</span>
                 </div>
                 
-                <div class="flex items-center gap-1.5">
-                    <button onclick="refreshIframe()" class="p-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors text-slate-600 dark:text-slate-300" title="Reload internal window">
+                <div class="flex items-center gap-2">
+                    <button onclick="refreshIframe()" class="p-2 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white" title="Reload internal workspace">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3m-3-3v12" />
                         </svg>
                     </button>
-                    <a id="externalAppLink" href="#" target="_blank" class="p-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors text-slate-600 dark:text-slate-300 flex items-center" title="Open in standard window tab">
+                    <a id="externalAppLink" href="#" target="_blank" class="p-2 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-xl transition-all text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center" title="Open application in separate tab">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                     </a>
                 </div>
             </div>
-            <div class="flex-1 bg-white dark:bg-slate-900 border-x border-b border-slate-200 dark:border-slate-800 rounded-b-xl overflow-hidden shadow-2xl relative min-h-[65vh] md:min-h-[75vh]">
-                <iframe id="appFrame" src="" class="absolute inset-0 w-full h-full border-none w-full bg-white dark:bg-slate-900" sandbox="allow-scripts allow-same-origin allow-forms allow-popups select-none" loading="lazy"></iframe>
+            
+            <div class="viewport-height flex-1 bg-white dark:bg-slate-900 border-x border-b border-slate-200/80 dark:border-slate-800/80 rounded-b-2xl overflow-hidden shadow-2xl relative transition-colors duration-300">
+                <iframe id="appFrame" src="" class="absolute inset-0 w-full h-full border-none bg-white dark:bg-slate-900" sandbox="allow-scripts allow-same-origin allow-forms allow-popups select-none" loading="lazy"></iframe>
             </div>
         </div>
 
     </main>
 
     <script>
+        const mainContainer = document.getElementById('mainContainer');
         const dashboardGrid = document.getElementById('dashboardGrid');
         const appViewport = document.getElementById('appViewport');
         const appFrame = document.getElementById('appFrame');
@@ -151,47 +174,65 @@
         const activeAppBadge = document.getElementById('activeAppBadge');
         const externalAppLink = document.getElementById('externalAppLink');
 
-        // Layout Router Engine
+        // Layout Routing System Architecture
         function loadApp(id, url) {
-            // Initiate interface state changes safely
-            dashboardGrid.classList.add('opacity-0');
+            // Animate layout dashboard fade-out
+            dashboardGrid.classList.remove('opacity-100', 'scale-100');
+            dashboardGrid.classList.add('opacity-0', 'scale-[0.98]');
             
             setTimeout(() => {
                 dashboardGrid.classList.add('hidden');
+                
+                // Switch the main content container container grid settings to break boundaries to full width screen size
+                mainContainer.classList.remove('max-w-7xl', 'p-4', 'sm:p-6', 'lg:p-8');
+                mainContainer.classList.add('max-w-full', 'p-2', 'sm:p-4');
+                
                 appViewport.classList.remove('hidden');
                 
-                // Mount source into iframe frame pointer
+                // Mount internal source frame target allocation safety validation Check
                 if (appFrame.src !== url) {
                     appFrame.src = url;
                 }
                 externalAppLink.href = url;
                 
-                // UI state tracking elements
+                // System UX Node tracking definitions
                 activeAppBadge.innerText = id === 'dbread' ? 'DB Read' : id;
                 updateBadgeColor(id);
                 updateActiveTabHighlight(id);
                 
                 quickNav.classList.remove('hidden');
-                appViewport.classList.remove('opacity-0');
-                appViewport.classList.add('opacity-100');
-            }, 200);
+                
+                // Soft fade-in visual entry trigger
+                setTimeout(() => {
+                    appViewport.classList.remove('opacity-0', 'scale-[0.99]');
+                    appViewport.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 250);
         }
 
         function showDashboard() {
-            appViewport.classList.remove('opacity-100');
-            appViewport.classList.add('opacity-0');
+            appViewport.classList.remove('opacity-100', 'scale-100');
+            appViewport.classList.add('opacity-0', 'scale-[0.99]');
             
             setTimeout(() => {
                 appViewport.classList.add('hidden');
                 quickNav.classList.add('hidden');
-                dashboardGrid.classList.remove('hidden');
-                dashboardGrid.classList.remove('opacity-0');
-                dashboardGrid.classList.add('opacity-100');
                 
-                // Clear iframe target asynchronously to release browser operational memory strings
+                // Revert main content container constraints safely to central layout structure format
+                mainContainer.classList.remove('max-w-full', 'p-2', 'sm:p-4');
+                mainContainer.classList.add('max-w-7xl', 'p-4', 'sm:p-6', 'lg:p-8');
+                
+                dashboardGrid.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    dashboardGrid.classList.remove('opacity-0', 'scale-[0.98]');
+                    dashboardGrid.classList.add('opacity-100', 'scale-100');
+                }, 50);
+                
+                // Clear background frame operations strings context asynchronously
                 appFrame.src = "";
                 clearTabHighlights();
-            }, 200);
+            }, 250);
         }
 
         function refreshIframe() {
@@ -201,35 +242,34 @@
         }
 
         function updateBadgeColor(id) {
-            activeAppBadge.className = "text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider ";
-            if (id === 'spawn') activeAppBadge.classList.add('bg-amber-100', 'text-amber-800', 'dark:bg-amber-950/40', 'dark:text-amber-400');
-            if (id === 'gcrm') activeAppBadge.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950/40', 'dark:text-emerald-400');
-            if (id === 'dbread') activeAppBadge.classList.add('bg-indigo-100', 'text-indigo-800', 'dark:bg-indigo-950/40', 'dark:text-indigo-400');
+            activeAppBadge.className = "text-[10px] px-3 py-1 rounded-lg font-extrabold uppercase tracking-widest shadow-sm transition-all duration-300 ";
+            if (id === 'spawn') activeAppBadge.classList.add('bg-amber-100', 'text-amber-800', 'dark:bg-amber-950/50', 'dark:text-amber-400', 'border', 'border-amber-200/40', 'dark:border-amber-800/30');
+            if (id === 'gcrm') activeAppBadge.classList.add('bg-emerald-100', 'text-emerald-800', 'dark:bg-emerald-950/50', 'dark:text-emerald-400', 'border', 'border-emerald-200/40', 'dark:border-emerald-800/30');
+            if (id === 'dbread') activeAppBadge.classList.add('bg-indigo-100', 'text-indigo-800', 'dark:bg-indigo-950/50', 'dark:text-indigo-400', 'border', 'border-indigo-200/40', 'dark:border-indigo-800/30');
         }
 
         function updateActiveTabHighlight(id) {
             const tabs = document.querySelectorAll('.nav-tab');
             tabs.forEach(tab => {
                 if (tab.innerText.toLowerCase().replace(/\s/g, '') === id) {
-                    tab.className = "nav-tab px-3 py-1.5 text-sm font-semibold rounded-md transition-all bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white";
+                    tab.className = "nav-tab px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 bg-white dark:bg-slate-800 shadow-sm text-indigo-600 dark:text-white border border-slate-200/40 dark:border-slate-700/50";
                 } else {
-                    tab.className = "nav-tab px-3 py-1.5 text-sm font-medium rounded-md transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white";
+                    tab.className = "nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white";
                 }
             });
         }
 
         function clearTabHighlights() {
             document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.className = "nav-tab px-3 py-1.5 text-sm font-medium rounded-md transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white";
+                tab.className = "nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all duration-200 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white";
             });
         }
 
-        // Dark/Light Display Environment Configuration Engine
+        // Dark / Light Framework Toggle Controller
         const themeToggleDarkIcon = document.getElementById('themeToggleDarkIcon');
         const themeToggleLightIcon = document.getElementById('themeToggleLightIcon');
         const themeToggleBtn = document.getElementById('themeToggle');
 
-        // System display preferences detection setup
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
             themeToggleLightIcon.classList.remove('hidden');
@@ -238,7 +278,6 @@
             themeToggleDarkIcon.classList.remove('hidden');
         }
 
-        // Toggle Event Listener Interceptor
         themeToggleBtn.addEventListener('click', function() {
             themeToggleLightIcon.classList.toggle('hidden');
             themeToggleDarkIcon.classList.toggle('hidden');
