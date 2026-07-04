@@ -176,7 +176,7 @@
             </div>
             
             <div class="viewport-height flex-1 bg-white dark:bg-slate-900 border-x border-b border-slate-200/80 dark:border-slate-800/80 rounded-b-2xl overflow-hidden shadow-2xl relative transition-colors duration-300">
-                <iframe id="appFrame" src="" class="absolute inset-0 w-full h-full border-none bg-white dark:bg-slate-900" sandbox="allow-scripts allow-same-origin allow-forms allow-popups select-none" loading="lazy"></iframe>
+                <div id="iframeContainer" class="absolute inset-0 w-full h-full bg-white dark:bg-slate-900"></div>
             </div>
         </div>
 
@@ -186,7 +186,7 @@
         const mainContainer = document.getElementById('mainContainer');
         const dashboardGrid = document.getElementById('dashboardGrid');
         const appViewport = document.getElementById('appViewport');
-        const appFrame = document.getElementById('appFrame');
+        const iframeContainer = document.getElementById('iframeContainer');
         const quickNav = document.getElementById('quickNav');
         const activeAppBadge = document.getElementById('activeAppBadge');
         const externalAppLink = document.getElementById('externalAppLink');
@@ -197,6 +197,9 @@
             dbread: 'DB Read',
             interestcal: 'Interest Cal'
         };
+
+        const iframes = {};
+        let currentAppId = null;
 
         function loadApp(id, url) {
             dashboardGrid.classList.remove('opacity-100', 'scale-100');
@@ -210,9 +213,20 @@
                 
                 appViewport.classList.remove('hidden');
                 
-                if (appFrame.src !== url) {
-                    appFrame.src = url;
+                Object.values(iframes).forEach(iframe => iframe.classList.add('hidden'));
+
+                if (!iframes[id]) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = url;
+                    iframe.className = "absolute inset-0 w-full h-full border-none bg-white dark:bg-slate-900";
+                    iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups";
+                    iframe.loading = "lazy";
+                    iframeContainer.appendChild(iframe);
+                    iframes[id] = iframe;
                 }
+                
+                iframes[id].classList.remove('hidden');
+                currentAppId = id;
                 externalAppLink.href = url;
                 
                 activeAppBadge.innerText = appTitles[id] || id;
@@ -246,15 +260,17 @@
                     dashboardGrid.classList.add('opacity-100', 'scale-100');
                 }, 50);
                 
-                appFrame.src = "";
+                currentAppId = null;
                 clearTabHighlights();
             }, 250);
         }
 
         function refreshIframe() {
-            const currentSrc = appFrame.src;
-            appFrame.src = '';
-            appFrame.src = currentSrc;
+            if (currentAppId && iframes[currentAppId]) {
+                const currentSrc = iframes[currentAppId].src;
+                iframes[currentAppId].src = '';
+                iframes[currentAppId].src = currentSrc;
+            }
         }
 
         function updateBadgeColor(id) {
