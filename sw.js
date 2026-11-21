@@ -1,4 +1,4 @@
-const VERSION = 'gss-v3';
+const VERSION = 'gss-v4';
 const SHELL_CACHE = VERSION + '-shell';
 const LIB_CACHE = VERSION + '-lib';
 const SHELL = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
