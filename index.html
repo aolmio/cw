@@ -823,6 +823,81 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
 #view-shwe .sc-widget-box iframe{border-radius:12px;background:transparent;width:100%;max-width:250px;border:1px solid var(--border)}
 @media(hover:hover) and (pointer:fine){#view-shwe .sc-icon-btn:hover{background:var(--surface-2);color:var(--text)}#view-shwe .sc-btn-ghost:hover{background:var(--surface-2)}#view-shwe .sc-btn-primary:hover,#view-shwe .sc-btn-diamond:hover,#view-shwe .sc-btn-success:hover,#view-shwe .sc-purity-toggle:hover{filter:brightness(1.05)}#view-shwe .sc-btn-secondary:hover{background:var(--surface-2);border-color:var(--primary)}#view-shwe .sc-btn-ghost:hover,#view-shwe .sc-tab-btn:hover{color:var(--text)}#view-shwe .sc-inp:hover{border-color:var(--primary)}#view-shwe .sc-inp-diamond:hover{border-color:var(--diamond)}#view-shwe .sc-link-btn:hover{background:var(--surface-2)}#view-shwe .sc-pp-copy:hover{background:var(--surface-2);border-color:var(--border)}#view-shwe .sc-pp-copy:hover .sc-pp-copy-ico{background:var(--primary);border-color:var(--primary);color:#14110a}}
 @media(max-width:359px){#view-shwe .sc-card{padding:13px}#view-shwe .sc-result-val,#view-shwe .sc-r-total{font-size:23px}#view-shwe .sc-purity-toggle{min-width:74px;padding:0 8px}}
+.hb-upd{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--safe-b) + 18px);z-index:150;display:flex;align-items:center;gap:10px;padding:9px 10px 9px 16px;border-radius:14px;background:var(--ink);color:var(--bg);box-shadow:var(--shadow-3);font-weight:650;font-size:13.5px;max-width:calc(100vw - 24px)}
+.hb-upd .btn{border-color:transparent}
+.hb-upd .btn-icon{background:transparent;color:var(--bg)}
+@media (max-width:767px){.hb-upd{bottom:calc(var(--nav-h) + var(--safe-b) + 12px)}}
+.hb-dotw{position:relative}
+.hb-dot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--bad);border:2px solid var(--surface)}
+.hb-pr{gap:6px;font-variant-numeric:tabular-nums;font-weight:750}
+.hb-pr .ic{color:var(--brand-ink)}
+@media (max-width:480px){.hb-pr{padding:0 9px}}
+.hb-chart{margin:16px 0 8px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface-2);padding:10px}
+.hb-chart:empty{display:none}
+.hb-chart svg{display:block;width:100%;height:auto}
+.hb-chart text{fill:var(--ink-3);font-size:11px;font-family:var(--font)}
+.hb-chart .ln{fill:none;stroke:var(--brand);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.hb-chart .ar{fill:var(--brand-soft);opacity:.7}
+.hb-chart .gl{stroke:var(--grid);stroke-width:1}
+.hb-chart .pt{fill:var(--brand);stroke:var(--surface-2);stroke-width:2}
+.hb-log-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 8px;flex-wrap:wrap}
+.hb-log-head h3{font-size:15px;font-weight:800}
+.hb-log{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden}
+.hb-log:empty::after{content:"No prices saved yet";padding:16px;text-align:center;color:var(--ink-3);font-size:13.5px}
+.hb-lr{display:grid;grid-template-columns:1fr auto auto 34px;align-items:center;gap:12px;padding:9px 12px;border-bottom:1px solid var(--border);font-size:14px}
+.hb-lr:last-child{border-bottom:0}
+.hb-lr .d{color:var(--ink-3);font-weight:600}
+.hb-lr .p{font-weight:800;font-variant-numeric:tabular-nums}
+.hb-lr .c{font-size:12.5px;font-weight:750;min-width:84px;text-align:right;font-variant-numeric:tabular-nums}
+.hb-lr .c.up{color:var(--good)}
+.hb-lr .c.dn{color:var(--bad)}
+.hb-lr .x{width:30px;height:30px;border-radius:8px;border:0;background:transparent;color:var(--ink-3);display:grid;place-items:center}
+.hb-lr .x:hover{background:var(--bad-soft);color:var(--bad)}
+.hb-res{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.hb-g{font-size:12.5px;font-weight:800;color:var(--ink-3);margin:12px 0 2px}
+.hb-it{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer}
+.hb-it:hover,.hb-it:focus-visible{border-color:var(--brand);background:var(--brand-soft)}
+.hb-it .a{min-width:0}
+.hb-it .a b{display:block;font-weight:750;overflow-wrap:anywhere}
+.hb-it .a span{display:block;font-size:12.5px;color:var(--ink-3);overflow-wrap:anywhere}
+.hb-it .z{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13.5px}
+.hb-empty{padding:26px 10px;text-align:center;color:var(--ink-3);font-size:14px}
+.hb-card{border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;background:var(--surface-2)}
+.hb-k{font-size:12.5px;font-weight:800;color:var(--ink-3)}
+.hb-v{font-size:18px;font-weight:800}
+.hb-sub{font-size:12.5px;color:var(--ink-3)}
+.hb-sub.warn{color:var(--warn);font-weight:700}
+.hb-prev{padding:12px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--border);display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.hb-prev .btn-row{display:flex;gap:8px}
+.hb-prev .btn-row .btn{flex:1;justify-content:center}
+.hb-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.hb-form{grid-template-columns:1fr}}
+.hb-paper{margin-top:16px;padding:14px;border-radius:var(--r-md);background:#cfd6df;overflow:auto;max-height:55vh}
+.hb-paper>div{margin:0 auto}
+.pr-sheet{background:#fff;color:#111;font-family:var(--font);padding:22px;max-width:720px;margin:0 auto;font-size:13px;line-height:1.5}
+.pr-sheet.th{max-width:300px;padding:10px;font-size:12px}
+.pr-sheet h2{font-size:22px;font-weight:800;text-align:center;margin:0}
+.pr-sheet.th h2{font-size:17px}
+.pr-sheet .sub{text-align:center;color:#444;margin-top:2px}
+.pr-sheet .ttl{text-align:center;font-weight:800;letter-spacing:.04em;margin:14px 0 10px;padding:6px 0;border-top:2px solid #111;border-bottom:1px solid #111}
+.pr-sheet .meta{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;margin-bottom:12px}
+.pr-sheet.th .meta{grid-template-columns:1fr}
+.pr-sheet .meta b{font-weight:700}
+.pr-sheet table{width:100%;border-collapse:collapse}
+.pr-sheet th,.pr-sheet td{padding:7px 6px;border-bottom:1px solid #ccc;text-align:left;vertical-align:top}
+.pr-sheet th{border-bottom:2px solid #111;font-weight:800}
+.pr-sheet .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pr-sheet .tot{display:flex;justify-content:space-between;gap:12px;font-size:17px;font-weight:800;margin-top:12px;padding-top:8px;border-top:2px solid #111}
+.pr-sheet.th .tot{font-size:14px}
+.pr-sheet .words{text-align:right;margin-top:4px;font-weight:600}
+.pr-sheet .note{margin-top:12px;color:#333}
+.pr-sheet .sig{display:flex;justify-content:space-between;gap:24px;margin-top:38px}
+.pr-sheet .sig span{flex:1;text-align:center;border-top:1px solid #111;padding-top:4px}
+.pr-sheet .thx{text-align:center;margin-top:16px;font-weight:700}
+#printRoot{display:none}
+body.printing>*:not(#printRoot){display:none!important}
+body.printing #printRoot{display:block}
+@media print{body.printing{background:#fff!important}body.printing #printRoot .pr-sheet{max-width:none;padding:0}body.printing #printRoot .pr-sheet.th{max-width:72mm}}
 </style>
 </head>
 <body>
@@ -893,6 +968,9 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
     </nav>
     <div class="shell-actions">
       <button type="button" class="btn btn-sm hidden" id="installBtn"><svg class="ic"><use href="#i-install"/></svg><span>Install app</span></button>
+      <button type="button" class="btn btn-sm hb-pr" id="priceBtn" aria-label="Today's gold price"><svg class="ic"><use href="#i-coin"/></svg><span id="priceTxt">Set price</span></button>
+      <button type="button" class="btn btn-icon" id="lookupBtn" aria-label="Find customer or ticket" title="Find customer or ticket"><svg class="ic"><use href="#i-search"/></svg></button>
+      <button type="button" class="btn btn-icon hb-dotw" id="dataBtn" aria-label="Backup and updates" title="Backup and updates"><svg class="ic"><use href="#i-db"/></svg></button>
       <button type="button" class="btn btn-icon" id="themeBtn" aria-label="Switch to dark theme" title="Switch theme"><svg class="ic" id="themeIc"><use href="#i-moon"/></svg></button>
     </div>
   </div>
@@ -1624,6 +1702,7 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
       </div>
       <div id="sc-invoice-list-area"><div id="sc-invoice-list"></div></div>
       <div class="sc-stack">
+        <button type="button" data-act="print-inv" class="sc-btn-secondary"><svg class="ic" aria-hidden="true"><use href="#i-print"/></svg> Print / PDF</button>
         <div class="sc-btn-row">
           <button data-act="save-inv" class="sc-btn-secondary"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Save</button>
           <button data-act="share-inv" class="sc-btn-success"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg> Share</button>
@@ -1768,6 +1847,92 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
     <div class="m-foot"><button type="button" class="btn" data-close>မလုပ်တော့ပါ</button><button type="button" class="btn btn-primary" id="cPasteOk">ထည့်မည်</button></div>
   </div>
 </div>
+
+<div class="hb-upd hidden" id="updBar" role="status" aria-live="polite">
+  <span id="updTxt">New version available</span>
+  <button type="button" class="btn btn-sm btn-primary" id="updGo">Refresh</button>
+  <button type="button" class="btn btn-sm btn-icon" id="updLater" aria-label="Dismiss"><svg class="ic"><use href="#i-x"/></svg></button>
+</div>
+
+<div class="modal-ov" id="priceModal" role="dialog" aria-modal="true" aria-labelledby="prcT" style="--mw:620px">
+  <div class="modal">
+    <div class="m-handle" data-drag></div>
+    <div class="m-head" data-drag><h2 class="m-title" id="prcT">Today's gold price</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
+    <div class="m-body">
+      <div class="field">
+        <label for="prcIn">၁၆ ပဲရည် ရွှေပေါက်ဈေး (၁ ကျပ်သား)</label>
+        <div class="inp-wrap pre"><span class="pre-t">K</span><input type="text" id="prcIn" class="input lg" inputmode="numeric" placeholder="4500000" autocomplete="off"></div>
+        <span class="muted" id="prcMeta" style="font-size:12.5px"></span>
+      </div>
+      <p class="muted" style="font-size:13px;margin:10px 0 0">One price is shared by Shwe Calc, Calculator and Inventory value. Each day's price is saved to the log below.</p>
+      <div class="hb-chart" id="prcChart" aria-label="Price history chart" role="img"></div>
+      <div class="hb-log-head"><h3>Daily price log</h3><div><button type="button" class="btn btn-sm" id="prcCsv"><svg class="ic"><use href="#i-download"/></svg>CSV</button> <button type="button" class="btn btn-sm btn-soft-bad" id="prcClear">Clear log</button></div></div>
+      <div class="hb-log" id="prcLog"></div>
+    </div>
+    <div class="m-foot"><button type="button" class="btn" data-close>Close</button><button type="button" class="btn btn-primary" id="prcSave"><svg class="ic"><use href="#i-check"/></svg>Save price</button></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="lookupModal" role="dialog" aria-modal="true" aria-labelledby="lkT" style="--mw:680px">
+  <div class="modal">
+    <div class="m-handle" data-drag></div>
+    <div class="m-head" data-drag><h2 class="m-title" id="lkT">Find customer or ticket</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
+    <div class="m-body">
+      <div class="search"><svg class="ic"><use href="#i-search"/></svg><input id="lkQ" class="input" type="search" placeholder="Name, customer ID, ticket ID, phone, item…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-label="Search customers and tickets"></div>
+      <div id="lkOut" class="hb-res"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="dataModal" role="dialog" aria-modal="true" aria-labelledby="dtT" style="--mw:560px">
+  <div class="modal">
+    <div class="m-handle" data-drag></div>
+    <div class="m-head" data-drag><h2 class="m-title" id="dtT">Backup and updates</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
+    <div class="m-body">
+      <div class="hb-card">
+        <div class="hb-k">Last backup</div>
+        <div class="hb-v" id="dtLast">Never</div>
+        <div class="hb-sub" id="dtLastAgo"></div>
+        <button type="button" class="btn btn-primary btn-block" id="dtBackup"><svg class="ic"><use href="#i-download"/></svg>Back up now</button>
+        <div class="hb-sub">Saves calculator history, invoices, price log, shop details and settings to one file. Pawn, Sales and Inventory files are not included because you load them each time.</div>
+      </div>
+      <div class="hb-card">
+        <div class="hb-k">Restore from a backup file</div>
+        <input type="file" id="dtFile" accept=".json,application/json" class="input" aria-label="Choose backup file">
+        <div id="dtPrev" class="hb-prev hidden"></div>
+      </div>
+      <div class="hb-card">
+        <div class="hb-k">App version</div>
+        <div class="hb-v" id="dtVer">—</div>
+        <div class="hb-sub" id="dtUpd"></div>
+        <button type="button" class="btn btn-block" id="dtCheck"><svg class="ic"><use href="#i-refresh"/></svg>Check for updates</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-ov" id="printModal" role="dialog" aria-modal="true" aria-labelledby="prT" style="--mw:760px">
+  <div class="modal">
+    <div class="m-handle" data-drag></div>
+    <div class="m-head" data-drag><h2 class="m-title" id="prT">Print invoice</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
+    <div class="m-body">
+      <div class="hb-form">
+        <div class="field"><label for="prShop">Shop name</label><input id="prShop" class="input" type="text" autocomplete="off"></div>
+        <div class="field"><label for="prPhone">Shop phone / address</label><input id="prPhone" class="input" type="text" autocomplete="off"></div>
+        <div class="field"><label for="prCust">Customer name</label><input id="prCust" class="input" type="text" autocomplete="off"></div>
+        <div class="field"><label for="prCPhone">Customer phone</label><input id="prCPhone" class="input" type="text" inputmode="tel" autocomplete="off"></div>
+        <div class="field"><label for="prDate">Date</label><input id="prDate" class="input" type="date"></div>
+        <div class="field"><label for="prNo">Invoice no.</label><input id="prNo" class="input" type="text" autocomplete="off"></div>
+        <div class="field"><label for="prPaper">Paper</label><select id="prPaper" class="input"><option value="a4">A4 / Letter</option><option value="th">80 mm receipt</option></select></div>
+        <div class="field"><label for="prNote">Note</label><input id="prNote" class="input" type="text" autocomplete="off"></div>
+      </div>
+      <div class="hb-paper"><div id="prPrev"></div></div>
+    </div>
+    <div class="m-foot"><button type="button" class="btn" data-close>Close</button><button type="button" class="btn btn-primary" id="prGo"><svg class="ic"><use href="#i-print"/></svg>Print / Save PDF</button></div>
+  </div>
+</div>
+
+<div id="printRoot" aria-hidden="true"></div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -2244,6 +2409,7 @@ const Inv = (() => {
   const root = $('#view-inventory');
   let BASE = 16.3293;
   let data = [];
+  let lastG = 0;
   let selected = new Set(['All']);
   let sort = { key: 'net_grams_total', asc: false };
   let hideZero = false;
@@ -2399,10 +2565,12 @@ const Inv = (() => {
     const rows = filtered();
     const active = rows.filter(activeQty);
     const totalG = active.reduce((s, r) => s + totalNetGrams(r), 0);
+    lastG = totalG;
     $('#invMUniq').textContent = fmtInt(rows.length);
     $('#invMQty').textContent = fmtInt(active.reduce((s, r) => s + (+r.qty_on_hand || 0), 0));
     $('#invMG').innerHTML = `${g2(totalG)}<span class="unit">g</span>`;
     $('#invMBW').textContent = gramsToBW(totalG);
+    document.dispatchEvent(new CustomEvent('invrender'));
     $('#invCount').textContent = fmtInt(rows.length);
 
     if (!rows.length) {
@@ -2707,7 +2875,7 @@ const Inv = (() => {
     updateSortUI();
   }
 
-  return { init, gramsToBW, bwToGrams, gramsToBWParts, netGramsPerUnit, filtered, sortBy, get BASE() { return BASE; }, _setData(d, hs) { data = d; hasSmith = hs; loaded = true; } };
+  return { init, get totalGrams() { return lastG; }, gramsToBW, bwToGrams, gramsToBWParts, netGramsPerUnit, filtered, sortBy, get BASE() { return BASE; }, _setData(d, hs) { data = d; hasSmith = hs; loaded = true; } };
 })();
 const Pawn = (() => {
   let loans = [], txns = [];
@@ -3349,7 +3517,7 @@ const Pawn = (() => {
 
   return {
     init, parseDateDetails, parseYearMonth, parseCurrency, formatWeightFromYway, overdueOf, makeGetter,
-    _load(lr, tr) { load(lr, tr); }, _state() { return { loans, txns }; }
+    openTicket, openCustomer, _load(lr, tr) { load(lr, tr); }, _state() { return { loans, txns }; }
   };
 })();
 const Sales = (() => {
@@ -5254,7 +5422,11 @@ const Shwe = (() => {
     'save-photo': () => photo('capture-area', false, 'ShweCalc', 'save', 'ဓာတ်ပုံ သိမ်းပြီးပါပြီ'),
     'share-photo': () => photo('capture-area', false, 'ShweCalc', 'share'),
     'save-inv': () => photo('invoice-view', true, 'ShweInvoice', 'save', 'ဘောင်ချာ သိမ်းပြီးပါပြီ'),
-    'share-inv': () => photo('invoice-view', true, 'ShweInvoice', 'share')
+    'share-inv': () => photo('invoice-view', true, 'ShweInvoice', 'share'),
+    'print-inv': () => {
+      if (!invoice.length) return toast('ဘောင်ချာစာရင်း မရှိသေးပါ');
+      Hub.openInvoice(invoice.map(i => ({ title: i.title, amount: i.amount })));
+    }
   };
 
   function bind() {
@@ -5322,6 +5494,478 @@ const Shwe = (() => {
 
   return { init, showView, toDecimal, split, fromDecimal, numToBurmeseText, fmtUnits, ensureWidgets };
 })();
+
+const Hub = (() => {
+  const FIXED_KEYS = ['calcHistory', 'invoiceList', 'rolloverEnabled', 'purityVisible', 'bannerVisible', 'gold-logs'];
+  const day = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const jget = (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v === null || v === undefined ? d : v; } catch (e) { return d; } };
+  const jset = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const fmtDT = iso => { const d = new Date(iso); return isNaN(d) ? '—' : d.toLocaleString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }); };
+  const ago = iso => {
+    const ms = Date.now() - new Date(iso).getTime();
+    if (!(ms >= 0)) return '';
+    const m = Math.floor(ms / 6e4), h = Math.floor(m / 60), d = Math.floor(h / 24);
+    if (m < 1) return 'just now';
+    if (m < 60) return `${m} min ago`;
+    if (h < 24) return `${h} h ago`;
+    return `${d} day${d === 1 ? '' : 's'} ago`;
+  };
+
+  const P = { v: 0, d: '', log: [], timer: 0 };
+
+  function loadPrice() {
+    const s = jget('gs.price', null);
+    if (s && s.v > 0) { P.v = Math.round(s.v); P.d = s.d || ''; }
+    const l = jget('gs.priceLog', []);
+    P.log = Array.isArray(l) ? l.filter(x => x && x.d && x.p > 0).sort((a, b) => a.d.localeCompare(b.d)) : [];
+  }
+
+  function compact(v) {
+    if (v >= 1e6) return (v / 1e6).toFixed(v % 1e6 === 0 ? 0 : 2).replace(/\.?0+$/, '') + 'M';
+    return fmtInt(v);
+  }
+
+  function paintChip() {
+    const t = $('#priceTxt');
+    if (!t) return;
+    t.textContent = P.v > 0 ? (window.innerWidth <= 480 ? compact(P.v) : fmtInt(P.v)) : 'Set price';
+    $('#priceBtn').title = P.v > 0 ? `Today's gold price: ${fmtInt(P.v)} Ks` : "Set today's gold price";
+  }
+
+  function fillFields(src, force) {
+    const sc = $('#sc-GoldPrice');
+    if (sc && src !== 'shwe' && (force || !sc.value) && sc.value !== String(P.v || '')) {
+      sc.value = P.v || '';
+      sc.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    const gp = $('#gPrice');
+    if (gp && src !== 'calc' && (force || !gp.value) && gp.value !== String(P.v || '')) gp.value = P.v || '';
+  }
+
+  function commitLog() {
+    if (!(P.v > 0)) return;
+    const d = day();
+    const i = P.log.findIndex(x => x.d === d);
+    if (i >= 0) P.log[i].p = P.v; else P.log.push({ d, p: P.v });
+    P.log.sort((a, b) => a.d.localeCompare(b.d));
+    jset('gs.priceLog', P.log);
+    P.d = d;
+    jset('gs.price', { v: P.v, d });
+    if ($('#priceModal').classList.contains('open')) renderLog();
+  }
+
+  function setPrice(v, src) {
+    v = Math.round(Number(v) || 0);
+    if (!(v > 0) && src !== 'clear') return;
+    if (v === P.v && src !== 'init') return;
+    P.v = v;
+    jset('gs.price', { v, d: P.d || day() });
+    fillFields(src, true);
+    paintChip();
+    paintInvValue();
+    clearTimeout(P.timer);
+    if (v > 0) P.timer = setTimeout(commitLog, src === 'modal' ? 0 : 1500);
+    document.dispatchEvent(new CustomEvent('pricechange', { detail: v }));
+  }
+
+  function paintInvValue() {
+    const el = $('#invMVal');
+    if (!el) return;
+    const g = Inv.totalGrams || 0;
+    el.textContent = P.v > 0 && g > 0 ? `${fmtInt(g / Inv.BASE * P.v)} Ks` : '—';
+    el.parentElement.title = P.v > 0 ? `Net grams ÷ ${Inv.BASE} g per kyat × ${fmtInt(P.v)} Ks` : "Set today's gold price to see stock value";
+  }
+
+  function addInvKpi() {
+    const box = $('#invKpis');
+    if (!box || $('#invMVal')) return;
+    const k = document.createElement('div');
+    k.className = 'kpi';
+    k.dataset.tone = 'blue';
+    k.innerHTML = '<div class="kpi-label">Stock value</div><div class="kpi-value sm" id="invMVal">—</div>';
+    box.appendChild(k);
+  }
+
+  function chartSvg() {
+    const pts = P.log.slice(-30);
+    if (pts.length < 2) return '';
+    const W = 600, H = 170, L = 8, R = 8, T = 16, B = 26;
+    const ps = pts.map(x => x.p);
+    let lo = Math.min(...ps), hi = Math.max(...ps);
+    if (hi === lo) { hi += 1; lo -= 1; }
+    const x = i => L + (W - L - R) * i / (pts.length - 1);
+    const y = p => T + (H - T - B) * (1 - (p - lo) / (hi - lo));
+    const line = pts.map((q, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(q.p).toFixed(1)}`).join('');
+    const area = `${line}L${x(pts.length - 1).toFixed(1)} ${H - B}L${x(0).toFixed(1)} ${H - B}Z`;
+    const last = pts[pts.length - 1];
+    return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+      <line class="gl" x1="${L}" x2="${W - R}" y1="${y(hi)}" y2="${y(hi)}"/><line class="gl" x1="${L}" x2="${W - R}" y1="${y(lo)}" y2="${y(lo)}"/>
+      <path class="ar" d="${area}"/><path class="ln" d="${line}"/>
+      <circle class="pt" cx="${x(pts.length - 1)}" cy="${y(last.p)}" r="5"/>
+      <text x="${L}" y="${H - 8}">${esc(pts[0].d)}</text><text x="${W - R}" y="${H - 8}" text-anchor="end">${esc(last.d)}</text>
+      <text x="${L}" y="${T - 4}">${fmtInt(hi)}</text><text x="${W - R}" y="${y(lo) - 5}" text-anchor="end">${fmtInt(lo)}</text></svg>`;
+  }
+
+  function renderLog() {
+    $('#prcChart').innerHTML = chartSvg();
+    const rows = P.log.slice().reverse().slice(0, 90);
+    $('#prcLog').innerHTML = rows.map(x => {
+      const idx = P.log.findIndex(y => y.d === x.d);
+      const prev = idx > 0 ? P.log[idx - 1] : null;
+      let c = '', cls = '';
+      if (prev) {
+        const diff = x.p - prev.p;
+        if (diff) { c = `${diff > 0 ? '▲' : '▼'} ${fmtInt(Math.abs(diff))}`; cls = diff > 0 ? 'up' : 'dn'; }
+        else c = '—';
+      }
+      return `<div class="hb-lr"><span class="d">${esc(x.d)}</span><span class="p">${fmtInt(x.p)}</span><span class="c ${cls}">${c}</span><button type="button" class="x" data-del="${esc(x.d)}" aria-label="Delete ${esc(x.d)}">${ic('x')}</button></div>`;
+    }).join('');
+    $('#prcMeta').textContent = P.log.length ? `Last saved: ${P.log[P.log.length - 1].d} · ${P.log.length} day${P.log.length === 1 ? '' : 's'} logged` : '';
+  }
+
+  function openPrice() {
+    $('#prcIn').value = P.v > 0 ? String(P.v) : '';
+    renderLog();
+    Modal.open('priceModal', $('#prcIn'));
+  }
+
+  function savePriceFromModal() {
+    const v = parseFloat($('#prcIn').value.replace(/[^\d.]/g, ''));
+    if (!(v > 0)) { toast('Enter a price above zero'); return; }
+    setPrice(v, 'modal');
+    commitLog();
+    renderLog();
+    toast(`Price saved: ${fmtInt(v)} Ks`);
+  }
+
+  function logCsv() {
+    if (!P.log.length) { toast('No prices logged yet'); return; }
+    const rows = ['date,price_ks_per_kyat_16pe', ...P.log.map(x => `${x.d},${x.p}`)];
+    downloadBlob('﻿' + rows.join('\r\n'), `GoldPriceLog_${day()}.csv`, 'text/csv;charset=utf-8');
+  }
+
+  function backupKeys() {
+    const ks = new Set(FIXED_KEYS);
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('gs.') && k !== 'gs.lastBackup') ks.add(k); } } catch (e) {}
+    $$('#view-shwe input[id], #view-shwe select[id]').forEach(e => { if (e.type !== 'checkbox') ks.add(e.id.slice(3)); });
+    return ks;
+  }
+
+  function hasData() {
+    return (jget('calcHistory', []).length + jget('invoiceList', []).length + P.log.length + jget('gold-logs', []).length) > 0;
+  }
+
+  function lastBackup() {
+    try { return localStorage.getItem('gs.lastBackup') || ''; } catch (e) { return ''; }
+  }
+
+  function paintBackupState() {
+    const lb = lastBackup();
+    const age = lb ? (Date.now() - new Date(lb).getTime()) / 864e5 : Infinity;
+    const stale = hasData() && age > 7;
+    const b = $('#dataBtn');
+    if (b) {
+      let dot = $('.hb-dot', b);
+      if (stale && !dot) { dot = document.createElement('i'); dot.className = 'hb-dot'; b.appendChild(dot); }
+      if (!stale && dot) dot.remove();
+    }
+    $('#dtLast').textContent = lb ? fmtDT(lb) : 'Never';
+    const s = $('#dtLastAgo');
+    s.textContent = lb ? ago(lb) : (hasData() ? 'No backup yet. Back up now so your data is safe.' : 'Nothing to back up yet.');
+    s.className = 'hb-sub' + (stale ? ' warn' : '');
+    if (stale && lb) s.textContent = `${ago(lb)} · backup is more than 7 days old`;
+  }
+
+  function makeBackup() {
+    const data = {};
+    backupKeys().forEach(k => { try { const v = localStorage.getItem(k); if (v !== null) data[k] = v; } catch (e) {} });
+    const now = new Date();
+    const payload = {
+      app: 'gold-shop-suite', schema: 1, createdAt: now.toISOString(), appVersion: $('#dtVer').dataset.v || '',
+      counts: { history: jget('calcHistory', []).length, invoices: jget('invoiceList', []).length, priceDays: P.log.length },
+      data
+    };
+    const stamp = `${day(now)}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+    downloadBlob(JSON.stringify(payload, null, 1), `GoldShopSuite_Backup_${stamp}.json`, 'application/json');
+    try { localStorage.setItem('gs.lastBackup', now.toISOString()); } catch (e) {}
+    paintBackupState();
+    toast(`Backup saved · ${fmtDT(now.toISOString())}`);
+  }
+
+  let pending = null;
+
+  async function readBackup(file) {
+    const box = $('#dtPrev');
+    pending = null;
+    if (!file) { box.classList.add('hidden'); return; }
+    try {
+      const j = JSON.parse(await file.text());
+      if (!j || j.app !== 'gold-shop-suite' || !j.data || typeof j.data !== 'object') throw new Error('bad');
+      pending = j;
+      const c = j.counts || {};
+      box.classList.remove('hidden');
+      box.innerHTML = `<div><b>Backup made on ${esc(fmtDT(j.createdAt))}</b></div>
+        <div class="muted">${esc(ago(j.createdAt))} · ${fmtInt(c.history || 0)} calculations · ${fmtInt(c.invoices || 0)} invoice lines · ${fmtInt(c.priceDays || 0)} price days</div>
+        <div class="muted">Restoring replaces the calculator history, invoices, price log and settings on this device.</div>
+        <div class="btn-row"><button type="button" class="btn" id="dtCancel">Cancel</button><button type="button" class="btn btn-primary" id="dtRestore">Restore this backup</button></div>`;
+    } catch (e) {
+      box.classList.remove('hidden');
+      box.innerHTML = '<div style="color:var(--bad);font-weight:700">This is not a Gold Shop Suite backup file.</div>';
+    }
+  }
+
+  function applyRestore() {
+    if (!pending) return;
+    const allowed = backupKeys();
+    Object.keys(pending.data).forEach(k => { if (k.startsWith('gs.') && k !== 'gs.lastBackup') allowed.add(k); else if (FIXED_KEYS.includes(k)) allowed.add(k); });
+    allowed.forEach(k => { if (!(k in pending.data)) { try { localStorage.removeItem(k); } catch (e) {} } });
+    Object.keys(pending.data).forEach(k => { if (allowed.has(k) && typeof pending.data[k] === 'string') { try { localStorage.setItem(k, pending.data[k]); } catch (e) {} } });
+    try { localStorage.setItem('gs.lastBackup', pending.createdAt || new Date().toISOString()); } catch (e) {}
+    toast('Restored. Reloading…');
+    setTimeout(() => location.reload(), 700);
+  }
+
+  async function checkUpdate() {
+    const out = $('#dtUpd'), btn = $('#dtCheck');
+    btn.disabled = true;
+    out.textContent = 'Checking…';
+    const r = await PWA.check();
+    if (r === 'unsupported') out.textContent = 'Updates are checked when the app is installed or hosted on https.';
+    else if (r === 'offline') out.textContent = 'Could not reach the server. Check your connection.';
+    else {
+      await sleep(2200);
+      out.textContent = PWA.pending() ? 'A new version is ready. Tap Refresh in the bar.' : 'You are on the latest version.';
+    }
+    btn.disabled = false;
+  }
+
+  function lookupData() {
+    let loans = [];
+    try { loans = Pawn._state().loans; } catch (e) {}
+    let crm = [];
+    try { crm = Sales._state().crm; } catch (e) {}
+    return { loans, crm };
+  }
+
+  function renderLookup() {
+    const q = $('#lkQ').value.trim().toLowerCase();
+    const out = $('#lkOut');
+    const { loans, crm } = lookupData();
+    if (!loans.length && !crm.length) {
+      out.innerHTML = '<div class="hb-empty">No Pawn or Sales data is loaded yet.<br>Load your CSV files in the Pawn or Sales tab, then search here.</div>';
+      return;
+    }
+    if (q.length < 2) { out.innerHTML = '<div class="hb-empty">Type at least 2 characters.</div>'; return; }
+    const terms = q.split(/\s+/);
+    const hit = s => terms.every(t => s.includes(t));
+    const ml = loans.filter(l => hit(l.search || '') || hit(String(l.ticket).toLowerCase()));
+    const byCust = new Map();
+    ml.forEach(l => {
+      const key = (l.custId || '') + '|' + (l.custName || '');
+      const c = byCust.get(key) || { name: l.custName, id: l.custId, n: 0, active: 0, owed: 0 };
+      c.n++;
+      if (l.active) { c.active++; c.owed += l.outstanding; }
+      byCust.set(key, c);
+    });
+    const mc = crm.filter(c => hit(`${c.customerName} ${c.customerId}`.toLowerCase()));
+    let html = '';
+    if (byCust.size) {
+      html += '<div class="hb-g">Pawn customers</div>' + [...byCust.values()].slice(0, 8).map(c =>
+        `<button type="button" class="hb-it" data-k="pc" data-n="${esc(c.name)}" data-i="${esc(c.id)}"><span class="a"><b>${esc(c.name || 'Unknown')}</b><span>ID ${esc(c.id || '—')} · ${c.n} ticket${c.n === 1 ? '' : 's'} · ${c.active} active</span></span><span class="z">${c.owed ? fmtInt(c.owed) + ' Ks' : ''}</span></button>`).join('');
+    }
+    if (ml.length) {
+      html += `<div class="hb-g">Pawn tickets${ml.length > 20 ? ` (first 20 of ${fmtInt(ml.length)})` : ''}</div>` + ml.slice(0, 20).map(l =>
+        `<button type="button" class="hb-it" data-k="pt" data-t="${esc(l.ticket)}"><span class="a"><b>${esc(l.ticket)} · ${esc(l.custName || 'Unknown')}</b><span>${esc(l.item || '—')} · ${esc(l.dateIn || '')} · ${esc(l.od && l.od.isOverdue ? l.od.label : l.status)}</span></span><span class="z">${fmtInt(l.amount)} Ks</span></button>`).join('');
+    }
+    if (mc.length) {
+      html += '<div class="hb-g">Sales customers</div>' + mc.slice(0, 10).map(c =>
+        `<button type="button" class="hb-it" data-k="sc"><span class="a"><b>${esc(c.customerName)}</b><span>ID ${esc(c.customerId)} · ${esc(c.tier)} · ${fmtInt(c.count)} purchases · ${esc(Sales.kpy(c.totalWeight))}</span></span><span class="z">${c.hasPrice === false ? '' : fmtInt(c.totalPriceKs) + ' Ks'}</span></button>`).join('');
+    }
+    out.innerHTML = html || '<div class="hb-empty">No matches.</div>';
+  }
+
+  function openLookup() {
+    Modal.open('lookupModal', $('#lkQ'));
+    renderLookup();
+  }
+
+  function onLookupClick(e) {
+    const b = e.target.closest('.hb-it');
+    if (!b) return;
+    Modal.close('lookupModal');
+    if (b.dataset.k === 'pt') { Router.go('pawn'); Pawn.openTicket(b.dataset.t); }
+    else if (b.dataset.k === 'pc') { Router.go('pawn'); Pawn.openCustomer(b.dataset.n, b.dataset.i, null); $('#pwMBack').classList.add('hidden'); }
+    else Router.go('sales');
+  }
+
+  const shop = () => jget('gs.shop', { name: '', phone: '' });
+
+  function invoiceNo(peek) {
+    const d = day();
+    const s = jget('gs.invSeq', { d: '', n: 0 });
+    const n = (s.d === d ? s.n : 0) + 1;
+    if (!peek) jset('gs.invSeq', { d, n });
+    return `INV-${d.replace(/-/g, '')}-${String(n).padStart(2, '0')}`;
+  }
+
+  let items = [];
+
+  function sheetHtml() {
+    const th = $('#prPaper').value === 'th';
+    const total = items.reduce((s, i) => s + (Number(i.amount) || 0), 0);
+    const name = $('#prShop').value.trim(), ph = $('#prPhone').value.trim();
+    const cust = $('#prCust').value.trim(), cph = $('#prCPhone').value.trim(), note = $('#prNote').value.trim();
+    const rows = items.map((i, n) => `<tr><td>${n + 1}</td><td>${esc(i.title)}</td><td class="r">${fmtInt(i.amount)}</td></tr>`).join('');
+    return `<div class="pr-sheet${th ? ' th' : ''}">
+      <h2>${esc(name || 'Gold Shop')}</h2>${ph ? `<div class="sub">${esc(ph)}</div>` : ''}
+      <div class="ttl">ဘောင်ချာ · INVOICE</div>
+      <div class="meta"><div><b>No:</b> ${esc($('#prNo').value)}</div><div><b>Date:</b> ${esc($('#prDate').value)}</div>${cust ? `<div><b>Customer:</b> ${esc(cust)}</div>` : ''}${cph ? `<div><b>Phone:</b> ${esc(cph)}</div>` : ''}</div>
+      <table><thead><tr><th>#</th><th>Item</th><th class="r">Amount (Ks)</th></tr></thead><tbody>${rows}</tbody></table>
+      <div class="tot"><span>Total</span><span>${fmtInt(total)} Ks</span></div>
+      <div class="words">${esc(Shwe.numToBurmeseText(total))}</div>
+      ${note ? `<div class="note">${esc(note)}</div>` : ''}
+      ${th ? '' : '<div class="sig"><span>Customer</span><span>Seller</span></div>'}
+      <div class="thx">ကျေးဇူးတင်ပါသည်</div></div>`;
+  }
+
+  function paintSheet() {
+    const th = $('#prPaper').value === 'th';
+    $('#prPrev').innerHTML = sheetHtml();
+    $('#prPrev').style.maxWidth = th ? '300px' : '720px';
+  }
+
+  function openInvoice(list) {
+    items = list.slice();
+    const s = shop();
+    $('#prShop').value = s.name || '';
+    $('#prPhone').value = s.phone || '';
+    $('#prCust').value = '';
+    $('#prCPhone').value = '';
+    $('#prNote').value = '';
+    $('#prDate').value = day();
+    $('#prNo').value = invoiceNo(true);
+    $('#prPaper').value = jget('gs.paper', 'a4');
+    paintSheet();
+    Modal.open('printModal', $('#prCust'));
+  }
+
+  function printNow() {
+    jset('gs.shop', { name: $('#prShop').value.trim(), phone: $('#prPhone').value.trim() });
+    jset('gs.paper', $('#prPaper').value);
+    const typed = $('#prNo').value;
+    if (typed === invoiceNo(true)) invoiceNo(false);
+    let st = $('#prPage');
+    if (!st) { st = document.createElement('style'); st.id = 'prPage'; document.head.appendChild(st); }
+    st.textContent = $('#prPaper').value === 'th' ? '@page{size:80mm auto;margin:4mm}' : '@page{size:A4;margin:14mm}';
+    $('#printRoot').innerHTML = sheetHtml();
+    document.body.classList.add('printing');
+    const done = () => { document.body.classList.remove('printing'); $('#printRoot').innerHTML = ''; window.removeEventListener('afterprint', done); };
+    window.addEventListener('afterprint', done);
+    setTimeout(() => { try { window.print(); } catch (e) { done(); } if (!('onafterprint' in window)) done(); }, 60);
+  }
+
+  function bind() {
+    $('#priceBtn').addEventListener('click', openPrice);
+    $('#lookupBtn').addEventListener('click', openLookup);
+    $('#dataBtn').addEventListener('click', () => { paintBackupState(); Modal.open('dataModal'); });
+    $('#prcSave').addEventListener('click', savePriceFromModal);
+    $('#prcIn').addEventListener('keydown', e => { if (e.key === 'Enter') savePriceFromModal(); });
+    $('#prcIn').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); });
+    $('#prcCsv').addEventListener('click', logCsv);
+    $('#prcClear').addEventListener('click', () => { if (!P.log.length) return; if (confirm('Delete the whole price log?')) { P.log = []; jset('gs.priceLog', []); renderLog(); } });
+    $('#prcLog').addEventListener('click', e => {
+      const b = e.target.closest('[data-del]');
+      if (!b) return;
+      P.log = P.log.filter(x => x.d !== b.dataset.del);
+      jset('gs.priceLog', P.log);
+      renderLog();
+    });
+    $('#lkQ').addEventListener('input', debounce(renderLookup, 150));
+    $('#lkOut').addEventListener('click', onLookupClick);
+    $('#dtBackup').addEventListener('click', makeBackup);
+    $('#dtFile').addEventListener('change', e => readBackup(e.target.files[0]));
+    $('#dtPrev').addEventListener('click', e => {
+      if (e.target.closest('#dtRestore')) applyRestore();
+      if (e.target.closest('#dtCancel')) { pending = null; $('#dtFile').value = ''; $('#dtPrev').classList.add('hidden'); }
+    });
+    $('#dtCheck').addEventListener('click', checkUpdate);
+    ['prShop', 'prPhone', 'prCust', 'prCPhone', 'prDate', 'prNo', 'prPaper', 'prNote'].forEach(id => $('#' + id).addEventListener('input', paintSheet));
+    $('#prPaper').addEventListener('change', paintSheet);
+    $('#prGo').addEventListener('click', printNow);
+    $('#dataModal').addEventListener('modalclose', () => { pending = null; $('#dtFile').value = ''; $('#dtPrev').classList.add('hidden'); });
+    document.addEventListener('invrender', paintInvValue);
+    document.addEventListener('viewchange', e => { if (e.detail === 'calc') fillFields('init', false); });
+    window.addEventListener('resize', debounce(paintChip, 150));
+    const sc = $('#sc-GoldPrice');
+    if (sc) sc.addEventListener('input', () => setPrice(parseFloat(sc.value), 'shwe'));
+    const gp = $('#gPrice');
+    if (gp) gp.addEventListener('input', () => setTimeout(() => setPrice(parseFloat(gp.value), 'calc'), 0));
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) paintBackupState(); });
+  }
+
+  function init() {
+    loadPrice();
+    const sc = $('#sc-GoldPrice');
+    if (!(P.v > 0) && sc && parseFloat(sc.value) > 0) { P.v = Math.round(parseFloat(sc.value)); jset('gs.price', { v: P.v, d: day() }); }
+    addInvKpi();
+    bind();
+    fillFields('init', true);
+    paintChip();
+    paintInvValue();
+    paintBackupState();
+  }
+
+  return { init, openInvoice, setPrice, get price() { return P.v; }, get log() { return P.log; }, makeBackup, _setLog(a) { P.log = a; jset('gs.priceLog', a); } };
+})();
+const PWA = (() => {
+  let reg = null, wantReload = false, refreshing = false;
+  const bar = () => $('#updBar');
+  const show = () => { bar().classList.remove('hidden'); };
+  const supported = () => 'serviceWorker' in navigator && /^https?:$/.test(location.protocol);
+  const pending = () => !!(reg && (reg.waiting || (reg.installing && navigator.serviceWorker.controller)));
+  const askVersion = () => {
+    const c = navigator.serviceWorker.controller || (reg && reg.active);
+    if (c) c.postMessage('GET_VERSION');
+  };
+  function watch(r) {
+    reg = r;
+    if (r.waiting && navigator.serviceWorker.controller) show();
+    r.addEventListener('updatefound', () => {
+      const w = r.installing;
+      if (!w) return;
+      w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) show(); });
+    });
+  }
+  async function check() {
+    if (!reg) return 'unsupported';
+    try { await reg.update(); } catch (e) { return 'offline'; }
+    return pending() ? 'available' : 'current';
+  }
+  function apply() {
+    if (reg && reg.waiting) { wantReload = true; reg.waiting.postMessage('SKIP_WAITING'); }
+    else location.reload();
+  }
+  function init() {
+    $('#updGo').addEventListener('click', apply);
+    $('#updLater').addEventListener('click', () => bar().classList.add('hidden'));
+    if (!supported()) { $('#dtVer').textContent = 'Not installed (opened as a file)'; return; }
+    navigator.serviceWorker.addEventListener('message', e => {
+      if (e.data && e.data.type === 'version') { const v = $('#dtVer'); v.textContent = e.data.version; v.dataset.v = e.data.version; }
+    });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (wantReload && !refreshing) { refreshing = true; location.reload(); }
+      else askVersion();
+    });
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').then(r => { watch(r); askVersion(); navigator.serviceWorker.ready.then(askVersion); }).catch(() => {});
+    });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+    setInterval(check, 30 * 60 * 1000);
+  }
+  return { init, check, pending, apply };
+})();
+
 (function pwa() {
   let deferred = null;
   const btn = $('#installBtn');
@@ -5339,19 +5983,7 @@ const Shwe = (() => {
     btn.classList.add('hidden');
   });
   window.addEventListener('appinstalled', () => { deferred = null; btn.classList.add('hidden'); toast('Installed. Open Gold Shop Suite from your home screen.'); });
-  if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
-    const hadController = !!navigator.serviceWorker.controller;
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').then(reg => {
-        reg.addEventListener('updatefound', () => {
-          const w = reg.installing;
-          if (!w) return;
-          w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) toast('Update ready. Reload to use the latest version.'); });
-        });
-      }).catch(() => {});
-    });
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) toast('App updated. Reload to use the latest version.'); });
-  }
+  PWA.init();
   window.addEventListener('online', () => toast('Back online'));
   window.addEventListener('offline', () => toast('You are offline. Saved features still work.'));
 })();
@@ -5360,7 +5992,9 @@ const Shwe = (() => {
   Inv.init();
   Pawn.init();
   Sales.init();
-  Calc.init(); Shwe.init();
+  Calc.init();
+  Shwe.init();
+  Hub.init();
   Router.init();
 })();
 </script></body></html>
