@@ -1,4 +1,4 @@
-const VERSION = 'gss-v2';
+const VERSION = 'gss-v3';
 const SHELL_CACHE = VERSION + '-shell';
 const LIB_CACHE = VERSION + '-lib';
 const SHELL = ['./', './index.html', './manifest.json', './icon.svg', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
@@ -22,7 +22,6 @@ self.addEventListener('install', event => {
         if (r.ok) await lib.put(u, r);
       } catch (e) {}
     }));
-    await self.skipWaiting();
   })());
 });
 
@@ -82,4 +81,5 @@ self.addEventListener('fetch', event => {
 
 self.addEventListener('message', event => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data === 'GET_VERSION' && event.source) event.source.postMessage({ type: 'version', version: VERSION });
 });
