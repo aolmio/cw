@@ -135,7 +135,7 @@ table{border-collapse:collapse}
 img,svg{max-width:100%}
 .ic{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hidden,[hidden]{display:none!important}
-.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.sr-only{position:absolute;left:0;top:0;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 :focus{outline:none}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:6px}
 .skip{position:absolute;left:12px;top:-60px;z-index:300;background:var(--primary);color:var(--on-primary);padding:10px 16px;border-radius:10px;font-weight:700;text-decoration:none;transition:top .15s}
@@ -544,7 +544,7 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
   .shell-in{height:54px}
   :root{--shell-h:54px}
   main{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 28px);padding-top:16px}
-  .tabs-bottom{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--glass);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--border);padding-bottom:var(--safe-b)}
+  .tabs-bottom{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--glass);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--border);padding-bottom:var(--safe-b)}
   .tabs-bottom .tab{flex-direction:column;gap:3px;height:var(--nav-h);padding:8px 4px 6px;font-size:11.5px}
   .tabs-bottom .tab .ic{width:22px;height:22px}
   .tabs-bottom .tab[aria-current="page"]::after{top:-1px;bottom:auto;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px}
@@ -667,6 +667,162 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
 .rs-total .rs-k,.rs-total .rs-v{color:var(--good)}
 .rs-total .rs-v{font-size:26px;font-weight:900}
 .rs-stack{display:flex;flex-direction:column;gap:6px}
+#view-shwe{--primary:#b8860f;--primary-soft:#f4e6c2;--diamond:#0a84c7;--diamond-soft:#dcf1fb;--danger:#d97706;--success:#1f9c56;--text:var(--ink);--text-muted:var(--ink-3);--radius:18px;--shadow:0 8px 24px rgba(20,20,26,.06)}
+[data-theme="dark"] #view-shwe{--primary:#e8bd4f;--primary-soft:#3a3016;--diamond:#4cc2f7;--diamond-soft:#14313c;--danger:#f59e0b;--success:#35d07f;--shadow:0 8px 24px rgba(0,0,0,.35)}
+#view-shwe .sc-wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+#view-shwe input,#view-shwe select{font-size:16px;font-family:inherit;color:inherit}
+#view-shwe input:focus,#view-shwe select:focus{outline:none}
+#view-shwe select.sc-inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+#view-shwe .sc-nav{position:sticky;top:var(--shell-top);z-index:20;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:8px 0;margin:-8px 0 0;background:var(--bg)}
+#view-shwe .sc-nav::-webkit-scrollbar{display:none}
+#view-shwe .sc-nav-btn{flex:1 0 auto;position:relative;display:inline-flex;align-items:center;justify-content:center;gap:7px;height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-weight:700;font-size:13.5px;white-space:nowrap;transition:background .15s,border-color .15s,color .15s}
+#view-shwe .sc-nav-btn .ic{width:18px;height:18px}
+#view-shwe .sc-nav-btn.sc-active{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+#view-shwe .sc-nav-btn.sc-active-diamond{background:var(--diamond-soft);border-color:var(--diamond);color:var(--diamond)}
+#view-shwe .sc-nav-btn .sc-badge{position:static;margin-left:2px}
+#view-shwe .sc-nav-btn:hover{color:var(--text)}
+#view-shwe .sc-nav-btn.sc-active:hover{color:var(--primary)}
+#view-shwe .sc-nav-btn.sc-active-diamond:hover{color:var(--diamond)}
+@media(max-width:600px){#view-shwe .sc-nav-btn{padding:0 12px;font-size:13px}}
+#view-shwe select:focus{outline:none}
+#view-shwe .ic{width:20px;height:20px;flex-shrink:0}
+#view-shwe .sc-icon-btn{background:none;border:none;color:var(--text-muted);cursor:pointer;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s,transform .1s}
+#view-shwe .sc-icon-btn:active{transform:scale(.9);background:var(--surface-2)}
+#view-shwe .sc-icon-btn .ic{width:19px;height:19px}
+#view-shwe #sc-refresh-btn .ic{transition:transform .5s}
+#view-shwe .sc-banner-card,#view-shwe .sc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+#view-shwe .sc-banner-card{padding:14px 16px;position:relative}
+#view-shwe .sc-banner-close{position:absolute;top:6px;right:6px;width:30px;height:30px;z-index:10}
+#view-shwe .sc-banner-close .ic{width:15px;height:15px}
+#view-shwe .sc-banner-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:.05em}
+#view-shwe .sc-banner-head .ic{width:16px;height:16px;color:var(--primary)}
+#view-shwe .sc-view{display:none;flex:1;flex-direction:column;animation:sc-fade .22s ease-out}
+#view-shwe .sc-view.sc-active{display:flex}
+@keyframes sc-fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#view-shwe .sc-responsive-grid{display:grid;grid-template-columns:1fr;gap:12px}
+#view-shwe .sc-sub{display:none}
+#view-shwe .sc-sub.sc-on{display:grid}
+@media(min-width:560px){#view-shwe .sc-responsive-grid{grid-template-columns:1fr 1fr}#view-shwe .sc-full-width{grid-column:1/-1}}
+#view-shwe .sc-card{padding:16px}
+#view-shwe .sc-row-between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+#view-shwe .sc-row-between.sc-wrap{flex-wrap:wrap}
+#view-shwe .sc-card-label{font-size:15px;font-weight:800;color:var(--primary);margin-bottom:9px;display:flex;align-items:center;gap:6px;letter-spacing:.02em}
+#view-shwe .sc-card-label .ic{width:18px;height:18px}
+#view-shwe .sc-card-label.sc-flush{margin:0}
+#view-shwe .sc-card-label.sc-center{justify-content:center}
+#view-shwe .sc-tone-d{color:var(--diamond)}
+#view-shwe .sc-inp{width:100%;background:var(--surface-2);border:1.5px solid var(--border);border-radius:14px;color:var(--text);padding:12px 14px;font-weight:700;transition:border-color .15s,box-shadow .15s;height:50px}
+#view-shwe .sc-inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+#view-shwe .sc-inp-center{text-align:center;padding-left:6px;padding-right:6px;min-width:0}
+#view-shwe .sc-inp-hero{font-size:22px!important;font-weight:800;text-align:center;height:58px}
+#view-shwe .sc-inp-diamond:focus{border-color:var(--diamond);box-shadow:0 0 0 3px var(--diamond-soft)}
+#view-shwe .sc-mm-text{font-size:13.5px;font-weight:800;color:var(--primary);margin-top:8px;text-align:center;word-break:break-word;line-height:1.5}
+#view-shwe .sc-mm-text:empty{display:none}
+#view-shwe .sc-price-input-row{display:flex;align-items:flex-start;gap:10px}
+#view-shwe .sc-price-input-wrap{flex:1;min-width:0}
+#view-shwe .sc-purity-toggle{height:58px;min-width:86px;padding:0 12px;border-radius:14px;border:2px solid var(--primary);background:var(--primary-soft);color:var(--primary);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex-shrink:0;font-weight:800;transition:background .2s,color .2s,transform .1s,box-shadow .2s;box-shadow:0 4px 12px rgba(184,134,15,.18)}
+#view-shwe .sc-purity-toggle:active{transform:scale(.95)}
+#view-shwe .sc-purity-toggle-top{display:flex;align-items:center;gap:5px;font-size:12.5px;line-height:1}
+#view-shwe .sc-purity-toggle-top .ic{width:15px;height:15px}
+#view-shwe .sc-purity-toggle-state{font-size:10px;font-weight:900;letter-spacing:.08em;padding:2px 8px;border-radius:999px;background:var(--surface);color:var(--text-muted);line-height:1.2}
+#view-shwe .sc-purity-toggle.sc-active{background:var(--primary);color:#14110a;box-shadow:0 6px 18px rgba(232,189,79,.4)}
+#view-shwe .sc-purity-toggle.sc-active .sc-purity-toggle-state{background:#14110a;color:var(--primary)}
+#view-shwe .sc-pp-hint{font-size:11.5px;font-weight:700;color:var(--text-muted)}
+#view-shwe .sc-pp-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+#view-shwe .sc-pp-row:last-child{border-bottom:none;padding-bottom:0}
+#view-shwe .sc-pp-row:first-child{padding-top:0}
+#view-shwe .sc-pp-row>span{font-weight:700;font-size:14.5px}
+#view-shwe .sc-pp-row b{display:block;font-weight:800;font-size:16px;color:var(--text)}
+#view-shwe .sc-pp-row small{display:block;font-size:12px;font-weight:700;color:var(--primary);word-break:break-word}
+#view-shwe .sc-pp-copy{background:transparent;border:1px solid transparent;border-radius:12px;padding:6px 8px;margin:-6px -8px;display:flex;align-items:center;gap:10px;cursor:pointer;color:inherit;text-align:right;transition:background .15s,border-color .15s,transform .1s}
+#view-shwe .sc-pp-copy>div{text-align:right;min-width:0}
+#view-shwe .sc-pp-copy:active{transform:scale(.97);background:var(--surface-2)}
+#view-shwe .sc-pp-copy-ico{width:32px;height:32px;border-radius:10px;background:var(--surface-2);border:1px solid var(--border);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,color .15s,border-color .15s}
+#view-shwe .sc-pp-copy-ico .ic{width:15px;height:15px}
+#view-shwe .sc-pp-copy.sc-copied{background:var(--primary-soft);border-color:var(--primary)}
+#view-shwe .sc-pp-copy.sc-copied .sc-pp-copy-ico{background:var(--success);border-color:var(--success);color:#fff}
+#view-shwe .sc-pp-empty{color:var(--text-muted);font-weight:600;font-size:13.5px;text-align:center}
+#view-shwe .sc-btn-primary,#view-shwe .sc-btn-diamond,#view-shwe .sc-btn-secondary,#view-shwe .sc-btn-ghost,#view-shwe .sc-btn-success{width:100%;padding:14px;border-radius:14px;border:none;font-weight:800;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s,filter .2s,background .15s;height:52px}
+#view-shwe .sc-btn-primary{color:#14110a;background:var(--primary)}
+#view-shwe .sc-btn-diamond{color:#071a24;background:var(--diamond)}
+#view-shwe .sc-btn-success{color:#fff;background:var(--success)}
+#view-shwe .sc-btn-secondary{background:var(--surface);border:1.5px solid var(--border);color:var(--text)}
+#view-shwe .sc-btn-ghost{background:transparent;border:1.5px dashed var(--border);color:var(--text-muted)}
+#view-shwe .sc-btn-primary:active,#view-shwe .sc-btn-diamond:active,#view-shwe .sc-btn-success:active,#view-shwe .sc-btn-secondary:active,#view-shwe .sc-btn-ghost:active{transform:scale(.97);filter:brightness(.92)}
+#view-shwe .sc-btn-row{display:flex;gap:10px}
+#view-shwe .sc-btn-row>*{flex:1}
+#view-shwe .sc-stack{margin-top:auto;padding-top:16px;display:flex;flex-direction:column;gap:12px}
+#view-shwe .sc-stack.sc-flush-top{padding-top:0}
+#view-shwe .sc-link-btn{background:none;border:none;color:var(--primary);font-weight:700;font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;padding:6px 8px;border-radius:10px}
+#view-shwe .sc-link-btn.sc-danger{color:var(--danger)}
+#view-shwe .sc-link-btn .ic{width:15px;height:15px}
+#view-shwe .sc-link-btn:active{background:var(--surface-2)}
+#view-shwe .sc-hist-actions{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+#view-shwe .sc-list-head{margin-bottom:12px}
+#view-shwe .sc-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#view-shwe .sc-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+#view-shwe .sc-gap-top{margin-top:12px}
+@media(max-width:340px){#view-shwe .sc-grid-2{grid-template-columns:1fr}}
+#view-shwe .sc-history-item{display:flex;align-items:flex-start;gap:12px;background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;text-align:left;cursor:pointer}
+#view-shwe .sc-history-item>div{flex:1;min-width:0}
+#view-shwe .sc-history-item .sc-r-title{font-size:13px;margin-bottom:8px}
+#view-shwe .sc-history-item .sc-r-row{font-size:14px}
+#view-shwe .sc-history-item .sc-r-total{font-size:21px;padding-top:10px;margin-top:8px}
+#view-shwe .sc-history-item .sc-r-mm{font-size:13px}
+#view-shwe .sc-history-item .sc-r-note{margin-bottom:8px}
+#view-shwe .sc-history-time{font-size:11.5px;color:var(--text-muted);font-weight:600;margin-top:8px}
+#view-shwe .sc-mini-btn{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:8px;color:var(--danger);cursor:pointer;display:flex;align-items:center;justify-content:center}
+#view-shwe .sc-mini-btn .ic{width:17px;height:17px}
+#view-shwe .sc-empty-card{text-align:center;color:var(--text-muted);font-weight:600}
+#view-shwe .sc-result-box{background:var(--surface);border:2px solid var(--primary);border-radius:var(--radius);padding:22px;text-align:center;margin-bottom:16px;box-shadow:var(--shadow)}
+#view-shwe .sc-result-box-diamond{border-color:var(--diamond)}
+#view-shwe .sc-result-val{font-size:27px;font-weight:900;color:var(--primary);letter-spacing:-.01em;word-break:break-word}
+#view-shwe .sc-res-sub{font-size:14px;margin-top:8px;color:var(--text-muted);font-weight:600}
+#view-shwe .sc-money-lines{margin-top:12px;display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--text)}
+#view-shwe .sc-money-lines:empty{display:none}
+#view-shwe .sc-money-lines small{display:block;color:var(--primary);font-weight:800}
+#view-shwe #sc-capture-area{background:var(--bg);border-radius:var(--radius);padding:4px}
+#view-shwe .sc-r-title{font-size:15px;color:var(--text-muted);margin-bottom:12px;font-weight:800;letter-spacing:.05em}
+#view-shwe .sc-r-row{display:flex;justify-content:space-between;gap:12px;font-size:16px;margin-bottom:6px}
+#view-shwe .sc-r-row b{font-weight:800;color:var(--text)}
+#view-shwe .sc-r-note{font-size:13px;color:var(--text-muted);text-align:left;margin-bottom:12px;font-weight:600}
+#view-shwe .sc-r-total{font-size:27px;font-weight:900;color:var(--primary);border-top:1px solid var(--border);padding-top:16px;margin-top:14px;word-break:break-word}
+#view-shwe .sc-r-total.sc-d{color:var(--diamond)}
+#view-shwe .sc-r-mm{font-size:14px;font-weight:700;margin-top:8px;text-align:center}
+#view-shwe .sc-tab-bar{display:flex;background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:16px}
+#view-shwe .sc-tab-btn{flex:1;padding:11px 6px;border-radius:11px;border:none;font-weight:700;font-size:13px;color:var(--text-muted);background:transparent;cursor:pointer;transition:.2s}
+#view-shwe .sc-tab-btn.sc-active{background:var(--surface);color:var(--primary);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+#view-shwe .sc-badge{background:#f59e0b;color:#fff;font-size:10px;font-weight:900;padding:2px 6px;border-radius:10px;position:absolute;top:2px;right:6px;min-width:16px;text-align:center}
+#view-shwe .sc-info-note{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+#view-shwe .sc-info-note p{font-size:13px;line-height:1.7;font-weight:500}
+#view-shwe .sc-info-note b{color:var(--primary)}
+#view-shwe .sc-info-title{display:flex;align-items:center;gap:6px;color:var(--primary);font-weight:800;font-size:14px;margin-bottom:6px}
+#view-shwe .sc-info-title .ic{width:18px;height:18px}
+#view-shwe #sc-purity-result{margin-top:16px;margin-bottom:0}
+#view-shwe .sc-equiv{font-size:13px;color:var(--diamond);font-weight:700;margin-top:12px;text-align:center}
+#view-shwe .sc-total-card{margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--primary);color:#14110a;border:none}
+#view-shwe .sc-total-title{font-weight:800;font-size:17px}
+#view-shwe .sc-total-vals{text-align:right;min-width:0}
+#view-shwe .sc-total-main{font-size:24px;font-weight:900;word-break:break-word}
+#view-shwe .sc-total-sub{font-size:13px;font-weight:700;margin-top:4px}
+#view-shwe #sc-invoice-list-area{flex:1;padding-bottom:12px}
+#view-shwe .sc-inv-item{margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;padding:14px}
+#view-shwe .sc-inv-title{font-weight:700;font-size:14px;color:var(--text-muted)}
+#view-shwe .sc-inv-amt{font-weight:800;font-size:16px;margin-top:6px}
+#view-shwe .sc-switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
+#view-shwe .sc-switch input{opacity:0;width:0;height:0}
+#view-shwe .sc-slider{position:absolute;cursor:pointer;inset:0;background:var(--border);transition:.3s}
+#view-shwe .sc-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:#fff;transition:.3s}
+#view-shwe .sc-switch input:checked+.sc-slider{background:var(--success)}
+#view-shwe .sc-switch input:checked+.sc-slider:before{transform:translateX(20px)}
+#view-shwe .sc-switch input:focus-visible+.sc-slider{outline:2px solid var(--primary);outline-offset:2px}
+#view-shwe .sc-slider.sc-round{border-radius:24px}
+#view-shwe .sc-slider.sc-round:before{border-radius:50%}
+#view-shwe .sc-widgets-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center}
+#view-shwe .sc-widget-box{flex:1;min-width:220px;max-width:100%;display:flex;justify-content:center}
+#view-shwe .sc-widget-box iframe{border-radius:12px;background:transparent;width:100%;max-width:250px;border:1px solid var(--border)}
+@media(hover:hover) and (pointer:fine){#view-shwe .sc-icon-btn:hover{background:var(--surface-2);color:var(--text)}#view-shwe .sc-btn-ghost:hover{background:var(--surface-2)}#view-shwe .sc-btn-primary:hover,#view-shwe .sc-btn-diamond:hover,#view-shwe .sc-btn-success:hover,#view-shwe .sc-purity-toggle:hover{filter:brightness(1.05)}#view-shwe .sc-btn-secondary:hover{background:var(--surface-2);border-color:var(--primary)}#view-shwe .sc-btn-ghost:hover,#view-shwe .sc-tab-btn:hover{color:var(--text)}#view-shwe .sc-inp:hover{border-color:var(--primary)}#view-shwe .sc-inp-diamond:hover{border-color:var(--diamond)}#view-shwe .sc-link-btn:hover{background:var(--surface-2)}#view-shwe .sc-pp-copy:hover{background:var(--surface-2);border-color:var(--border)}#view-shwe .sc-pp-copy:hover .sc-pp-copy-ico{background:var(--primary);border-color:var(--primary);color:#14110a}}
+@media(max-width:359px){#view-shwe .sc-card{padding:13px}#view-shwe .sc-result-val,#view-shwe .sc-r-total{font-size:23px}#view-shwe .sc-purity-toggle{min-width:74px;padding:0 8px}}
 </style>
 </head>
 <body>
@@ -697,6 +853,21 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
 <symbol id="i-calc" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2.5"/><path d="M8 6h8M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01M8 18.5h.01M12 18.5h.01M16 18.5h.01"/></symbol>
 <symbol id="i-install" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
 <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3L8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 21h14"/><path d="M5 7h14"/><path d="M5 7l-3 8a4 4 0 006 0L5 7z"/><path d="M19 7l-3 8a4 4 0 006 0l-3-8z"/></symbol>
+<symbol id="i-trend-down" viewBox="0 0 24 24"><path d="M23 18l-9.5-9.5-5 5L1 6"/><path d="M17 18h6v-6"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol>
+<symbol id="i-plus-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></symbol>
+<symbol id="i-minus-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><path d="M1 1l22 22"/></symbol>
+<symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 2h6M10 2v6L4 19a2 2 0 001.8 3h12.4a2 2 0 001.8-3l-6-11V2"/><path d="M7 15h10"/></symbol>
+<symbol id="i-plus-square" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></symbol>
 </defs>
 </svg>
 
@@ -718,6 +889,7 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
       <button type="button" class="tab" data-go="pawn"><svg class="ic"><use href="#i-coin"/></svg><span>Pawn</span></button>
       <button type="button" class="tab" data-go="sales"><svg class="ic"><use href="#i-chart"/></svg><span>Sales</span></button>
       <button type="button" class="tab" data-go="calc"><svg class="ic"><use href="#i-calc"/></svg><span>Calculator</span></button>
+      <button type="button" class="tab" data-go="shwe"><svg class="ic"><use href="#i-gem"/></svg><span>Shwe Calc</span></button>
     </nav>
     <div class="shell-actions">
       <button type="button" class="btn btn-sm hidden" id="installBtn"><svg class="ic"><use href="#i-install"/></svg><span>Install app</span></button>
@@ -731,6 +903,7 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
   <button type="button" class="tab" data-go="pawn"><svg class="ic"><use href="#i-coin"/></svg><span>Pawn</span></button>
   <button type="button" class="tab" data-go="sales"><svg class="ic"><use href="#i-chart"/></svg><span>Sales</span></button>
   <button type="button" class="tab" data-go="calc"><svg class="ic"><use href="#i-calc"/></svg><span>Calculator</span></button>
+  <button type="button" class="tab" data-go="shwe"><svg class="ic"><use href="#i-gem"/></svg><span>Shwe Calc</span></button>
 </nav>
 
 <main id="main" tabindex="-1">
@@ -1220,6 +1393,255 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
       </div>
     </div>
   </section>
+  </div>
+</section>
+<section class="view" id="view-shwe" data-title="Gold, diamond and unit calculators" aria-labelledby="scH">
+  <div class="page-head">
+    <div>
+      <h1 id="scH">ရွှေဈေးတွက်စက်</h1>
+      <p>Gold price, purity, diamond, unit and invoice calculators. Everything stays on this device.</p>
+    </div>
+    <div class="toolbar">
+      <button type="button" class="sc-icon-btn" id="sc-toggle-banner-btn" data-act="banner" aria-label="Toggle price banner" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-eye-off"/></svg></button>
+      <button type="button" class="sc-icon-btn" id="sc-refresh-btn" data-act="refresh" aria-label="Refresh price widgets"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></button>
+    </div>
+  </div>
+  <div class="sc-wrap">
+    <nav class="sc-nav" id="sc-nav" aria-label="Shwe Calc sections">
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="price-calc"><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg><span>ရွှေဈေး</span></button>
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="purity-calc"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg><span>အခေါက်</span></button>
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="diamond-calc"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg><span>စိန်/ရတနာ</span></button>
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="tools"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg><span>ယူနစ်/အသားတင်</span></button>
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="invoice"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><span>ဘောင်ချာ</span><span id="sc-invoice-badge" class="sc-badge" hidden>0</span></button>
+      <button type="button" class="sc-nav-btn" data-act="view" data-view="history"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg><span>မှတ်တမ်း</span></button>
+    </nav>
+    <div id="sc-banner-wrapper" class="sc-banner-wrapper">
+      <div class="sc-banner-card">
+        <button data-act="banner" class="sc-icon-btn sc-banner-close" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+        <div class="sc-banner-head"><svg class="ic" aria-hidden="true"><use href="#i-trend"/></svg><span>XAU/USD Live Markets</span></div>
+        <div class="sc-widgets-row" id="sc-widgets-container"></div>
+      </div>
+    </div>
+
+    <div class="sc-card sc-full-width sc-row-between">
+      <div class="sc-card-label sc-flush"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg> ယူနစ်အလိုအလျောက်ပြောင်းရန်</div>
+      <label class="sc-switch"><input type="checkbox" id="sc-rollover-toggle" checked aria-label="Auto rollover"><span class="sc-slider sc-round"></span></label>
+    </div>
+
+    <section id="sc-price-calc-view" class="sc-view sc-active">
+      <div class="sc-responsive-grid">
+        <div class="sc-card sc-full-width">
+          <div class="sc-card-label"><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg> ယနေ့ပေါက်ဈေး (ကျပ်)</div>
+          <div class="sc-price-input-row">
+            <div class="sc-price-input-wrap">
+              <input type="number" id="sc-GoldPrice" data-mm inputmode="decimal" placeholder="၀" class="sc-inp sc-inp-hero">
+            </div>
+            <button type="button" id="sc-purity-toggle-btn" class="sc-purity-toggle" data-act="toggle-purity" aria-pressed="false" aria-label="Toggle purity prices">
+              <span class="sc-purity-toggle-top"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg><span>ပဲရည်</span></span>
+              <span id="sc-purity-toggle-state" class="sc-purity-toggle-state">OFF</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="sc-pp-card" class="sc-card sc-full-width" hidden>
+          <div class="sc-row-between sc-list-head">
+            <div class="sc-card-label sc-flush"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg> ပဲရည်အလိုက် ဈေးနှုန်း</div>
+            <span class="sc-pp-hint">နှိပ်၍ ကူးယူပါ</span>
+          </div>
+          <div id="sc-pp-list"></div>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-label"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg> ရွှေအလေးချိန်</div>
+          <div class="sc-grid-3" data-w="PKat,PPe,PYway"></div>
+        </div>
+
+        <div class="sc-card">
+          <div class="sc-card-label sc-tone-d"><svg class="ic" aria-hidden="true"><use href="#i-trend-down"/></svg> အလျော့တွက်</div>
+          <div class="sc-grid-3" data-w="RKat,RPae,RYway"></div>
+        </div>
+
+        <div class="sc-card sc-full-width">
+          <div class="sc-grid-2">
+            <div><div class="sc-card-label">လက်ခ (ကျပ်)</div><input type="number" id="sc-Smith" data-mm inputmode="decimal" placeholder="၀" class="sc-inp"></div>
+            <div><div class="sc-card-label">ကျောက်ဖိုး (ကျပ်)</div><input type="number" id="sc-StonePrice" data-mm inputmode="decimal" placeholder="၀" class="sc-inp"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-stack">
+        <button data-act="calc" class="sc-btn-primary"><svg class="ic" aria-hidden="true"><use href="#i-calc"/></svg> တွက်ချက်မည်</button>
+        <button data-act="reset" data-target="#sc-price-calc-view" class="sc-btn-secondary">အကုန်ဖျက်မည် (RESET)</button>
+      </div>
+    </section>
+
+    <section id="sc-price-result-view" class="sc-view">
+      <div id="sc-capture-area"><div class="sc-result-box" id="sc-res-list"></div></div>
+      <div class="sc-stack">
+        <button data-act="add-inv" class="sc-btn-secondary"><svg class="ic" aria-hidden="true"><use href="#i-plus-square"/></svg> ဘောင်ချာသို့ ထည့်မည်</button>
+        <div class="sc-btn-row">
+          <button data-act="save-photo" class="sc-btn-secondary"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Save</button>
+          <button data-act="share-photo" class="sc-btn-success"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg> Share</button>
+        </div>
+        <button data-act="back" class="sc-btn-ghost">နောက်သို့ ပြန်သွားမည်</button>
+      </div>
+    </section>
+
+    <section id="sc-purity-calc-view" class="sc-view">
+      <div class="sc-tab-bar">
+        <button id="sc-tab-purity" class="sc-tab-btn sc-active" data-act="tab" data-target="sc-purity-sub-view">အရည်အသွေးတွက်</button>
+        <button id="sc-tab-yield" class="sc-tab-btn" data-act="tab" data-target="sc-yield-sub-view">အသားတင်ထွက်နှုန်း</button>
+      </div>
+      <div class="sc-info-note">
+        <div class="sc-info-title"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg> Density အညွှန်းကိန်းများ</div>
+        <p>၁၆ပဲရည် ရွှေတစ်ကျပ်သားတွင် <b>19.25</b> Density ရှိပြီး ၁၅ပဲရည်သည် <b>17.8</b> Density ဖြစ်ပါသည်။</p>
+      </div>
+      <div id="sc-purity-sub-view" class="sc-responsive-grid sc-sub sc-on">
+        <div class="sc-card"><div class="sc-card-label">အထည်ပျက် အလေးချိန်</div><div class="sc-grid-3" data-w="p1-k,p1-p,p1-y"></div></div>
+        <div class="sc-card"><div class="sc-card-label">ချွတ်ပြီးရရှိသော အခေါက်ရွှေ</div><div class="sc-grid-3" data-w="p2-k,p2-p,p2-y"></div></div>
+      </div>
+      <div id="sc-yield-sub-view" class="sc-responsive-grid sc-sub">
+        <div class="sc-card sc-full-width"><div class="sc-card-label">အထည်ပျက် အလေးချိန်</div><div class="sc-grid-3" data-w="y1-k,y1-p,y1-y"></div></div>
+        <div class="sc-card"><div class="sc-card-label">Density (စက်ပွိုင့်)</div><input type="number" id="sc-y-den" inputmode="decimal" step="0.01" placeholder="ဥပမာ- 17.51" class="sc-inp"></div>
+        <div class="sc-card"><div class="sc-card-label">ပဲရည် သိလျှင်ရိုက်ထည့်ပါ</div><input type="number" id="sc-y-pe" inputmode="decimal" step="0.01" placeholder="ဥပမာ- 14.5" class="sc-inp"></div>
+      </div>
+      <div id="sc-purity-result" class="sc-result-box" hidden>
+        <div class="sc-card-label sc-center" id="sc-p-res-label">ရလဒ်</div>
+        <div id="sc-p-res-val" class="sc-result-val">0.00</div>
+        <div id="sc-p-res-detail" class="sc-res-sub">-</div>
+      </div>
+      <div class="sc-stack"><button data-act="calc-purity" class="sc-btn-primary">တွက်မည်</button></div>
+    </section>
+
+    <section id="sc-diamond-calc-view" class="sc-view">
+      <div class="sc-responsive-grid">
+        <div class="sc-card sc-full-width">
+          <div class="sc-grid-2">
+            <div>
+              <div class="sc-card-label sc-tone-d">ဈေးနှုန်းသတ်မှတ်ချက်</div>
+              <select id="sc-DiamondPriceType" class="sc-inp sc-inp-diamond">
+                <option value="carat">၁ ကာရက် ဈေးနှုန်း</option>
+                <option value="ratti">၁ ရတီ ဈေးနှုန်း</option>
+              </select>
+            </div>
+            <div>
+              <div class="sc-card-label sc-tone-d">ဈေးနှုန်း (ကျပ်)</div>
+              <input type="number" id="sc-DiamondPrice" data-mm inputmode="decimal" placeholder="၀" class="sc-inp sc-inp-diamond">
+            </div>
+          </div>
+          <div id="sc-equivPriceDisplay" class="sc-equiv"></div>
+        </div>
+        <div class="sc-card sc-full-width">
+          <div class="sc-grid-2">
+            <div><div class="sc-card-label sc-tone-d">ကာရက် (Carat)</div><input type="number" id="sc-DCt" inputmode="decimal" step="0.0001" placeholder="0.00" class="sc-inp sc-inp-diamond"></div>
+            <div><div class="sc-card-label sc-tone-d">ရတီ / ဗြီ / ပိုင်း</div><div class="sc-grid-3" data-w="DR,DB,DP" data-ph="R,B,P" data-cls="sc-inp-diamond" data-nr></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-stack">
+        <button data-act="calc-diamond" class="sc-btn-diamond"><svg class="ic" aria-hidden="true"><use href="#i-gem"/></svg> စိန်ဈေးတွက်မည်</button>
+        <button data-act="reset" data-target="#sc-diamond-calc-view" class="sc-btn-secondary">RESET</button>
+      </div>
+    </section>
+
+    <section id="sc-tools-view" class="sc-view">
+      <div class="sc-tab-bar">
+        <button id="sc-tab-tools-unit" class="sc-tab-btn sc-active" data-act="tab" data-target="sc-tools-unit-sub">ယူနစ်</button>
+        <button id="sc-tab-tools-net" class="sc-tab-btn" data-act="tab" data-target="sc-tools-net-sub">အသားတင်</button>
+        <button id="sc-tab-tools-budget" class="sc-tab-btn" data-act="tab" data-target="sc-tools-budget-sub">ဘတ်ဂျက်</button>
+      </div>
+
+      <div id="sc-tools-unit-sub" class="sc-responsive-grid sc-sub sc-on">
+        <div class="sc-card sc-full-width">
+          <div class="sc-grid-2">
+            <div><div class="sc-card-label">ဂရမ် (Grams)</div><input type="number" id="sc-gramsInput" inputmode="decimal" step="0.01" placeholder="0.00" class="sc-inp"></div>
+            <div>
+              <div class="sc-card-label">စံသတ်မှတ်ချက်</div>
+              <select id="sc-standard" class="sc-inp">
+                <option value="16.329325">Official (16.33g)</option>
+                <option value="16.606">Traditional (16.61g)</option>
+              </select>
+            </div>
+          </div>
+          <div class="sc-grid-3 sc-gap-top" data-w="uKyat,uPe,uYway"></div>
+        </div>
+        <div class="sc-card sc-full-width">
+          <div class="sc-card-label sc-tone-d">စိန် / ရတနာ (Carat ⇄ Gram)</div>
+          <div class="sc-grid-2">
+            <input type="number" id="sc-convCt" inputmode="decimal" step="0.01" placeholder="Carat (Ct)" class="sc-inp sc-inp-diamond">
+            <input type="number" id="sc-convGm" inputmode="decimal" step="0.01" placeholder="Gram (g)" class="sc-inp sc-inp-diamond">
+          </div>
+        </div>
+        <div class="sc-result-box sc-full-width">
+          <div class="sc-card-label sc-center">ရွှေအလေးချိန် ရလဒ်</div>
+          <div id="sc-uDisplay" class="sc-result-val">၀ ကျပ် ၀ ပဲ ၀ ရွေး</div>
+          <div id="sc-uSubDisplay" class="sc-res-sub">(0.0000 ကျပ်) | 0.000 g</div>
+        </div>
+        <div class="sc-full-width"><button data-act="reset" data-target="#sc-tools-unit-sub" class="sc-btn-secondary">RESET</button></div>
+      </div>
+
+      <div id="sc-tools-net-sub" class="sc-responsive-grid sc-sub">
+        <div class="sc-card sc-full-width"><div class="sc-card-label"><svg class="ic" aria-hidden="true"><use href="#i-plus-circle"/></svg> စုစုပေါင်းအလေးချိန်</div><div class="sc-grid-3" data-w="TKat,TPe,TYway"></div></div>
+        <div class="sc-card sc-full-width"><div class="sc-card-label sc-tone-d"><svg class="ic" aria-hidden="true"><use href="#i-minus-circle"/></svg> နှုတ်မည့်အလေးချိန်</div><div class="sc-grid-3" data-w="SKat,SPe,SYway"></div></div>
+        <div class="sc-result-box sc-full-width">
+          <div class="sc-card-label sc-center">အသားတင်ရွှေအလေးချိန်</div>
+          <div id="sc-netDisplay" class="sc-result-val">၀ ကျပ် ၀ ပဲ ၀ ရွေး</div>
+          <div id="sc-netSubDisplay" class="sc-res-sub">(0.0000 ကျပ်)</div>
+        </div>
+        <div class="sc-full-width sc-stack sc-flush-top">
+          <button data-act="use-net" class="sc-btn-primary"><svg class="ic" aria-hidden="true"><use href="#i-calc"/></svg> ရွှေဈေးတွက်စက်သို့ ထည့်မည်</button>
+          <button data-act="reset" data-target="#sc-tools-net-sub" class="sc-btn-secondary">RESET</button>
+        </div>
+      </div>
+
+      <div id="sc-tools-budget-sub" class="sc-responsive-grid sc-sub">
+        <div class="sc-card sc-full-width">
+          <div class="sc-grid-2">
+            <div><div class="sc-card-label">ဘတ်ဂျက်ငွေ (ကျပ်)</div><input type="number" id="sc-b-amount" data-mm inputmode="decimal" placeholder="ဥပမာ- ၁၀၀၀၀၀၀" class="sc-inp"></div>
+            <div><div class="sc-card-label">ယနေ့ရွှေဈေး (ကျပ်)</div><input type="number" id="sc-b-price" data-mm inputmode="decimal" placeholder="ဥပမာ- ၄၀၀၀၀၀၀" class="sc-inp"></div>
+          </div>
+        </div>
+        <div class="sc-result-box sc-full-width">
+          <div class="sc-card-label sc-center">ရရှိနိုင်သော ရွှေအလေးချိန်</div>
+          <div id="sc-b-result" class="sc-result-val">၀ ကျပ် ၀ ပဲ ၀ ရွေး</div>
+          <div id="sc-b-sub-result" class="sc-res-sub">(0.0000 ကျပ်)</div>
+          <div id="sc-b-money" class="sc-money-lines"></div>
+        </div>
+        <div class="sc-full-width"><button data-act="reset" data-target="#sc-tools-budget-sub" class="sc-btn-secondary">RESET</button></div>
+      </div>
+    </section>
+
+    <section id="sc-invoice-view" class="sc-view">
+      <div class="sc-card sc-total-card">
+        <div class="sc-total-title">စုစုပေါင်း ကျသင့်ငွေ</div>
+        <div class="sc-total-vals">
+          <div id="sc-invoice-total" class="sc-total-main">၀ ကျပ်</div>
+          <div id="sc-invoice-total-text" class="sc-total-sub">၀ ကျပ်</div>
+        </div>
+      </div>
+      <div class="sc-row-between sc-list-head">
+        <div class="sc-card-label sc-flush"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg> ဘောင်ချာစာရင်း</div>
+        <button data-act="clear-inv" class="sc-link-btn sc-danger">Clear All</button>
+      </div>
+      <div id="sc-invoice-list-area"><div id="sc-invoice-list"></div></div>
+      <div class="sc-stack">
+        <div class="sc-btn-row">
+          <button data-act="save-inv" class="sc-btn-secondary"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg> Save</button>
+          <button data-act="share-inv" class="sc-btn-success"><svg class="ic" aria-hidden="true"><use href="#i-share"/></svg> Share</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="sc-history-view" class="sc-view">
+      <div class="sc-row-between sc-list-head sc-wrap">
+        <div class="sc-card-label sc-flush"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg> မှတ်တမ်းများ</div>
+        <div class="sc-hist-actions">
+          <button data-act="export-csv" class="sc-link-btn"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg> CSV</button>
+          <button data-act="export-json" class="sc-link-btn"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg> JSON</button>
+          <button data-act="clear-hist" class="sc-link-btn sc-danger">Clear All</button>
+        </div>
+      </div>
+      <div id="sc-history-list"></div>
+    </section>
   </div>
 </section>
 </main>
@@ -1771,8 +2193,8 @@ function legendHTML(rows, fmt, unit) {
 }
 
 const Router = (() => {
-  const VIEWS = ['inventory', 'pawn', 'sales', 'calc'];
-  const NAMES = { inventory: 'Inventory', pawn: 'Pawn Analytics', sales: 'Sales', calc: 'Calculator' };
+  const VIEWS = ['inventory', 'pawn', 'sales', 'calc', 'shwe'];
+  const NAMES = { inventory: 'Inventory', pawn: 'Pawn Analytics', sales: 'Sales', calc: 'Calculator', shwe: 'Shwe Calc' };
   let current = null;
   function go(name, fromHash) {
     if (!VIEWS.includes(name)) name = 'inventory';
@@ -4255,6 +4677,651 @@ const Calc = (() => {
 
   return { init, evaluate, myanmarTextToNumber, numberToWords, smartFormatDate, parseDateString, goldWeightText };
 })();
+
+const Shwe = (() => {
+  const PURITY = [['၁၅ ပဲရည်', 17], ['၁၄ ပဲ ၂ ပြားရည်', 17.5], ['၁၄ ပဲရည်', 18], ['၁၃ ပဲရည်', 19], ['၁၂ ပဲရည်', 20]];
+  const UNITS = [[100000, 'သိန်း'], [10000, 'သောင်း'], [1000, 'ထောင်'], [100, 'ရာ'], [10, 'ဆယ်']];
+  const MY_DIGITS = [...'၀၁၂၃၄၅၆၇၈၉'];
+  const WEIGHT_DEFAULT = '၀ ကျပ် ၀ ပဲ ၀ ရွေး';
+  const HOUR = 36e5;
+  const MAX_HISTORY = 50;
+  const H2C = [
+    'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+    'https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js'
+  ];
+
+  const store = {
+    get: (k, d = null) => { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } },
+    set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} },
+    del: k => { try { localStorage.removeItem(k); } catch (e) {} },
+    json: (k, d) => { try { const v = JSON.parse(localStorage.getItem(k)); return v === null || v === undefined ? d : v; } catch (e) { return d; } }
+  };
+
+  const S = { banner: true, purity: false, calc: null, from: 'price-calc', widgets: false, widgetsTheme: '' };
+  let hist = store.json('calcHistory', []);
+  let invoice = store.json('invoiceList', []);
+  if (!Array.isArray(hist)) hist = [];
+  if (!Array.isArray(invoice)) invoice = [];
+
+  const root = () => document.getElementById('view-shwe');
+  const g = id => document.getElementById('sc-' + id);
+  const all = (s, r) => Array.from((r || root()).querySelectorAll(s));
+  const keyOf = el => (el.id || '').slice(3);
+  const num = v => parseFloat(v) || 0;
+  const val = id => num(g(id).value);
+  const fmt = n => Math.round(n).toLocaleString('en-US');
+  const toMy = n => String(n).replace(/\d/g, d => MY_DIGITS[d]);
+  const isActive = () => root() && root().classList.contains('active');
+
+  const breakdown = n => {
+    let r = Math.floor(n);
+    const out = [];
+    for (const [u, name] of UNITS) {
+      const q = Math.floor(r / u);
+      r %= u;
+      if (q > 0) out.push([q, name]);
+    }
+    if (r > 0) out.push([r, '']);
+    return out;
+  };
+  const fmtUnits = n => (n > 0 ? breakdown(Math.round(n)).map(([q, u]) => q + u).join('') : '');
+  const numToBurmeseText = n => {
+    n = Math.floor(n);
+    if (!n || isNaN(n) || n <= 0) return '၀ ကျပ်';
+    return breakdown(n).map(([q, u]) => toMy(q) + (u ? ' ' + u : '')).join(' ') + ' ကျပ်';
+  };
+
+  const toDecimal = (k, p, y) => num(k) + num(p) / 16 + num(y) / 128;
+  const split = d => {
+    let k = Math.floor(d + 1e-7);
+    const r = (d - k) * 16;
+    let p = Math.floor(r + 1e-7);
+    let y = +((r - p) * 8).toFixed(2);
+    if (y >= 8) { p++; y = 0; }
+    if (p >= 16) { k++; p = 0; }
+    return [k, p, y];
+  };
+  const weightStr = (k, p, y) => [k > 0 && `${k} ကျပ်`, p > 0 && `${p} ပဲ`, y > 0 && `${y} ရွေး`].filter(Boolean).join(' ');
+  const fromDecimal = d => weightStr(...split(d)) || '၀ ကျပ်';
+  const diamondStr = (r, b, p) => [r > 0 && `${r}R`, b > 0 && `${b}B`, p > 0 && `${p}P`].filter(Boolean).join(' ');
+
+  function buildWeights() {
+    all('[data-w]').forEach(box => {
+      const ids = box.dataset.w.split(',');
+      const ph = (box.dataset.ph || 'ကျပ်,ပဲ,ရွေး').split(',');
+      ids.forEach((id, i) => {
+        const el = document.createElement('input');
+        el.type = 'number';
+        el.id = 'sc-' + id;
+        el.inputMode = 'decimal';
+        el.placeholder = ph[i];
+        el.setAttribute('aria-label', ph[i]);
+        el.className = `sc-inp sc-inp-center ${box.dataset.cls || ''}`.trim();
+        if (i === 2) el.step = '0.01';
+        if (!box.hasAttribute('data-nr')) el.dataset.g = box.dataset.w;
+        box.appendChild(el);
+      });
+    });
+    all('[data-mm]').forEach(el => {
+      const label = document.createElement('div');
+      label.className = 'sc-mm-text';
+      label.id = 'sc-mm-' + keyOf(el);
+      label.setAttribute('aria-live', 'polite');
+      el.insertAdjacentElement('afterend', label);
+    });
+  }
+
+  function mmLabel(el) {
+    if (!el.hasAttribute('data-mm')) return;
+    const l = g('mm-' + keyOf(el));
+    if (l) l.textContent = fmtUnits(num(el.value));
+  }
+
+  function rollover(ids) {
+    if (!g('rollover-toggle').checked) return;
+    const [k, p, y] = ids.map(g);
+    let kv = num(k.value), pv = num(p.value), yv = num(y.value);
+    if (yv >= 8) {
+      pv += Math.floor(yv / 8);
+      yv = +(yv % 8).toFixed(2);
+      y.value = yv || '';
+      p.value = pv || '';
+    }
+    if (pv >= 16) {
+      kv += Math.floor(pv / 16);
+      pv %= 16;
+      p.value = pv || '';
+      k.value = kv || '';
+    }
+    ids.forEach(id => store.set(id, g(id).value));
+  }
+
+  function setPurityVisible(show) {
+    S.purity = !!show;
+    g('pp-card').hidden = !S.purity;
+    const btn = g('purity-toggle-btn');
+    btn.classList.toggle('sc-active', S.purity);
+    btn.setAttribute('aria-pressed', String(S.purity));
+    g('purity-toggle-state').textContent = S.purity ? 'ON' : 'OFF';
+  }
+
+  function togglePurity() {
+    setPurityVisible(!S.purity);
+    store.set('purityVisible', S.purity);
+  }
+
+  async function copyPurity(btn) {
+    const raw = btn.dataset.val;
+    const label = btn.dataset.label;
+    if (!raw) return;
+    const ok = await copyText(raw);
+    if (!ok) return toast('ကူးယူ၍မရပါ');
+    btn.classList.add('sc-copied');
+    const ico = btn.querySelector('.sc-pp-copy-ico');
+    if (ico) ico.innerHTML = ic('check');
+    toast(`${label} (${fmt(num(raw))} ကျပ်) ကူးယူပြီးပါပြီ`);
+    clearTimeout(btn._t);
+    btn._t = setTimeout(() => {
+      btn.classList.remove('sc-copied');
+      if (ico) ico.innerHTML = ic('copy');
+    }, 1400);
+  }
+
+  function purityPrices() {
+    const p = val('GoldPrice');
+    const box = g('pp-list');
+    if (p <= 0) {
+      box.innerHTML = '<div class="sc-pp-empty">၁၆ ပဲရည် ယနေ့ပေါက်ဈေး ထည့်ပါ</div>';
+      return;
+    }
+    const rows = [['၁၆ ပဲရည်', p], ...PURITY.map(([label, d]) => [label, (16 / d) * p])];
+    box.innerHTML = rows.map(([label, a]) => {
+      const raw = Math.round(a);
+      return `<div class="sc-pp-row"><span>${label}</span><button type="button" class="sc-pp-copy" data-act="copy-pp" data-val="${raw}" data-label="${label}" aria-label="Copy ${label}"><div><b>${fmt(a)} ကျပ်</b><small>${fmtUnits(a)}</small></div><span class="sc-pp-copy-ico">${ic('copy')}</span></button></div>`;
+    }).join('');
+  }
+
+  function netWeight() {
+    const net = Math.max(0, toDecimal(val('TKat'), val('TPe'), val('TYway')) - toDecimal(val('SKat'), val('SPe'), val('SYway')));
+    g('netDisplay').textContent = fromDecimal(net);
+    g('netSubDisplay').textContent = `(${net.toFixed(4)} ကျပ်)`;
+    return net;
+  }
+
+  function useNetWeight() {
+    const [k, p, y] = split(netWeight());
+    [['PKat', k], ['PPe', p], ['PYway', y]].forEach(([id, v]) => {
+      g(id).value = v > 0 ? v : '';
+      store.set(id, g(id).value);
+    });
+    showView('price-calc');
+    toast('ရွှေအလေးချိန်သို့ ထည့်သွင်းပြီးပါပြီ');
+  }
+
+  function convertUnits(source) {
+    const factor = val('standard');
+    let kyat = 0;
+    if (source === 'grams') {
+      kyat = val('gramsInput') / factor;
+      const [k, p, y] = split(kyat);
+      g('uKyat').value = k > 0 ? k : '';
+      g('uPe').value = p > 0 ? p : '';
+      g('uYway').value = y > 0 ? y : '';
+    } else {
+      kyat = toDecimal(g('uKyat').value, g('uPe').value, g('uYway').value);
+      g('gramsInput').value = kyat > 0 ? (kyat * factor).toFixed(3) : '';
+    }
+    g('uDisplay').textContent = fromDecimal(kyat);
+    g('uSubDisplay').textContent = `(${kyat.toFixed(4)} ကျပ်) | ${(kyat * factor).toFixed(3)} g`;
+  }
+
+  function convertDiamond(mode) {
+    if (mode === 'ct') g('convGm').value = (val('convCt') * 0.2).toFixed(4);
+    else g('convCt').value = (val('convGm') / 0.2).toFixed(4);
+  }
+
+  function calcBudget() {
+    const b = val('b-amount'), p = val('b-price');
+    if (b > 0 && p > 0) {
+      const d = b / p;
+      g('b-result').textContent = fromDecimal(d);
+      g('b-sub-result').textContent = `(${d.toFixed(4)} ကျပ်)`;
+    } else {
+      g('b-result').textContent = WEIGHT_DEFAULT;
+      g('b-sub-result').textContent = '(0.0000 ကျပ်)';
+    }
+    const line = (label, n) => (n > 0 ? `<div>${label}: ${fmt(n)} ကျပ်<small>${fmtUnits(n)}</small></div>` : '');
+    g('b-money').innerHTML = line('ဘတ်ဂျက်ငွေ', b) + line('ယနေ့ရွှေဈေး', p);
+  }
+
+  function equivPrice() {
+    const price = val('DiamondPrice');
+    const out = g('equivPriceDisplay');
+    if (price === 0) { out.textContent = ''; return; }
+    out.textContent = g('DiamondPriceType').value === 'carat'
+      ? `≈ ${fmt(price / 1.1)} ကျပ် (၁ ရတီလျှင်)`
+      : `≈ ${fmt(price * 1.1)} ကျပ် (၁ ကာရက်လျှင်)`;
+  }
+
+  function syncDiamond(mode) {
+    const dr = g('DR'), db = g('DB'), dp = g('DP'), dct = g('DCt');
+    if (mode === 'ct') {
+      const ratti = num(dct.value) * 1.1;
+      const r = Math.floor(ratti + 1e-5);
+      const remB = (ratti - r) * 20;
+      const b = Math.floor(remB + 1e-5);
+      const p = +((remB - b) * 8).toFixed(2);
+      dr.value = r || '';
+      db.value = b || '';
+      dp.value = p > 0 ? p : '';
+    } else {
+      let r = num(dr.value), b = num(db.value), p = num(dp.value);
+      if (p >= 8) { b += Math.floor(p / 8); p = +(p % 8).toFixed(2); db.value = b; dp.value = p > 0 ? p : ''; }
+      if (b >= 20) { r += Math.floor(b / 20); b %= 20; dr.value = r; db.value = b > 0 ? b : ''; }
+      dct.value = ((r + b / 20 + p / 160) / 1.1).toFixed(4);
+    }
+  }
+
+  function calcPurity() {
+    const isPurity = g('tab-purity').classList.contains('sc-active');
+    const box = g('purity-result');
+    if (isPurity) {
+      const raw = toDecimal(val('p1-k'), val('p1-p'), val('p1-y'));
+      const pure = toDecimal(val('p2-k'), val('p2-p'), val('p2-y'));
+      if (raw <= 0 || pure <= 0) return toast('အလေးချိန်မှန်ကန်စွာထည့်ပါ။');
+      box.hidden = false;
+      g('p-res-label').textContent = 'တွက်ချက်ရရှိသော ရွှေအရည်အသွေး';
+      g('p-res-val').textContent = `${((pure / raw) * 16).toFixed(2)} ပဲရည်`;
+      g('p-res-detail').textContent = `Density (စက်ပွိုင့်): ${((pure / raw) * 19.32).toFixed(2)}`;
+      return;
+    }
+    const raw = toDecimal(val('y1-k'), val('y1-p'), val('y1-y'));
+    const den = val('y-den'), pe = val('y-pe');
+    let kyat;
+    if (den > 0) kyat = (den / 19.32) * raw;
+    else if (pe > 0) kyat = (pe / 16) * raw;
+    else return toast('Density (သို့မဟုတ်) ပဲရည် တစ်ခုခုထည့်ပါ။');
+    box.hidden = false;
+    g('p-res-label').textContent = 'ပြန်ရမည့် အခေါက်ရွှေပမာဏ';
+    g('p-res-val').textContent = fromDecimal(kyat);
+    g('p-res-detail').textContent = `စုစုပေါင်းဒသမကိန်း: ${kyat.toFixed(6)} ကျပ်`;
+  }
+
+  const R = {
+    title: s => `<div class="sc-r-title">${s}</div>`,
+    row: (a, b) => `<div class="sc-r-row"><span>${a}</span><b>${b}</b></div>`,
+    note: s => (s ? `<div class="sc-r-note">(အလေးချိန်: ${s})</div>` : ''),
+    total: (n, cls = '') => `<div class="sc-r-total ${cls}">${fmt(n)} ကျပ်</div><div class="sc-r-mm">${numToBurmeseText(n)}</div>`
+  };
+
+  function commit(type, sig, html, total, summary) {
+    S.calc = { amount: total, summary };
+    saveHistory({ type, sig: `${type}|${sig}`, html, total, summary });
+    const box = g('res-list');
+    box.innerHTML = html;
+    box.classList.toggle('sc-result-box-diamond', type === 'diamond');
+    showView('price-result');
+  }
+
+  function calcPrice() {
+    const price = val('GoldPrice');
+    const [pk, pp, py] = ['PKat', 'PPe', 'PYway'].map(val);
+    const [rk, rp, ry] = ['RKat', 'RPae', 'RYway'].map(val);
+    const smith = val('Smith'), stone = val('StonePrice');
+    const gold = toDecimal(pk, pp, py), red = toDecimal(rk, rp, ry);
+    const total = gold * price + red * price + smith + stone;
+    const html = R.title('ရွှေတွက်ချက်မှု') + R.row('ယနေ့ဈေး:', price.toLocaleString()) + R.row('ရွှေဖိုး:', fmt(gold * price)) + R.note(weightStr(pk, pp, py)) +
+      R.row('လျော့တွက်ဖိုး:', fmt(red * price)) + R.note(weightStr(rk, rp, ry)) + R.row('လက်ခ+ကျောက်:', (smith + stone).toLocaleString()) + R.total(total);
+    commit('gold', [price, pk, pp, py, rk, rp, ry, smith, stone].join(','), html, total, `ရွှေ (${pk}K ${pp}P ${py}Y)`);
+  }
+
+  function calcDiamond() {
+    const price = val('DiamondPrice');
+    const type = g('DiamondPriceType').value;
+    const ct = val('DCt'), r = val('DR'), b = val('DB'), p = val('DP');
+    const total = type === 'carat' ? ct * price : (r + b / 20 + p / 160) * price;
+    const ws = diamondStr(r, b, p);
+    const note = ct > 0 ? `${ct} Ct${ws ? ' - ' + ws : ''}` : '';
+    const html = R.title('စိန်/ရတနာ တွက်ချက်မှု') + R.row('သတ်မှတ်ဈေး:', price.toLocaleString()) + R.row('စိန်/ရတနာဖိုး:', fmt(total)) + R.note(note) + R.total(total, 'sc-d');
+    commit('diamond', [type, price, ct, r, b, p].join(','), html, total, `စိန်/ရတနာ (${ct} Ct)`);
+  }
+
+  function saveHistory(e) {
+    const now = Date.now();
+    if (hist.some(h => h.sig === e.sig && now - (h.ts || h.id) < HOUR)) {
+      toast('တူညီသော တွက်ချက်မှုကို ၁ နာရီအတွင်း မှတ်တမ်းတင်ပြီးဖြစ်သည်');
+      return;
+    }
+    hist.unshift({ id: now, ts: now, v: 2, type: e.type, sig: e.sig, summary: e.summary, total: Math.round(e.total), html: e.html });
+    if (hist.length > MAX_HISTORY) hist.length = MAX_HISTORY;
+    store.set('calcHistory', JSON.stringify(hist));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const list = g('history-list');
+    if (!hist.length) {
+      list.innerHTML = '<div class="sc-card sc-empty-card">မှတ်တမ်းမရှိသေးပါ</div>';
+      return;
+    }
+    list.innerHTML = hist.map((h, i) => `
+      <div class="sc-history-item" data-act="view-hist" data-id="${h.id}">
+        <div>${h.html}<div class="sc-history-time">${new Date(h.ts || h.id).toLocaleString()}</div></div>
+        <button type="button" class="sc-mini-btn" data-act="del-hist" data-i="${i}" aria-label="Delete">${ic('trash')}</button>
+      </div>`).join('');
+  }
+
+  function viewHistory(id) {
+    const h = hist.find(i => i.id === id);
+    if (!h) return;
+    const time = `<div class="sc-history-time" style="text-align:center;font-size:12.5px;margin-top:16px">တွက်ချက်ခဲ့သော အချိန် - ${new Date(h.ts || h.id).toLocaleString()}</div>`;
+    const box = g('res-list');
+    box.innerHTML = h.html + time;
+    box.classList.toggle('sc-result-box-diamond', h.type === 'diamond' || h.html.includes('စိန်/ရတနာ'));
+    S.calc = null;
+    showView('price-result');
+  }
+
+  function historyRows() {
+    return hist.map(h => ({
+      time: new Date(h.ts || h.id).toISOString(),
+      type: h.type || (h.html.includes('စိန်/ရတနာ') ? 'diamond' : 'gold'),
+      summary: h.summary || '',
+      total_kyat: h.total === undefined ? '' : h.total,
+      details: new DOMParser().parseFromString(h.html, 'text/html').body.textContent.replace(/\s+/g, ' ').trim()
+    }));
+  }
+
+  function exportHistory(kind) {
+    if (!hist.length) return toast('မှတ်တမ်းမရှိသေးပါ');
+    const rows = historyRows();
+    const stamp = new Date().toISOString().slice(0, 10);
+    if (kind === 'json') {
+      downloadBlob(JSON.stringify(rows, null, 2), `ShweCalc_History_${stamp}.json`, 'application/json');
+    } else {
+      const cols = Object.keys(rows[0]);
+      const cell = v => `"${String(v).replace(/"/g, '""')}"`;
+      const csv = '﻿' + [cols.join(','), ...rows.map(r => cols.map(c => cell(r[c])).join(','))].join('\r\n');
+      downloadBlob(csv, `ShweCalc_History_${stamp}.csv`, 'text/csv;charset=utf-8');
+    }
+    toast('မှတ်တမ်း ထုတ်ယူပြီးပါပြီ');
+  }
+
+  function renderInvoice() {
+    const badge = g('invoice-badge');
+    badge.hidden = !invoice.length;
+    badge.textContent = invoice.length;
+    if (!invoice.length) {
+      g('invoice-list').innerHTML = '<div class="sc-card sc-empty-card">ဘောင်ချာစာရင်း မရှိသေးပါ</div>';
+      g('invoice-total').textContent = '၀ ကျပ်';
+      g('invoice-total-text').textContent = '၀ ကျပ်';
+      return;
+    }
+    const total = invoice.reduce((s, i) => s + i.amount, 0);
+    g('invoice-list').innerHTML = invoice.map((it, i) => `
+      <div class="sc-card sc-inv-item">
+        <div><div class="sc-inv-title">${esc(it.title)}</div><div class="sc-inv-amt">${fmt(it.amount)} ကျပ်</div></div>
+        <button type="button" class="sc-mini-btn" data-act="del-inv" data-i="${i}" aria-label="Remove">${ic('minus-circle')}</button>
+      </div>`).join('');
+    g('invoice-total').textContent = `${fmt(total)} ကျပ်`;
+    g('invoice-total-text').textContent = numToBurmeseText(total);
+  }
+
+  const saveInvoiceList = () => { store.set('invoiceList', JSON.stringify(invoice)); renderInvoice(); };
+
+  function addToInvoice() {
+    if (!S.calc) return toast('မှတ်တမ်းဟောင်းများကို ဘောင်ချာသို့ထည့်၍မရပါ');
+    invoice.push({ id: Date.now(), title: S.calc.summary, amount: S.calc.amount });
+    saveInvoiceList();
+    toast('ဘောင်ချာသို့ ထည့်ပြီးပါပြီ');
+  }
+
+  function showView(view) {
+    if (view !== 'price-result') S.from = view;
+    all('.sc-view').forEach(el => el.classList.remove('sc-active'));
+    const target = g(view + '-view');
+    if (target) target.classList.add('sc-active');
+    all('.sc-nav-btn').forEach(b => {
+      const on = b.dataset.view === view;
+      b.classList.toggle('sc-active', on && view !== 'diamond-calc');
+      b.classList.toggle('sc-active-diamond', on && view === 'diamond-calc');
+      if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
+    });
+    const nav = g('nav');
+    const cur = nav.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView && isActive()) {
+      const l = cur.offsetLeft - (nav.clientWidth - cur.offsetWidth) / 2;
+      nav.scrollTo ? nav.scrollTo({ left: Math.max(0, l), behavior: 'smooth' }) : (nav.scrollLeft = l);
+    }
+    if (isActive()) window.scrollTo(0, 0);
+  }
+
+  function switchTab(btn) {
+    const view = btn.closest('.sc-view');
+    all('.sc-tab-btn', view).forEach(b => b.classList.toggle('sc-active', b === btn));
+    all('.sc-sub', view).forEach(s => s.classList.toggle('sc-on', s.id === btn.dataset.target));
+    if (view.id === 'sc-purity-calc-view') g('purity-result').hidden = true;
+  }
+
+  function resetGroup(sel) {
+    all(`${sel} input, ${sel} select`).forEach(el => {
+      if (el.type === 'checkbox') return;
+      if (el.tagName === 'INPUT') { el.value = ''; store.del(keyOf(el)); }
+      mmLabel(el);
+    });
+    const run = { '#sc-price-calc-view': purityPrices, '#sc-diamond-calc-view': equivPrice, '#sc-tools-net-sub': netWeight, '#sc-tools-budget-sub': calcBudget };
+    if (run[sel]) run[sel]();
+    if (sel === '#sc-tools-unit-sub') {
+      g('uDisplay').textContent = WEIGHT_DEFAULT;
+      g('uSubDisplay').textContent = '(0.0000 ကျပ်) | 0.000 g';
+    }
+  }
+
+  function widgetsWanted() {
+    return isActive() && S.banner && navigator.onLine !== false;
+  }
+
+  function renderWidgets() {
+    const box = g('widgets-container');
+    box.innerHTML = '';
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    S.widgetsTheme = dark ? 'dark' : 'light';
+    const tv = document.createElement('div');
+    tv.className = 'sc-widget-box';
+    tv.style.width = '220px';
+    const wrap = document.createElement('div');
+    wrap.className = 'tradingview-widget-container';
+    wrap.style.width = '100%';
+    const inner = document.createElement('div');
+    inner.className = 'tradingview-widget-container__widget';
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js';
+    script.async = true;
+    script.text = JSON.stringify({ symbol: 'TVC:GOLD', width: '100%', isTransparent: false, colorTheme: S.widgetsTheme, locale: 'en' });
+    wrap.append(inner, script);
+    tv.appendChild(wrap);
+    const gb = document.createElement('div');
+    gb.className = 'sc-widget-box';
+    const frame = document.createElement('iframe');
+    frame.src = 'https://www.goldbroker.com/widget/live/XAU?currency=USD&weight=oz';
+    frame.width = '250';
+    frame.height = '130';
+    frame.loading = 'lazy';
+    frame.title = 'Gold live price';
+    gb.appendChild(frame);
+    box.append(tv, gb);
+    S.widgets = true;
+  }
+
+  function ensureWidgets() {
+    if (!widgetsWanted()) return;
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    if (!S.widgets || S.widgetsTheme !== theme) renderWidgets();
+  }
+
+  function refreshWidgets() {
+    const icon = g('refresh-btn').querySelector('svg');
+    if (icon) { icon.style.transform = 'rotate(180deg)'; setTimeout(() => { icon.style.transform = ''; }, 500); }
+    if (navigator.onLine === false) return toast('အင်တာနက်မရှိပါ');
+    if (!S.banner) toggleBanner();
+    else renderWidgets();
+  }
+
+  function toggleBanner() {
+    S.banner = !S.banner;
+    g('banner-wrapper').hidden = !S.banner;
+    g('toggle-banner-btn').innerHTML = ic(S.banner ? 'eye-off' : 'eye');
+    g('toggle-banner-btn').setAttribute('aria-pressed', String(!S.banner));
+    store.set('bannerVisible', S.banner);
+    if (S.banner) ensureWidgets();
+  }
+
+  function ensureH2C() {
+    return loadLib('html2canvas', () => !!window.html2canvas, H2C);
+  }
+
+  async function captureElement(id, hideButtons) {
+    await ensureH2C();
+    const area = g(id);
+    const buttons = hideButtons ? all('button', area) : [];
+    buttons.forEach(b => { b.style.display = 'none'; });
+    const bg = css('--bg');
+    try {
+      return await window.html2canvas(area, { backgroundColor: bg, scale: 3, logging: false, useCORS: true });
+    } finally {
+      buttons.forEach(b => { b.style.display = ''; });
+    }
+  }
+
+  const canvasToBlob = c => new Promise(res => c.toBlob(res, 'image/png'));
+
+  async function shareBlob(blob, name, title) {
+    const file = new File([blob], name, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title }); }
+      catch (e) { if (e.name !== 'AbortError') { downloadBlob(blob, name, 'image/png'); toast('မျှဝေမရ၍ သိမ်းပြီးပါပြီ'); } }
+    } else {
+      downloadBlob(blob, name, 'image/png');
+      toast('ဓာတ်ပုံ သိမ်းပြီးပါပြီ');
+    }
+  }
+
+  async function photo(id, hide, prefix, mode, msg) {
+    try {
+      const blob = await canvasToBlob(await captureElement(id, hide));
+      const name = `${prefix}_${Date.now()}.png`;
+      if (mode === 'share') await shareBlob(blob, name, 'Shwe Calculator');
+      else { downloadBlob(blob, name, 'image/png'); toast(msg); }
+    } catch (e) { toast('ဓာတ်ပုံမရနိုင်ပါ - အင်တာနက်စစ်ပါ'); }
+  }
+
+  const ROUTES = [
+    [/^(TKat|TPe|TYway|SKat|SPe|SYway)$/, netWeight],
+    [/^(uKyat|uPe|uYway)$/, () => convertUnits('units')],
+    [/^(gramsInput|standard)$/, () => convertUnits('grams')],
+    [/^convCt$/, () => convertDiamond('ct')],
+    [/^convGm$/, () => convertDiamond('gm')],
+    [/^(b-amount|b-price)$/, calcBudget],
+    [/^(DiamondPrice|DiamondPriceType)$/, equivPrice],
+    [/^DCt$/, () => syncDiamond('ct')],
+    [/^(DR|DB|DP)$/, () => syncDiamond('unit')],
+    [/^GoldPrice$/, purityPrices]
+  ];
+  const route = el => { const k = keyOf(el); const r = ROUTES.find(([re]) => re.test(k)); if (r) r[1](); };
+
+  const ACTIONS = {
+    view: b => showView(b.dataset.view),
+    banner: toggleBanner,
+    refresh: refreshWidgets,
+    'toggle-purity': togglePurity,
+    'copy-pp': copyPurity,
+    calc: calcPrice,
+    'calc-diamond': calcDiamond,
+    'calc-purity': calcPurity,
+    reset: b => resetGroup(b.dataset.target),
+    back: () => showView(S.from),
+    'add-inv': addToInvoice,
+    tab: switchTab,
+    'use-net': useNetWeight,
+    'view-hist': b => viewHistory(+b.dataset.id),
+    'del-hist': b => { hist.splice(+b.dataset.i, 1); store.set('calcHistory', JSON.stringify(hist)); renderHistory(); },
+    'clear-hist': () => { hist = []; store.set('calcHistory', '[]'); renderHistory(); },
+    'del-inv': b => { invoice.splice(+b.dataset.i, 1); saveInvoiceList(); },
+    'clear-inv': () => { invoice = []; saveInvoiceList(); },
+    'export-csv': () => exportHistory('csv'),
+    'export-json': () => exportHistory('json'),
+    'save-photo': () => photo('capture-area', false, 'ShweCalc', 'save', 'ဓာတ်ပုံ သိမ်းပြီးပါပြီ'),
+    'share-photo': () => photo('capture-area', false, 'ShweCalc', 'share'),
+    'save-inv': () => photo('invoice-view', true, 'ShweInvoice', 'save', 'ဘောင်ချာ သိမ်းပြီးပါပြီ'),
+    'share-inv': () => photo('invoice-view', true, 'ShweInvoice', 'share')
+  };
+
+  function bind() {
+    const r = root();
+    r.addEventListener('click', e => {
+      const b = e.target.closest('[data-act]');
+      if (b && r.contains(b) && ACTIONS[b.dataset.act]) {
+        e.stopPropagation();
+        ACTIONS[b.dataset.act](b, e);
+      }
+    });
+    r.addEventListener('input', e => {
+      const el = e.target;
+      if (!el.id || el.type === 'checkbox') return;
+      store.set(keyOf(el), el.value);
+      mmLabel(el);
+      route(el);
+    });
+    r.addEventListener('change', e => {
+      if (e.target.tagName === 'SELECT') { store.set(keyOf(e.target), e.target.value); route(e.target); }
+    });
+    r.addEventListener('focusout', e => {
+      const el = e.target;
+      if (el.dataset && el.dataset.g) { rollover(el.dataset.g.split(',')); route(el); }
+    });
+    r.addEventListener('focusin', e => {
+      if (e.target.matches('input, select') && window.innerWidth < 900) setTimeout(() => { try { e.target.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (x) {} }, 260);
+    });
+    g('rollover-toggle').addEventListener('change', e => store.set('rolloverEnabled', e.target.checked));
+    document.addEventListener('viewchange', e => { if (e.detail === 'shwe') ensureWidgets(); });
+    window.addEventListener('online', ensureWidgets);
+    new MutationObserver(ensureWidgets).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  }
+
+  function restore() {
+    if (store.get('bannerVisible') === 'false') {
+      S.banner = false;
+      g('banner-wrapper').hidden = true;
+      g('toggle-banner-btn').innerHTML = ic('eye');
+      g('toggle-banner-btn').setAttribute('aria-pressed', 'true');
+    }
+    if (store.get('rolloverEnabled') === 'false') g('rollover-toggle').checked = false;
+    setPurityVisible(store.get('purityVisible') === 'true');
+    all('input, select').forEach(el => {
+      if (el.type === 'checkbox' || !el.id) return;
+      const v = store.get(keyOf(el));
+      if (v) el.value = v;
+    });
+    all('input, select').forEach(el => { if (el.id && el.type !== 'checkbox' && el.value) { mmLabel(el); route(el); } });
+    netWeight();
+    equivPrice();
+    purityPrices();
+    calcBudget();
+  }
+
+  function init() {
+    if (!root()) return;
+    buildWeights();
+    bind();
+    restore();
+    renderHistory();
+    renderInvoice();
+    showView('price-calc');
+  }
+
+  return { init, showView, toDecimal, split, fromDecimal, numToBurmeseText, fmtUnits, ensureWidgets };
+})();
 (function pwa() {
   let deferred = null;
   const btn = $('#installBtn');
@@ -4293,9 +5360,7 @@ const Calc = (() => {
   Inv.init();
   Pawn.init();
   Sales.init();
-  Calc.init();
+  Calc.init(); Shwe.init();
   Router.init();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
