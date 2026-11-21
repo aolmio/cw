@@ -24,6 +24,7 @@
     { "name": "Pawn Analytics", "url": "./index.html#pawn", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
     { "name": "Sales", "url": "./index.html#sales", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
     { "name": "Calculator", "url": "./index.html#calc", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
-    { "name": "Shwe Calc", "url": "./index.html#shwe", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+    { "name": "Shwe Calc", "url": "./index.html#shwe", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
+    { "name": "Receipts", "url": "./index.html#verify", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]
 }
