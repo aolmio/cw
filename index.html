@@ -898,6 +898,28 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
 body.printing>*:not(#printRoot){display:none!important}
 body.printing #printRoot{display:block}
 @media print{body.printing{background:#fff!important}body.printing #printRoot .pr-sheet{max-width:none;padding:0}body.printing #printRoot .pr-sheet.th{max-width:72mm}}
+.hb-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 12px}
+.hb-chips button{height:42px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);font-weight:750;font-size:14px;transition:transform .12s,background .15s}
+.hb-chips button:active{transform:scale(.96)}
+.hb-chips button[aria-checked="true"]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.hb-lr .p{display:flex;flex-direction:column;align-items:flex-start}
+.hb-lr .p .c{font-style:normal;font-size:11.5px;font-weight:750;min-width:0;text-align:left}
+.hb-lh{background:var(--surface-2);font-size:12px;font-weight:800;color:var(--ink-3)}
+.hb-lh span{font-weight:800}
+.hb-lr{grid-template-columns:1fr 1fr 1fr 34px}
+.chk-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chipx{min-height:44px;padding:6px 8px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);font-weight:750;font-size:13.5px;text-align:center;transition:transform .12s,background .15s,border-color .15s}
+.chipx:active{transform:scale(.95)}
+.chipx.add{background:var(--brand-soft);border-color:transparent;color:var(--brand-ink)}
+.chipx[aria-checked="true"]{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.chip-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 8px}
+.chip-head .field-label{margin:0}
+.chip-undo{display:inline-flex;align-items:center;gap:5px;border:0;background:none;color:var(--brand-ink);font-weight:700;font-size:12.5px;padding:4px 6px;border-radius:8px}
+.chip-undo:disabled{color:var(--ink-3);opacity:.5;cursor:not-allowed}
+.pre-my{min-height:20px;margin:6px 2px 10px;font-size:13px;font-weight:750;color:var(--brand-ink)}
+.dur-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;margin-bottom:8px;border-radius:12px;background:var(--surface-3);border:1px solid var(--border)}
+.dur-seg button{height:38px;border:0;border-radius:9px;background:transparent;color:var(--ink-2);font-weight:700;font-size:13px}
+.dur-seg button[aria-checked="true"]{background:var(--primary);color:var(--on-primary);box-shadow:var(--shadow-1)}
 </style>
 </head>
 <body>
@@ -1376,11 +1398,32 @@ body.printing #printRoot{display:block}
       </div>
     </div>
 
-    <div class="grid-2">
-      <div class="field"><label for="cPrincipal">အရင်းပမာဏ</label>
-        <div class="inp-wrap pre"><span class="pre-t">K</span><input type="text" id="cPrincipal" class="input lg" inputmode="numeric" pattern="[0-9]*" placeholder="ဂဏန်းဖြင့် (ဥပမာ - 300000)" autocomplete="off"></div></div>
-      <div class="field"><label for="cRate">အတိုးနှုန်း (ကျပ်)</label>
-        <div class="inp-wrap pre"><span class="pre-t">%</span><input type="text" id="cRate" class="input lg" inputmode="decimal" placeholder="ဥပမာ - 3" autocomplete="off"></div></div>
+    <div class="field">
+      <label for="cPrincipal">အရင်းပမာဏ</label>
+      <div class="inp-wrap pre"><span class="pre-t">K</span><input type="text" id="cPrincipal" class="input lg" inputmode="numeric" pattern="[0-9]*" placeholder="ဂဏန်းဖြင့် (ဥပမာ - 300000)" autocomplete="off"></div>
+      <div class="pre-my" id="cPrincipalMy" aria-live="polite"></div>
+      <div class="chip-head"><span class="field-label">အမြန်ပေါင်းထည့်ရန် (တစ်ချက်နှိပ်ပါ)</span><button type="button" class="chip-undo" id="cUndo" disabled><svg class="ic"><use href="#i-back"/></svg>နောက်ပြန်ဆုတ်</button></div>
+      <div class="chk-chips" id="cAddChips">
+        <button type="button" class="chipx add" data-add="100000">+ ၁ သိန်း</button>
+        <button type="button" class="chipx add" data-add="500000">+ ၅ သိန်း</button>
+        <button type="button" class="chipx add" data-add="1000000">+ ၁၀ သိန်း</button>
+        <button type="button" class="chipx add" data-add="5000000">+ ၅၀ သိန်း</button>
+        <button type="button" class="chipx add" data-add="10000">+ ၁ သောင်း</button>
+        <button type="button" class="chipx add" data-add="50000">+ ၅ သောင်း</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="cRate">အတိုးနှုန်း (လစဉ် %)</label>
+      <div class="chk-chips" id="cRateChips" role="radiogroup" aria-label="Monthly interest rate">
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="1">၁%</button>
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="1.5">၁.၅%</button>
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="2">၂%</button>
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="2.5">၂.၅%</button>
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="3">၃%</button>
+        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="5">၅%</button>
+      </div>
+      <div class="inp-wrap pre" style="margin-top:8px"><span class="pre-t">%</span><input type="text" id="cRate" class="input lg" inputmode="decimal" placeholder="အခြားနှုန်း (ဥပမာ - 3.5)" autocomplete="off"></div>
     </div>
 
     <div class="grid-2 end">
@@ -1394,9 +1437,17 @@ body.printing #printRoot{display:block}
         </div>
         <div id="cEndDateBox" class="inp-wrap"><input type="text" id="cEnd" class="input lg" inputmode="numeric" placeholder="ရွေးယူမည့် ရက်စွဲ" autocomplete="off" aria-label="End date">
           <label class="date-btn" aria-label="Pick end date"><svg class="ic"><use href="#i-calendar"/></svg><input type="date" id="cEndPick" class="date-ov"></label></div>
-        <div id="cEndDurBox" class="grid-2 hidden">
+        <div id="cEndDurBox" class="hidden">
+          <div class="dur-seg" id="cDurSeg" role="radiogroup" aria-label="Duration">
+            <button type="button" role="radio" aria-checked="false" data-months="1">၁ လ</button>
+            <button type="button" role="radio" aria-checked="false" data-months="3">၃ လ</button>
+            <button type="button" role="radio" aria-checked="false" data-months="6">၆ လ</button>
+            <button type="button" role="radio" aria-checked="false" data-months="12">၁ နှစ်</button>
+          </div>
+        <div class="grid-2">
           <div class="inp-wrap"><input type="text" id="cMonths" class="input lg" inputmode="numeric" placeholder="ထားရှိမည့် လ" aria-label="Months" autocomplete="off"><span class="suf-t">လ</span></div>
           <div class="inp-wrap"><input type="text" id="cDays" class="input lg" inputmode="numeric" placeholder="ထားရှိမည့် ရက်" aria-label="Days" autocomplete="off"><span class="suf-t">ရက်</span></div>
+        </div>
         </div>
       </div>
     </div>
@@ -1859,12 +1910,23 @@ body.printing #printRoot{display:block}
     <div class="m-handle" data-drag></div>
     <div class="m-head" data-drag><h2 class="m-title" id="prcT">Today's gold price</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
     <div class="m-body">
+      <div class="hb-k">ဘယ်ပဲရည် ပေါက်ဈေးကို ထည့်မလဲ</div>
+      <div class="hb-chips" id="prcBasis" role="radiogroup" aria-label="Price quality">
+        <button type="button" role="radio" data-b="15" aria-checked="true">၁၅ ပဲရည်</button>
+        <button type="button" role="radio" data-b="16" aria-checked="false">၁၆ ပဲရည်</button>
+      </div>
       <div class="field">
-        <label for="prcIn">၁၆ ပဲရည် ရွှေပေါက်ဈေး (၁ ကျပ်သား)</label>
+        <label for="prcIn" id="prcLbl">၁၅ ပဲရည် ရွှေပေါက်ဈေး (၁ ကျပ်သား)</label>
         <div class="inp-wrap pre"><span class="pre-t">K</span><input type="text" id="prcIn" class="input lg" inputmode="numeric" placeholder="4500000" autocomplete="off"></div>
+        <span class="muted" id="prcDerived" style="font-size:12.5px;font-weight:700"></span>
         <span class="muted" id="prcMeta" style="font-size:12.5px"></span>
       </div>
-      <p class="muted" style="font-size:13px;margin:10px 0 0">One price is shared by Shwe Calc, Calculator and Inventory value. Each day's price is saved to the log below.</p>
+      <div class="hb-k" style="margin-top:14px">စတော့ရှိ ရွှေ၏ ပဲရည် (Inventory တန်ဖိုးတွက်ရန်)</div>
+      <div class="hb-chips" id="prcStock" role="radiogroup" aria-label="Stock quality">
+        <button type="button" role="radio" data-q="15" aria-checked="true">၁၅ ပဲရည်</button>
+        <button type="button" role="radio" data-q="16" aria-checked="false">၁၆ ပဲရည်</button>
+      </div>
+      <p class="muted" style="font-size:13px;margin:10px 0 0">The other quality is worked out as ၁၅ ပဲရည် = ၁၆ ပဲရည် × 16 ÷ 17. Shwe Calc and Calculator use the ၁၆ ပဲရည် price; Inventory value uses your stock quality. Each day is saved to the log below.</p>
       <div class="hb-chart" id="prcChart" aria-label="Price history chart" role="img"></div>
       <div class="hb-log-head"><h3>Daily price log</h3><div><button type="button" class="btn btn-sm" id="prcCsv"><svg class="ic"><use href="#i-download"/></svg>CSV</button> <button type="button" class="btn btn-sm btn-soft-bad" id="prcClear">Clear log</button></div></div>
       <div class="hb-log" id="prcLog"></div>
@@ -4466,6 +4528,8 @@ const Calc = (() => {
     const cleaned = $('#kRes').textContent.replace(/[^0-9.]/g, '');
     if (cleaned && !isNaN(parseFloat(cleaned))) {
       $('#cPrincipal').value = Math.round(parseFloat(cleaned));
+      amtHist = [];
+      refreshInterestUI();
       setTab('interest');
       toast('အရင်းပမာဏထဲသို့ ထည့်သွင်းပြီးပါပြီ');
     } else toast('တရားဝင်သော ဂဏန်းမဟုတ်ပါ');
@@ -4636,9 +4700,50 @@ const Calc = (() => {
   }
   function hideErr(boxId) { $('#' + boxId).classList.add('hidden'); }
 
+  let amtHist = [];
+  function refreshInterestUI() {
+    const p = parseFloat($('#cPrincipal').value) || 0;
+    $('#cPrincipalMy').textContent = p > 0 ? Shwe.numToBurmeseText(p) : '';
+    $('#cUndo').disabled = !amtHist.length;
+    const r = parseFloat($('#cRate').value);
+    $$('#cRateChips [data-rate]').forEach(b => b.setAttribute('aria-checked', String(parseFloat(b.dataset.rate) === r)));
+    const m = parseInt($('#cMonths').value, 10) || 0, d = parseInt($('#cDays').value, 10) || 0;
+    $$('#cDurSeg [data-months]').forEach(b => b.setAttribute('aria-checked', String(d === 0 && m === +b.dataset.months)));
+  }
+  function bindInterestChips() {
+    const box = $('#calcInterest');
+    box.addEventListener('click', e => {
+      const a = e.target.closest('[data-add]');
+      if (a) {
+        const cur = parseFloat($('#cPrincipal').value) || 0;
+        amtHist.push(cur);
+        if (amtHist.length > 20) amtHist.shift();
+        $('#cPrincipal').value = Math.min(999999999999, Math.round(cur + Number(a.dataset.add)));
+        refreshInterestUI();
+        return;
+      }
+      const r = e.target.closest('[data-rate]');
+      if (r) { $('#cRate').value = r.dataset.rate; refreshInterestUI(); return; }
+      const m = e.target.closest('[data-months]');
+      if (m) { $('#cMonths').value = m.dataset.months; $('#cDays').value = ''; endFromDuration(); refreshInterestUI(); return; }
+      if (e.target.closest('#cUndo') && amtHist.length) {
+        const v = amtHist.pop();
+        $('#cPrincipal').value = v > 0 ? v : '';
+        refreshInterestUI();
+      }
+    });
+    box.addEventListener('input', e => {
+      if (e.target.id === 'cPrincipal') amtHist = [];
+      refreshInterestUI();
+    });
+    refreshInterestUI();
+  }
+
   function clearInterest() {
+    amtHist = [];
     ['cText', 'cPrincipal', 'cRate', 'cStart', 'cStartPick', 'cEnd', 'cEndPick', 'cMonths', 'cDays'].forEach(id => { $('#' + id).value = ''; });
     hideErr('cErr');
+    refreshInterestUI();
   }
 
   const copyIcon = ic('copy');
@@ -4778,8 +4883,8 @@ const Calc = (() => {
     $('#calcTabs').addEventListener('click', e => { const b = e.target.closest('[data-ctab]'); if (b) setTab(b.dataset.ctab); });
 
     const text = $('#cText');
-    text.addEventListener('input', () => myanmarTextToNumber(text.value));
-    const clearText = () => { text.value = ''; $('#cPrincipal').value = ''; text.focus(); };
+    text.addEventListener('input', () => { myanmarTextToNumber(text.value); refreshInterestUI(); });
+    const clearText = () => { text.value = ''; $('#cPrincipal').value = ''; amtHist = []; refreshInterestUI(); text.focus(); };
     $('#cTextClear').addEventListener('click', clearText);
     $('#cTextClear2').addEventListener('click', clearText);
     $('#calcInterest').addEventListener('click', e => {
@@ -4804,6 +4909,7 @@ const Calc = (() => {
       $('#cAdvBtn').setAttribute('aria-expanded', String(advOpen));
     });
     $('#cClearAll').addEventListener('click', clearInterest);
+    bindInterestChips();
     $('#cGo').addEventListener('click', calculateInterest);
 
     $('#gGo').addEventListener('click', calculateGold);
@@ -5512,11 +5618,20 @@ const Hub = (() => {
     return `${d} day${d === 1 ? '' : 's'} ago`;
   };
 
-  const P = { v: 0, d: '', log: [], timer: 0 };
+  const P = { v: 0, v15: 0, basis: '15', q: '15', d: '', log: [], timer: 0 };
+
+  const to15 = v => Math.round(v * 16 / 17);
+  const to16 = v => Math.round(v * 17 / 16);
+  const p15of = x => x.p15 || to15(x.p);
+  const stockPrice = () => (P.q === '16' ? P.v : P.v15);
+  const logVal = x => (P.q === '16' ? x.p : p15of(x));
 
   function loadPrice() {
     const s = jget('gs.price', null);
-    if (s && s.v > 0) { P.v = Math.round(s.v); P.d = s.d || ''; }
+    if (s && s.v > 0) { P.v = Math.round(s.v); P.v15 = Math.round(s.v15 || to15(s.v)); P.basis = s.basis === '16' ? '16' : '15'; P.d = s.d || ''; }
+    let q = '15';
+    try { q = localStorage.getItem('gs.stockQ') === '16' ? '16' : '15'; } catch (e) {}
+    P.q = q;
     const l = jget('gs.priceLog', []);
     P.log = Array.isArray(l) ? l.filter(x => x && x.d && x.p > 0).sort((a, b) => a.d.localeCompare(b.d)) : [];
   }
@@ -5529,11 +5644,17 @@ const Hub = (() => {
   function paintChip() {
     const t = $('#priceTxt');
     if (!t) return;
-    t.textContent = P.v > 0 ? (window.innerWidth <= 480 ? compact(P.v) : fmtInt(P.v)) : 'Set price';
-    $('#priceBtn').title = P.v > 0 ? `Today's gold price: ${fmtInt(P.v)} Ks` : "Set today's gold price";
+    const p = stockPrice();
+    t.textContent = p > 0 ? `${P.q}P ${window.innerWidth <= 480 ? compact(p) : fmtInt(p)}` : 'Set price';
+    $('#priceBtn').title = p > 0 ? `Today's ${P.q}-pe gold price: ${fmtInt(p)} Ks` : "Set today's gold price";
   }
 
   function fillFields(src, force) {
+    P.busy = true;
+    try { fillInner(src, force); } finally { P.busy = false; }
+  }
+
+  function fillInner(src, force) {
     const sc = $('#sc-GoldPrice');
     if (sc && src !== 'shwe' && (force || !sc.value) && sc.value !== String(P.v || '')) {
       sc.value = P.v || '';
@@ -5547,34 +5668,43 @@ const Hub = (() => {
     if (!(P.v > 0)) return;
     const d = day();
     const i = P.log.findIndex(x => x.d === d);
-    if (i >= 0) P.log[i].p = P.v; else P.log.push({ d, p: P.v });
+    if (i >= 0) { P.log[i].p = P.v; P.log[i].p15 = P.v15; } else P.log.push({ d, p: P.v, p15: P.v15 });
     P.log.sort((a, b) => a.d.localeCompare(b.d));
     jset('gs.priceLog', P.log);
     P.d = d;
-    jset('gs.price', { v: P.v, d });
+    saveState();
     if ($('#priceModal').classList.contains('open')) renderLog();
   }
 
-  function setPrice(v, src) {
+  function saveState() { jset('gs.price', { v: P.v, v15: P.v15, basis: P.basis, d: P.d || day() }); }
+
+  function setPrice(v, src, basis) {
     v = Math.round(Number(v) || 0);
-    if (!(v > 0) && src !== 'clear') return;
-    if (v === P.v && src !== 'init') return;
-    P.v = v;
-    jset('gs.price', { v, d: P.d || day() });
+    if (!(v > 0)) return;
+    basis = basis === '15' ? '15' : '16';
+    const v16 = basis === '15' ? to16(v) : v;
+    const v15 = basis === '15' ? v : to15(v);
+    if (v16 === P.v && v15 === P.v15 && basis === P.basis) return;
+    P.v = v16;
+    P.v15 = v15;
+    P.basis = basis;
+    saveState();
     fillFields(src, true);
     paintChip();
     paintInvValue();
     clearTimeout(P.timer);
-    if (v > 0) P.timer = setTimeout(commitLog, src === 'modal' ? 0 : 1500);
-    document.dispatchEvent(new CustomEvent('pricechange', { detail: v }));
+    P.timer = setTimeout(commitLog, src === 'modal' ? 0 : 1500);
+    document.dispatchEvent(new CustomEvent('pricechange', { detail: P.v }));
   }
 
   function paintInvValue() {
     const el = $('#invMVal');
     if (!el) return;
     const g = Inv.totalGrams || 0;
-    el.textContent = P.v > 0 && g > 0 ? `${fmtInt(g / Inv.BASE * P.v)} Ks` : '—';
-    el.parentElement.title = P.v > 0 ? `Net grams ÷ ${Inv.BASE} g per kyat × ${fmtInt(P.v)} Ks` : "Set today's gold price to see stock value";
+    const p = stockPrice();
+    el.textContent = p > 0 && g > 0 ? `${fmtInt(g / Inv.BASE * p)} Ks` : '—';
+    $('#invMValL').textContent = `Stock value (${P.q} pe)`;
+    el.parentElement.title = p > 0 ? `Net grams ÷ ${Inv.BASE} g per kyat × ${fmtInt(p)} Ks (${P.q}-pe price)` : "Set today's gold price to see stock value";
   }
 
   function addInvKpi() {
@@ -5583,7 +5713,7 @@ const Hub = (() => {
     const k = document.createElement('div');
     k.className = 'kpi';
     k.dataset.tone = 'blue';
-    k.innerHTML = '<div class="kpi-label">Stock value</div><div class="kpi-value sm" id="invMVal">—</div>';
+    k.innerHTML = '<div class="kpi-label" id="invMValL">Stock value</div><div class="kpi-value sm" id="invMVal">—</div>';
     box.appendChild(k);
   }
 
@@ -5591,18 +5721,18 @@ const Hub = (() => {
     const pts = P.log.slice(-30);
     if (pts.length < 2) return '';
     const W = 600, H = 170, L = 8, R = 8, T = 16, B = 26;
-    const ps = pts.map(x => x.p);
+    const ps = pts.map(logVal);
     let lo = Math.min(...ps), hi = Math.max(...ps);
     if (hi === lo) { hi += 1; lo -= 1; }
     const x = i => L + (W - L - R) * i / (pts.length - 1);
     const y = p => T + (H - T - B) * (1 - (p - lo) / (hi - lo));
-    const line = pts.map((q, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(q.p).toFixed(1)}`).join('');
+    const line = pts.map((q, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(logVal(q)).toFixed(1)}`).join('');
     const area = `${line}L${x(pts.length - 1).toFixed(1)} ${H - B}L${x(0).toFixed(1)} ${H - B}Z`;
     const last = pts[pts.length - 1];
     return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
       <line class="gl" x1="${L}" x2="${W - R}" y1="${y(hi)}" y2="${y(hi)}"/><line class="gl" x1="${L}" x2="${W - R}" y1="${y(lo)}" y2="${y(lo)}"/>
       <path class="ar" d="${area}"/><path class="ln" d="${line}"/>
-      <circle class="pt" cx="${x(pts.length - 1)}" cy="${y(last.p)}" r="5"/>
+      <circle class="pt" cx="${x(pts.length - 1)}" cy="${y(logVal(last))}" r="5"/>
       <text x="${L}" y="${H - 8}">${esc(pts[0].d)}</text><text x="${W - R}" y="${H - 8}" text-anchor="end">${esc(last.d)}</text>
       <text x="${L}" y="${T - 4}">${fmtInt(hi)}</text><text x="${W - R}" y="${y(lo) - 5}" text-anchor="end">${fmtInt(lo)}</text></svg>`;
   }
@@ -5610,22 +5740,35 @@ const Hub = (() => {
   function renderLog() {
     $('#prcChart').innerHTML = chartSvg();
     const rows = P.log.slice().reverse().slice(0, 90);
-    $('#prcLog').innerHTML = rows.map(x => {
+    const head = `<div class="hb-lr hb-lh"><span>Date</span><span>၁၅ ပဲရည်</span><span>၁၆ ပဲရည်</span><span></span></div>`;
+    $('#prcLog').innerHTML = rows.length ? head + rows.map(x => {
       const idx = P.log.findIndex(y => y.d === x.d);
       const prev = idx > 0 ? P.log[idx - 1] : null;
       let c = '', cls = '';
       if (prev) {
-        const diff = x.p - prev.p;
+        const diff = logVal(x) - logVal(prev);
         if (diff) { c = `${diff > 0 ? '▲' : '▼'} ${fmtInt(Math.abs(diff))}`; cls = diff > 0 ? 'up' : 'dn'; }
-        else c = '—';
       }
-      return `<div class="hb-lr"><span class="d">${esc(x.d)}</span><span class="p">${fmtInt(x.p)}</span><span class="c ${cls}">${c}</span><button type="button" class="x" data-del="${esc(x.d)}" aria-label="Delete ${esc(x.d)}">${ic('x')}</button></div>`;
-    }).join('');
+      return `<div class="hb-lr"><span class="d">${esc(x.d)}</span><span class="p">${fmtInt(p15of(x))}<i class="c ${cls}">${c}</i></span><span class="p">${fmtInt(x.p)}</span><button type="button" class="x" data-del="${esc(x.d)}" aria-label="Delete ${esc(x.d)}">${ic('x')}</button></div>`;
+    }).join('') : '';
     $('#prcMeta').textContent = P.log.length ? `Last saved: ${P.log[P.log.length - 1].d} · ${P.log.length} day${P.log.length === 1 ? '' : 's'} logged` : '';
   }
 
+  let mb = '15';
+
+  function paintModalPrice() {
+    $$('#prcBasis [data-b]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.b === mb)));
+    $$('#prcStock [data-q]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.q === P.q)));
+    $('#prcLbl').textContent = `${mb === '15' ? '၁၅' : '၁၆'} ပဲရည် ရွှေပေါက်ဈေး (၁ ကျပ်သား)`;
+    const v = parseFloat($('#prcIn').value.replace(/[^\d.]/g, '')) || 0;
+    const o = mb === '15' ? to16(v) : to15(v);
+    $('#prcDerived').textContent = v > 0 ? `${mb === '15' ? '၁၆' : '၁၅'} ပဲရည် ≈ ${fmtInt(o)} Ks` : '';
+  }
+
   function openPrice() {
-    $('#prcIn').value = P.v > 0 ? String(P.v) : '';
+    mb = P.basis || '15';
+    $('#prcIn').value = (mb === '15' ? P.v15 : P.v) > 0 ? String(mb === '15' ? P.v15 : P.v) : '';
+    paintModalPrice();
     renderLog();
     Modal.open('priceModal', $('#prcIn'));
   }
@@ -5633,16 +5776,16 @@ const Hub = (() => {
   function savePriceFromModal() {
     const v = parseFloat($('#prcIn').value.replace(/[^\d.]/g, ''));
     if (!(v > 0)) { toast('Enter a price above zero'); return; }
-    setPrice(v, 'modal');
+    setPrice(v, 'modal', mb);
     commitLog();
     renderLog();
-    toast(`Price saved: ${fmtInt(v)} Ks`);
+    toast(`${mb}-pe price saved: ${fmtInt(v)} Ks`);
   }
 
   function logCsv() {
     if (!P.log.length) { toast('No prices logged yet'); return; }
-    const rows = ['date,price_ks_per_kyat_16pe', ...P.log.map(x => `${x.d},${x.p}`)];
-    downloadBlob('﻿' + rows.join('\r\n'), `GoldPriceLog_${day()}.csv`, 'text/csv;charset=utf-8');
+    const rows = ['date,price_15pe_ks_per_kyat,price_16pe_ks_per_kyat', ...P.log.map(x => `${x.d},${p15of(x)},${x.p}`)];
+    downloadBlob('\uFEFF' + rows.join('\r\n'), `GoldPriceLog_${day()}.csv`, 'text/csv;charset=utf-8');
   }
 
   function backupKeys() {
@@ -5871,7 +6014,26 @@ const Hub = (() => {
     $('#dataBtn').addEventListener('click', () => { paintBackupState(); Modal.open('dataModal'); });
     $('#prcSave').addEventListener('click', savePriceFromModal);
     $('#prcIn').addEventListener('keydown', e => { if (e.key === 'Enter') savePriceFromModal(); });
-    $('#prcIn').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); });
+    $('#prcIn').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); paintModalPrice(); });
+    $('#prcBasis').addEventListener('click', e => {
+      const b = e.target.closest('[data-b]');
+      if (!b || b.dataset.b === mb) return;
+      const cur = parseFloat($('#prcIn').value.replace(/[^\d.]/g, '')) || 0;
+      const nv = cur > 0 ? (b.dataset.b === '15' ? to15(cur) : to16(cur)) : 0;
+      mb = b.dataset.b;
+      $('#prcIn').value = nv > 0 ? String(nv) : '';
+      paintModalPrice();
+    });
+    $('#prcStock').addEventListener('click', e => {
+      const b = e.target.closest('[data-q]');
+      if (!b) return;
+      P.q = b.dataset.q;
+      try { localStorage.setItem('gs.stockQ', P.q); } catch (x) {}
+      paintModalPrice();
+      paintChip();
+      paintInvValue();
+      renderLog();
+    });
     $('#prcCsv').addEventListener('click', logCsv);
     $('#prcClear').addEventListener('click', () => { if (!P.log.length) return; if (confirm('Delete the whole price log?')) { P.log = []; jset('gs.priceLog', []); renderLog(); } });
     $('#prcLog').addEventListener('click', e => {
@@ -5898,16 +6060,16 @@ const Hub = (() => {
     document.addEventListener('viewchange', e => { if (e.detail === 'calc') fillFields('init', false); });
     window.addEventListener('resize', debounce(paintChip, 150));
     const sc = $('#sc-GoldPrice');
-    if (sc) sc.addEventListener('input', () => setPrice(parseFloat(sc.value), 'shwe'));
+    if (sc) sc.addEventListener('input', () => !P.busy && setPrice(parseFloat(sc.value), 'shwe', '16'));
     const gp = $('#gPrice');
-    if (gp) gp.addEventListener('input', () => setTimeout(() => setPrice(parseFloat(gp.value), 'calc'), 0));
+    if (gp) gp.addEventListener('input', () => setTimeout(() => !P.busy && setPrice(parseFloat(gp.value), 'calc', '16'), 0));
     document.addEventListener('visibilitychange', () => { if (!document.hidden) paintBackupState(); });
   }
 
   function init() {
     loadPrice();
     const sc = $('#sc-GoldPrice');
-    if (!(P.v > 0) && sc && parseFloat(sc.value) > 0) { P.v = Math.round(parseFloat(sc.value)); jset('gs.price', { v: P.v, d: day() }); }
+    if (!(P.v > 0) && sc && parseFloat(sc.value) > 0) { P.v = Math.round(parseFloat(sc.value)); P.v15 = to15(P.v); P.basis = '16'; saveState(); }
     addInvKpi();
     bind();
     fillFields('init', true);
