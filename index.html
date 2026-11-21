@@ -544,9 +544,10 @@ input[type=file]::file-selector-button:hover{border-color:var(--brand);color:var
   .shell-in{height:54px}
   :root{--shell-h:54px}
   main{padding-bottom:calc(var(--nav-h) + var(--safe-b) + 28px);padding-top:16px}
-  .tabs-bottom{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--glass);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--border);padding-bottom:var(--safe-b)}
+  .tabs-bottom{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--glass);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-top:1px solid var(--border);padding-bottom:var(--safe-b)}
   .tabs-bottom .tab{flex-direction:column;gap:3px;height:var(--nav-h);padding:8px 4px 6px;font-size:11.5px}
   .tabs-bottom .tab .ic{width:22px;height:22px}
+  .tabs-bottom .tab span{font-size:10.5px;white-space:nowrap}
   .tabs-bottom .tab[aria-current="page"]::after{top:-1px;bottom:auto;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px}
   .toast{bottom:calc(var(--nav-h) + var(--safe-b) + 14px)}
   .inv-sticky{top:var(--shell-top)}
@@ -920,6 +921,83 @@ body.printing #printRoot{display:block}
 .dur-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:4px;margin-bottom:8px;border-radius:12px;background:var(--surface-3);border:1px solid var(--border)}
 .dur-seg button{height:38px;border:0;border-radius:9px;background:transparent;color:var(--ink-2);font-weight:700;font-size:13px}
 .dur-seg button[aria-checked="true"]{background:var(--primary);color:var(--on-primary);box-shadow:var(--shadow-1)}
+.hb-form2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0 0}
+.hb-lr{grid-template-columns:1.2fr 1fr 1fr 30px 30px}
+.hb-lr .d small{display:block;font-size:11.5px;font-weight:650}
+.hb-lr.ed{background:var(--brand-soft)}
+.pr-sheet{position:relative;overflow:hidden}
+.pr-sheet>*:not(.wm):not(.wmt){position:relative;z-index:1}
+.pr-sheet .wm{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62%;max-height:70%;object-fit:contain;pointer-events:none;z-index:0}
+.pr-sheet .wmt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:56px;font-weight:800;white-space:nowrap;color:#000;pointer-events:none;z-index:0}
+.pr-sheet.th .wmt{font-size:30px}
+.pr-sheet .logo{text-align:center;margin-bottom:6px}
+.pr-sheet .logo img{max-height:64px;max-width:60%;object-fit:contain}
+.pr-sheet td small{display:block;color:#555;font-size:11.5px;margin-top:2px}
+.pr-sheet .sl{display:flex;justify-content:space-between;gap:10px;color:#444;font-size:11.5px;margin-top:2px}
+.pr-sheet .qrb{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:10px;border-top:1px dashed #999}
+.pr-sheet .qrb img{width:112px;height:112px;flex:none}
+.pr-sheet .qrb div{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#333}
+.pr-sheet.th .qrb{flex-direction:column;text-align:center}
+.hb-sec{margin-top:12px;border:1px solid var(--border);border-radius:var(--r-md);padding:0 12px 12px;background:var(--surface)}
+.hb-sec>summary{cursor:pointer;font-weight:750;padding:12px 0;list-style:none}
+.hb-sec>summary::-webkit-details-marker{display:none}
+.hb-sec>summary::after{content:"+";float:right;font-weight:800;color:var(--ink-3)}
+.hb-sec[open]>summary::after{content:"–"}
+.hb-lines{display:grid;gap:10px;margin-bottom:10px}
+.hb-ln{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,.7fr) minmax(0,1fr) minmax(0,1fr) 34px;gap:6px;align-items:center}
+.hb-ln .input{min-width:0;padding-left:8px;padding-right:8px}
+.hb-ln .x{height:36px;border:0;background:transparent;color:var(--ink-3);font-size:18px;border-radius:8px}
+.hb-lt{grid-column:1/-1;font-size:12px;color:var(--ink-3);margin-top:-2px}
+@media (max-width:560px){.hb-ln{grid-template-columns:1fr 1fr 34px}.hb-ln [data-f=name]{grid-column:1/-1}.hb-ln [data-f=qty]{grid-column:1}.hb-ln [data-f=unit]{grid-column:2/3}.hb-ln [data-f=amount]{grid-column:1/3}.hb-ln .x{grid-column:3;grid-row:2}}
+.hb-chk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hb-chk label,.hb-chk1{display:flex;align-items:center;gap:8px;font-weight:650;min-height:36px}
+.hb-chk input,.hb-chk1 input{width:18px;height:18px}
+.hb-brand{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.hb-bt{font-weight:700;margin-bottom:6px}
+.hb-bp{height:72px;border:1px dashed var(--border-strong);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;overflow:hidden;background:#fff}
+.hb-bp img{max-width:100%;max-height:100%;object-fit:contain}
+.hb-hint{font-size:12.5px;color:var(--ink-3);margin:8px 0}
+.rc-wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.rc-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.rc-head h1{font-size:22px;font-weight:800;margin:0}
+.rc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;background:var(--surface-2);border-radius:14px}
+.rc-tabs button{height:40px;border:0;border-radius:10px;background:transparent;color:var(--ink-2);font-weight:750;font-size:14px}
+.rc-tabs button.on{background:var(--surface);color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.rc-pane{display:flex;flex-direction:column;gap:14px}
+.rc-pane.hidden{display:none}
+.rc-btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.rc-cam{display:none;position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:4/3;max-height:52vh}
+.rc-cam.on{display:block}
+.rc-cam video{width:100%;height:100%;object-fit:cover}
+.rc-frame{position:absolute;inset:18%;border:3px solid rgba(255,255,255,.85);border-radius:16px;box-shadow:0 0 0 999px rgba(0,0,0,.28)}
+.rc-v{display:flex;gap:14px;align-items:center;padding:16px;border-radius:16px;color:#fff}
+.rc-v .ic{width:34px;height:34px;flex:none}
+.rc-v.ok{background:#1f9c56}
+.rc-v.bad{background:#c62828}
+.rc-badge{font-size:20px;font-weight:850;letter-spacing:.02em}
+.rc-sub{font-size:13.5px;opacity:.95;margin-top:2px}
+.rc-d{margin-top:12px;padding:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.rc-d.dim{opacity:.7}
+.rc-r{display:flex;justify-content:space-between;gap:14px;padding:5px 0;border-bottom:1px solid var(--border)}
+.rc-r span{color:var(--ink-3)}
+.rc-r b{text-align:right;word-break:break-word}
+.rc-t{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+.rc-t th,.rc-t td{padding:6px 4px;border-bottom:1px solid var(--border);text-align:left}
+.rc-t .r{text-align:right;font-variant-numeric:tabular-nums}
+.rc-tot{display:flex;justify-content:space-between;font-size:18px;font-weight:800;margin-top:10px}
+.rc-warn{font-size:13px;color:var(--ink-3);margin:10px 0}
+.rc-d .rc-warn{color:#c62828;font-weight:700}
+.rc-list{display:grid;gap:8px;margin-top:6px}
+.rc-row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;text-align:left;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--ink)}
+.rc-row small{color:var(--ink-3)}
+.rc-st{font-style:normal;font-weight:800;font-size:12px;padding:3px 8px;border-radius:99px;background:var(--surface-2);color:var(--ink-3);align-self:start}
+.rc-st.ok{background:#1f9c56;color:#fff}
+.rc-st.bad{background:#c62828;color:#fff}
+.rc-keybox{padding:12px;border-radius:12px;background:var(--surface-2);font-weight:650;word-break:break-word}
+.rc-h3{font-size:15px;margin:14px 0 4px}
+.rc-qrbox{text-align:center;margin-top:14px}
+.rc-qrbox img{width:240px;max-width:100%;background:#fff;padding:8px;border-radius:10px}
+.rc-trow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:12px}
 </style>
 </head>
 <body>
@@ -933,6 +1011,10 @@ body.printing #printRoot{display:block}
 <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></symbol>
 <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+<symbol id="i-qr" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM20 14v3M14 20h3M20 20h1M17 17v3"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 7h3l2-2h6l2 2h3a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V8a1 1 0 011-1z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5L15.5 10"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
 <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></symbol>
 <symbol id="i-filter" viewBox="0 0 24 24"><path d="M22 3H2l8 9.5V19l4 2v-8.5L22 3z"/></symbol>
@@ -987,6 +1069,7 @@ body.printing #printRoot{display:block}
       <button type="button" class="tab" data-go="sales"><svg class="ic"><use href="#i-chart"/></svg><span>Sales</span></button>
       <button type="button" class="tab" data-go="calc"><svg class="ic"><use href="#i-calc"/></svg><span>Calculator</span></button>
       <button type="button" class="tab" data-go="shwe"><svg class="ic"><use href="#i-gem"/></svg><span>Shwe Calc</span></button>
+  <button type="button" class="tab" data-go="verify"><svg class="ic"><use href="#i-shield"/></svg><span>Receipts</span></button>
     </nav>
     <div class="shell-actions">
       <button type="button" class="btn btn-sm hidden" id="installBtn"><svg class="ic"><use href="#i-install"/></svg><span>Install app</span></button>
@@ -1004,6 +1087,7 @@ body.printing #printRoot{display:block}
   <button type="button" class="tab" data-go="sales"><svg class="ic"><use href="#i-chart"/></svg><span>Sales</span></button>
   <button type="button" class="tab" data-go="calc"><svg class="ic"><use href="#i-calc"/></svg><span>Calculator</span></button>
   <button type="button" class="tab" data-go="shwe"><svg class="ic"><use href="#i-gem"/></svg><span>Shwe Calc</span></button>
+  <button type="button" class="tab" data-go="verify"><svg class="ic"><use href="#i-shield"/></svg><span>Receipts</span></button>
 </nav>
 
 <main id="main" tabindex="-1">
@@ -1387,17 +1471,6 @@ body.printing #printRoot{display:block}
 
   <div class="calc-wrap">
   <section class="card pad calc-panel" id="calcInterest" aria-labelledby="calcTabInterest">
-    <div class="calc-box">
-      <label class="field-label" for="cText">စာဖြင့်ရိုက်ထည့်ရန် (ဥပမာ - ၁၅သိန်း၄သောင်း)</label>
-      <div class="inp-wrap"><input type="text" id="cText" class="input lg" placeholder="ဆယ်သိန်း / 5သိန်း၁သောင်း" autocomplete="off"><button type="button" class="inp-x" id="cTextClear" aria-label="ဖျက်မည်"><svg class="ic"><use href="#i-x"/></svg></button></div>
-      <div class="word-row">
-        <button type="button" class="btn btn-primary btn-sm" data-word="သိန်း">+ သိန်း</button>
-        <button type="button" class="btn btn-primary btn-sm" data-word="သောင်း">+ သောင်း</button>
-        <button type="button" class="btn btn-sm" data-word="ထောင်">+ ထောင်</button>
-        <button type="button" class="btn btn-sm btn-soft-bad" id="cTextClear2">စာသားဖျက်မည်</button>
-      </div>
-    </div>
-
     <div class="field">
       <label for="cPrincipal">အရင်းပမာဏ</label>
       <div class="inp-wrap pre"><span class="pre-t">K</span><input type="text" id="cPrincipal" class="input lg" inputmode="numeric" pattern="[0-9]*" placeholder="ဂဏန်းဖြင့် (ဥပမာ - 300000)" autocomplete="off"></div>
@@ -1415,15 +1488,7 @@ body.printing #printRoot{display:block}
 
     <div class="field">
       <label for="cRate">အတိုးနှုန်း (လစဉ် %)</label>
-      <div class="chk-chips" id="cRateChips" role="radiogroup" aria-label="Monthly interest rate">
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="1">၁%</button>
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="1.5">၁.၅%</button>
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="2">၂%</button>
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="2.5">၂.၅%</button>
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="3">၃%</button>
-        <button type="button" class="chipx" role="radio" aria-checked="false" data-rate="5">၅%</button>
-      </div>
-      <div class="inp-wrap pre" style="margin-top:8px"><span class="pre-t">%</span><input type="text" id="cRate" class="input lg" inputmode="decimal" placeholder="အခြားနှုန်း (ဥပမာ - 3.5)" autocomplete="off"></div>
+      <div class="inp-wrap pre"><span class="pre-t">%</span><input type="text" id="cRate" class="input lg" inputmode="decimal" placeholder="ဥပမာ - 3" autocomplete="off"></div>
     </div>
 
     <div class="grid-2 end">
@@ -1774,6 +1839,55 @@ body.printing #printRoot{display:block}
     </section>
   </div>
 </section>
+<section class="view" id="view-verify" data-title="Signed receipts and QR verification" aria-labelledby="rcH">
+  <div class="rc-wrap">
+    <div class="rc-head"><h1 id="rcH">Receipts</h1><button type="button" class="btn btn-primary" id="rcNew"><svg class="ic"><use href="#i-qr"/></svg>New receipt</button></div>
+    <div class="rc-tabs" role="tablist" aria-label="Receipt tools">
+      <button type="button" role="tab" class="on" data-rt="scan">Scan &amp; verify</button>
+      <button type="button" role="tab" data-rt="saved">Saved</button>
+      <button type="button" role="tab" data-rt="keys">Keys &amp; sync</button>
+    </div>
+    <div class="rc-pane" id="rcScan">
+      <div class="card pad">
+        <div class="rc-cam" id="rcCam"><video id="rcVid" playsinline muted></video><div class="rc-frame"></div></div>
+        <canvas id="rcCv" class="hidden"></canvas>
+        <div class="rc-btns">
+          <button type="button" class="btn btn-primary" id="rcCamBtn"><svg class="ic"><use href="#i-camera"/></svg>Start camera</button>
+          <button type="button" class="btn hidden" id="rcStop">Stop camera</button>
+          <label class="btn" for="rcImg"><svg class="ic"><use href="#i-upload"/></svg>Upload QR image</label>
+          <input type="file" id="rcImg" accept="image/*" class="sr-only">
+        </div>
+        <div class="field"><label for="rcPaste">Or paste the QR text</label><textarea id="rcPaste" class="input" rows="3" placeholder="GSI2.…" spellcheck="false"></textarea></div>
+        <div class="rc-btns"><button type="button" class="btn" id="rcPasteBtn">Verify text</button></div>
+      </div>
+      <div id="rcRes" aria-live="polite"></div>
+    </div>
+    <div class="rc-pane hidden" id="rcSaved">
+      <div class="card pad">
+        <div class="rc-btns"><button type="button" class="btn" id="rcExp"><svg class="ic"><use href="#i-download"/></svg>Export receipts</button><label class="btn" for="rcImp"><svg class="ic"><use href="#i-upload"/></svg>Import file</label><input type="file" id="rcImp" accept="application/json,.json" class="sr-only"></div>
+        <div id="rcList" class="rc-list"></div>
+      </div>
+    </div>
+    <div class="rc-pane hidden" id="rcKeys">
+      <div class="card pad">
+        <div class="rc-keybox" id="rcKeyBox"></div>
+        <div class="rc-btns">
+          <button type="button" class="btn" id="rcGen"><svg class="ic"><use href="#i-key"/></svg>Generate new key pair</button>
+          <button type="button" class="btn" id="rcExpPub"><svg class="ic"><use href="#i-download"/></svg>Export public key</button>
+          <button type="button" class="btn" id="rcExpPriv"><svg class="ic"><use href="#i-download"/></svg>Export private key</button>
+          <button type="button" class="btn" id="rcExpAll"><svg class="ic"><use href="#i-share"/></svg>Export all for another device</button>
+          <label class="btn" for="rcKeyFile"><svg class="ic"><use href="#i-upload"/></svg>Import key or file</label>
+          <input type="file" id="rcKeyFile" accept="application/json,.json" class="sr-only">
+        </div>
+        <div class="field"><label for="rcPubTxt">Paste an issuer public key</label><textarea id="rcPubTxt" class="input" rows="3" spellcheck="false" placeholder='{"gsKey":1,"kind":"public",…}'></textarea></div>
+        <div class="rc-btns"><button type="button" class="btn" id="rcPubAdd">Trust this key</button></div>
+        <p class="rc-warn">The private key signs your receipts. Anyone who has it can issue receipts in your name, and it is also inside full backups. Share only the public key with verifiers.</p>
+        <h3 class="rc-h3">Trusted issuer keys</h3>
+        <div id="rcTrusted" class="rc-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 
 <div class="modal-ov" id="invModal" role="dialog" aria-modal="true" aria-labelledby="invMTitle" style="--mw:620px">
@@ -1921,17 +2035,21 @@ body.printing #printRoot{display:block}
         <span class="muted" id="prcDerived" style="font-size:12.5px;font-weight:700"></span>
         <span class="muted" id="prcMeta" style="font-size:12.5px"></span>
       </div>
+      <div class="hb-form2">
+        <div class="field"><label for="prcLd">Date</label><input type="date" id="prcLd" class="input"></div>
+        <div class="field"><label for="prcLt">Time</label><input type="time" id="prcLt" class="input"></div>
+      </div>
       <div class="hb-k" style="margin-top:14px">စတော့ရှိ ရွှေ၏ ပဲရည် (Inventory တန်ဖိုးတွက်ရန်)</div>
       <div class="hb-chips" id="prcStock" role="radiogroup" aria-label="Stock quality">
         <button type="button" role="radio" data-q="15" aria-checked="true">၁၅ ပဲရည်</button>
         <button type="button" role="radio" data-q="16" aria-checked="false">၁၆ ပဲရည်</button>
       </div>
-      <p class="muted" style="font-size:13px;margin:10px 0 0">The other quality is worked out as ၁၅ ပဲရည် = ၁၆ ပဲရည် × 16 ÷ 17. Shwe Calc and Calculator use the ၁၆ ပဲရည် price; Inventory value uses your stock quality. Each day is saved to the log below.</p>
+      <p class="muted" style="font-size:13px;margin:10px 0 0">The other quality is worked out as ၁၅ ပဲရည် = ၁၆ ပဲရည် × 16 ÷ 17. Shwe Calc and Calculator use the ၁၆ ပဲရည် price; Inventory value uses your stock quality. Add as many entries per day as you like, for any date. The newest entry is the current price.</p>
       <div class="hb-chart" id="prcChart" aria-label="Price history chart" role="img"></div>
       <div class="hb-log-head"><h3>Daily price log</h3><div><button type="button" class="btn btn-sm" id="prcCsv"><svg class="ic"><use href="#i-download"/></svg>CSV</button> <button type="button" class="btn btn-sm btn-soft-bad" id="prcClear">Clear log</button></div></div>
       <div class="hb-log" id="prcLog"></div>
     </div>
-    <div class="m-foot"><button type="button" class="btn" data-close>Close</button><button type="button" class="btn btn-primary" id="prcSave"><svg class="ic"><use href="#i-check"/></svg>Save price</button></div>
+    <div class="m-foot"><button type="button" class="btn" data-close>Close</button><button type="button" class="btn hidden" id="prcCancel">Cancel edit</button><button type="button" class="btn btn-primary" id="prcSave"><svg class="ic"><use href="#i-check"/></svg>Save price</button></div>
   </div>
 </div>
 
@@ -1973,6 +2091,15 @@ body.printing #printRoot{display:block}
   </div>
 </div>
 
+<div class="modal-ov" id="rcModal" role="dialog" aria-modal="true" aria-labelledby="rcMT" style="--mw:640px">
+  <div class="modal">
+    <div class="m-handle" data-drag></div>
+    <div class="m-head" data-drag><h2 class="m-title" id="rcMT">Receipt</h2><div class="m-actions"><button type="button" class="btn btn-icon btn-sm" data-close aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button></div></div>
+    <div class="m-body"><div id="rcMBody"></div><div class="rc-qrbox hidden" id="rcMQr"><img id="rcMImg" alt="Receipt QR code"></div></div>
+    <div class="m-foot"><button type="button" class="btn" id="rcMDel"><svg class="ic"><use href="#i-trash"/></svg>Delete</button><button type="button" class="btn" id="rcMDl"><svg class="ic"><use href="#i-download"/></svg>Download QR</button><button type="button" class="btn btn-primary" data-close>Close</button></div>
+  </div>
+</div>
+
 <div class="modal-ov" id="printModal" role="dialog" aria-modal="true" aria-labelledby="prT" style="--mw:760px">
   <div class="modal">
     <div class="m-handle" data-drag></div>
@@ -1988,6 +2115,34 @@ body.printing #printRoot{display:block}
         <div class="field"><label for="prPaper">Paper</label><select id="prPaper" class="input"><option value="a4">A4 / Letter</option><option value="th">80 mm receipt</option></select></div>
         <div class="field"><label for="prNote">Note</label><input id="prNote" class="input" type="text" autocomplete="off"></div>
       </div>
+      <details class="hb-sec" open><summary>Products bought</summary>
+        <div id="prLines" class="hb-lines"></div>
+        <button type="button" class="btn btn-sm" id="prAddLine"><svg class="ic"><use href="#i-plus-circle"/></svg>Add product line</button>
+      </details>
+      <details class="hb-sec"><summary>Show on invoice</summary>
+        <div class="hb-chk">
+          <label><input type="checkbox" id="prIncP"> ပေါက်ဈေး</label>
+          <label><input type="checkbox" id="prIncR"> လျော့တွက်</label>
+          <label><input type="checkbox" id="prIncS"> လက်ခ</label>
+          <label><input type="checkbox" id="prIncT"> ကျောက်ဖိုး</label>
+        </div>
+      </details>
+      <details class="hb-sec"><summary>Logo and watermark</summary>
+        <div class="hb-brand">
+          <div class="hb-bi"><div class="hb-bt">Logo</div><div class="hb-bp"><img id="prLogoImg" alt="" class="hidden"></div><div class="rc-btns"><label class="btn btn-sm" for="prLogo">Choose image</label><input type="file" id="prLogo" accept="image/*" class="sr-only"><button type="button" class="btn btn-sm hidden" id="prLogoRm">Remove</button></div></div>
+          <div class="hb-bi"><div class="hb-bt">Watermark image</div><div class="hb-bp"><img id="prWmImg" alt="" class="hidden"></div><div class="rc-btns"><label class="btn btn-sm" for="prWm">Choose image</label><input type="file" id="prWm" accept="image/*" class="sr-only"><button type="button" class="btn btn-sm hidden" id="prWmRm">Remove</button></div></div>
+        </div>
+        <div class="hb-form">
+          <div class="field"><label for="prWmTxt">Watermark text</label><input id="prWmTxt" class="input" type="text" autocomplete="off" placeholder="Optional"></div>
+          <div class="field"><label for="prWmOp">Watermark strength</label><input id="prWmOp" type="range" min="4" max="40" step="1"></div>
+        </div>
+        <p class="hb-hint">Images are saved on this device and reused for every invoice.</p>
+      </details>
+      <details class="hb-sec"><summary>Verification QR</summary>
+        <label class="hb-chk1"><input type="checkbox" id="prQr"> Add a QR code that proves this invoice is genuine</label>
+        <div class="hb-hint" id="prQrInfo"></div>
+        <div class="rc-btns"><button type="button" class="btn btn-sm" id="prQrDl"><svg class="ic"><use href="#i-download"/></svg>Download QR</button><button type="button" class="btn btn-sm" id="prSaveRc"><svg class="ic"><use href="#i-shield"/></svg>Save receipt</button></div>
+      </details>
       <div class="hb-paper"><div id="prPrev"></div></div>
     </div>
     <div class="m-foot"><button type="button" class="btn" data-close>Close</button><button type="button" class="btn btn-primary" id="prGo"><svg class="ic"><use href="#i-print"/></svg>Print / Save PDF</button></div>
@@ -2420,8 +2575,8 @@ function legendHTML(rows, fmt, unit) {
 }
 
 const Router = (() => {
-  const VIEWS = ['inventory', 'pawn', 'sales', 'calc', 'shwe'];
-  const NAMES = { inventory: 'Inventory', pawn: 'Pawn Analytics', sales: 'Sales', calc: 'Calculator', shwe: 'Shwe Calc' };
+  const VIEWS = ['inventory', 'pawn', 'sales', 'calc', 'shwe', 'verify'];
+  const NAMES = { inventory: 'Inventory', pawn: 'Pawn Analytics', sales: 'Sales', calc: 'Calculator', shwe: 'Shwe Calc', verify: 'Receipts' };
   let current = null;
   function go(name, fromHash) {
     if (!VIEWS.includes(name)) name = 'inventory';
@@ -4558,68 +4713,6 @@ const Calc = (() => {
     });
   }
 
-  function myanmarTextToNumber(inputText) {
-    const out = $('#cPrincipal');
-    if (!inputText.trim()) { out.value = ''; return; }
-    let text = inputText.toLowerCase().replace(/\s+/g, '');
-    const md = { '၀': '0', '၁': '1', '၂': '2', '၃': '3', '၄': '4', '၅': '5', '၆': '6', '၇': '7', '၈': '8', '၉': '9' };
-    for (const m in md) text = text.split(m).join(md[m]);
-    const words = { 'တစ်': 1, 'တ': 1, 'နှစ်': 2, 'နှ': 2, 'သုံး': 3, 'လေး': 4, 'ငါး': 5, 'ခြောက်': 6, 'ခုနစ်': 7, 'ခုနှစ်': 7, 'ရှစ်': 8, 'ကိုး': 9, 'ဆယ်': 10 };
-    function seg(s) {
-      if (!s) return 0;
-      if (/^\d+$/.test(s)) return parseInt(s, 10);
-      if (words[s] !== undefined) return words[s];
-      if (s.includes('ဆယ်')) {
-        const parts = s.split('ဆယ်');
-        const pre = parts[0] ? (words[parts[0]] || parseInt(parts[0], 10) || 1) : 1;
-        const suf = parts[1] ? (words[parts[1]] || parseInt(parts[1], 10) || 0) : 0;
-        return pre * 10 + suf;
-      }
-      return parseInt(s, 10) || 0;
-    }
-    let total = 0;
-    let target = text;
-    if (target.includes('သန်း')) {
-      const chunks = target.split('သန်း');
-      const cv = chunks[0].trim();
-      if (cv.includes('သိန်း')) {
-        const sub = cv.split('သိန်း');
-        let lakh = sub[0] ? (words[sub[0]] || parseInt(sub[0], 10) || 1) : 1;
-        if (sub[1]) lakh = lakh * 100 + seg(sub[1]); else lakh = lakh * 100;
-        total += lakh * 100000;
-      } else {
-        total += (words[cv] || parseInt(cv, 10) || 0) * 1000000;
-      }
-      target = chunks[1] || '';
-    }
-    if (target.includes('သိန်း')) {
-      const chunks = target.split('သိန်း');
-      const cv = chunks[0].trim();
-      let base = 1;
-      if (cv.endsWith('ထောင်')) { const pre = cv.replace('ထောင်', ''); base = (words[pre] || parseInt(pre, 10) || 1) * 1000; }
-      else if (cv.endsWith('ရာ')) { const pre = cv.replace('ရာ', ''); base = (words[pre] || parseInt(pre, 10) || 1) * 100; }
-      else if (cv.includes('ဆယ်')) base = seg(cv);
-      else base = words[cv] || parseInt(cv, 10) || (cv === '' ? 1 : 0);
-      total += base * 100000;
-      target = chunks[1] || '';
-    }
-    [['သောင်း', 10000], ['ထောင်', 1000], ['ရာ', 100]].forEach(([w, mult]) => {
-      if (target.includes(w)) {
-        const chunks = target.split(w);
-        const cv = chunks[0].trim();
-        const base = words[cv] || seg(cv) || (cv === '' ? 1 : 0);
-        total += base * mult;
-        target = chunks[1] || '';
-      }
-    });
-    if (target) total += seg(target);
-    if (total > 0) out.value = total;
-    else {
-      const pure = text.replace(/\D/g, '');
-      if (pure) out.value = pure;
-    }
-  }
-
   function numberToWords(num) {
     num = Math.round(num);
     if (num === 0) return '၀ ကျပ်';
@@ -4705,8 +4798,6 @@ const Calc = (() => {
     const p = parseFloat($('#cPrincipal').value) || 0;
     $('#cPrincipalMy').textContent = p > 0 ? Shwe.numToBurmeseText(p) : '';
     $('#cUndo').disabled = !amtHist.length;
-    const r = parseFloat($('#cRate').value);
-    $$('#cRateChips [data-rate]').forEach(b => b.setAttribute('aria-checked', String(parseFloat(b.dataset.rate) === r)));
     const m = parseInt($('#cMonths').value, 10) || 0, d = parseInt($('#cDays').value, 10) || 0;
     $$('#cDurSeg [data-months]').forEach(b => b.setAttribute('aria-checked', String(d === 0 && m === +b.dataset.months)));
   }
@@ -4722,8 +4813,6 @@ const Calc = (() => {
         refreshInterestUI();
         return;
       }
-      const r = e.target.closest('[data-rate]');
-      if (r) { $('#cRate').value = r.dataset.rate; refreshInterestUI(); return; }
       const m = e.target.closest('[data-months]');
       if (m) { $('#cMonths').value = m.dataset.months; $('#cDays').value = ''; endFromDuration(); refreshInterestUI(); return; }
       if (e.target.closest('#cUndo') && amtHist.length) {
@@ -4741,7 +4830,7 @@ const Calc = (() => {
 
   function clearInterest() {
     amtHist = [];
-    ['cText', 'cPrincipal', 'cRate', 'cStart', 'cStartPick', 'cEnd', 'cEndPick', 'cMonths', 'cDays'].forEach(id => { $('#' + id).value = ''; });
+    ['cPrincipal', 'cRate', 'cStart', 'cStartPick', 'cEnd', 'cEndPick', 'cMonths', 'cDays'].forEach(id => { $('#' + id).value = ''; });
     hideErr('cErr');
     refreshInterestUI();
   }
@@ -4882,15 +4971,6 @@ const Calc = (() => {
 
     $('#calcTabs').addEventListener('click', e => { const b = e.target.closest('[data-ctab]'); if (b) setTab(b.dataset.ctab); });
 
-    const text = $('#cText');
-    text.addEventListener('input', () => { myanmarTextToNumber(text.value); refreshInterestUI(); });
-    const clearText = () => { text.value = ''; $('#cPrincipal').value = ''; amtHist = []; refreshInterestUI(); text.focus(); };
-    $('#cTextClear').addEventListener('click', clearText);
-    $('#cTextClear2').addEventListener('click', clearText);
-    $('#calcInterest').addEventListener('click', e => {
-      const w = e.target.closest('[data-word]');
-      if (w) { text.value += w.dataset.word; myanmarTextToNumber(text.value); text.focus(); }
-    });
     $('#cPrincipal').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); });
     $('#cRate').addEventListener('input', e => { e.target.value = e.target.value.replace(/[^\d.]/g, ''); });
 
@@ -4949,7 +5029,7 @@ const Calc = (() => {
     $('#cPasteIn').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#cPasteOk').click(); } });
   }
 
-  return { init, evaluate, myanmarTextToNumber, numberToWords, smartFormatDate, parseDateString, goldWeightText };
+  return { init, evaluate, numberToWords, smartFormatDate, parseDateString, goldWeightText };
 })();
 
 const Shwe = (() => {
@@ -5229,8 +5309,8 @@ const Shwe = (() => {
     total: (n, cls = '') => `<div class="sc-r-total ${cls}">${fmt(n)} ကျပ်</div><div class="sc-r-mm">${numToBurmeseText(n)}</div>`
   };
 
-  function commit(type, sig, html, total, summary) {
-    S.calc = { amount: total, summary };
+  function commit(type, sig, html, total, summary, detail) {
+    S.calc = { amount: total, summary, detail: detail || null };
     saveHistory({ type, sig: `${type}|${sig}`, html, total, summary });
     const box = g('res-list');
     box.innerHTML = html;
@@ -5247,7 +5327,7 @@ const Shwe = (() => {
     const total = gold * price + red * price + smith + stone;
     const html = R.title('ရွှေတွက်ချက်မှု') + R.row('ယနေ့ဈေး:', price.toLocaleString()) + R.row('ရွှေဖိုး:', fmt(gold * price)) + R.note(weightStr(pk, pp, py)) +
       R.row('လျော့တွက်ဖိုး:', fmt(red * price)) + R.note(weightStr(rk, rp, ry)) + R.row('လက်ခ+ကျောက်:', (smith + stone).toLocaleString()) + R.total(total);
-    commit('gold', [price, pk, pp, py, rk, rp, ry, smith, stone].join(','), html, total, `ရွှေ (${pk}K ${pp}P ${py}Y)`);
+    commit('gold', [price, pk, pp, py, rk, rp, ry, smith, stone].join(','), html, total, `ရွှေ (${pk}K ${pp}P ${py}Y)`, { kind: 'gold', price, goldW: weightStr(pk, pp, py), gold: Math.round(gold * price), redW: weightStr(rk, rp, ry), red: Math.round(red * price), smith, stone });
   }
 
   function calcDiamond() {
@@ -5258,7 +5338,7 @@ const Shwe = (() => {
     const ws = diamondStr(r, b, p);
     const note = ct > 0 ? `${ct} Ct${ws ? ' - ' + ws : ''}` : '';
     const html = R.title('စိန်/ရတနာ တွက်ချက်မှု') + R.row('သတ်မှတ်ဈေး:', price.toLocaleString()) + R.row('စိန်/ရတနာဖိုး:', fmt(total)) + R.note(note) + R.total(total, 'sc-d');
-    commit('diamond', [type, price, ct, r, b, p].join(','), html, total, `စိန်/ရတနာ (${ct} Ct)`);
+    commit('diamond', [type, price, ct, r, b, p].join(','), html, total, `စိန်/ရတနာ (${ct} Ct)`, { kind: 'diamond', price, note, gold: Math.round(total) });
   }
 
   function saveHistory(e) {
@@ -5346,7 +5426,7 @@ const Shwe = (() => {
 
   function addToInvoice() {
     if (!S.calc) return toast('မှတ်တမ်းဟောင်းများကို ဘောင်ချာသို့ထည့်၍မရပါ');
-    invoice.push({ id: Date.now(), title: S.calc.summary, amount: S.calc.amount });
+    invoice.push({ id: Date.now(), title: S.calc.summary, amount: S.calc.amount, detail: S.calc.detail || null });
     saveInvoiceList();
     toast('ဘောင်ချာသို့ ထည့်ပြီးပါပြီ');
   }
@@ -5531,7 +5611,7 @@ const Shwe = (() => {
     'share-inv': () => photo('invoice-view', true, 'ShweInvoice', 'share'),
     'print-inv': () => {
       if (!invoice.length) return toast('ဘောင်ချာစာရင်း မရှိသေးပါ');
-      Hub.openInvoice(invoice.map(i => ({ title: i.title, amount: i.amount })));
+      Hub.openInvoice(invoice.map(i => ({ title: i.title, amount: i.amount, detail: i.detail || null })));
     }
   };
 
@@ -5633,7 +5713,7 @@ const Hub = (() => {
     try { q = localStorage.getItem('gs.stockQ') === '16' ? '16' : '15'; } catch (e) {}
     P.q = q;
     const l = jget('gs.priceLog', []);
-    P.log = Array.isArray(l) ? l.filter(x => x && x.d && x.p > 0).sort((a, b) => a.d.localeCompare(b.d)) : [];
+    P.log = normLog(l);
   }
 
   function compact(v) {
@@ -5664,13 +5744,51 @@ const Hub = (() => {
     if (gp && src !== 'calc' && (force || !gp.value) && gp.value !== String(P.v || '')) gp.value = P.v || '';
   }
 
-  function commitLog() {
+  const pad2 = n => String(n).padStart(2, '0');
+  const nowT = () => { const d = new Date(); return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
+  const cmpLog = (a, b) => `${a.d} ${a.t}`.localeCompare(`${b.d} ${b.t}`) || a.id - b.id;
+  const newId = () => Date.now() * 1000 + Math.floor(Math.random() * 1000);
+  let editId = null;
+
+  function normLog(l) {
+    return (Array.isArray(l) ? l : []).filter(x => x && x.d && x.p > 0).map((x, i) => ({
+      id: x.id || newId() + i, d: String(x.d), t: x.t || '00:00', p: Math.round(x.p), p15: Math.round(x.p15 || to15(x.p)), b: x.b === '16' ? '16' : '15', auto: !!x.auto
+    })).sort(cmpLog);
+  }
+
+  function mkEntry(v, basis, d, t, auto) {
+    const v16 = basis === '15' ? to16(v) : v;
+    const v15 = basis === '15' ? v : to15(v);
+    return { id: newId(), d, t, p: v16, p15: v15, b: basis, auto: !!auto };
+  }
+
+  function saveLog() { jset('gs.priceLog', P.log); }
+
+  function applyLatest() {
+    const l = P.log[P.log.length - 1];
+    if (!l) return;
+    if (l.p === P.v && l.p15 === P.v15 && l.b === P.basis) return;
+    P.v = l.p;
+    P.v15 = l.p15;
+    P.basis = l.b;
+    P.d = l.d;
+    saveState();
+    fillFields('log', true);
+    paintChip();
+    paintInvValue();
+    document.dispatchEvent(new CustomEvent('pricechange', { detail: P.v }));
+  }
+
+  function autoLog() {
     if (!(P.v > 0)) return;
-    const d = day();
-    const i = P.log.findIndex(x => x.d === d);
-    if (i >= 0) { P.log[i].p = P.v; P.log[i].p15 = P.v15; } else P.log.push({ d, p: P.v, p15: P.v15 });
-    P.log.sort((a, b) => a.d.localeCompare(b.d));
-    jset('gs.priceLog', P.log);
+    const d = day(), t = nowT();
+    const l = P.log[P.log.length - 1];
+    if (l && l.p === P.v && l.p15 === P.v15) return;
+    const mins = x => parseInt(x.slice(0, 2), 10) * 60 + parseInt(x.slice(3, 5), 10);
+    if (l && l.auto && l.d === d && Math.abs(mins(t) - mins(l.t)) <= 10) { l.p = P.v; l.p15 = P.v15; l.b = P.basis; l.t = t; }
+    else P.log.push(mkEntry(P.basis === '15' ? P.v15 : P.v, P.basis, d, t, true));
+    P.log.sort(cmpLog);
+    saveLog();
     P.d = d;
     saveState();
     if ($('#priceModal').classList.contains('open')) renderLog();
@@ -5693,7 +5811,7 @@ const Hub = (() => {
     paintChip();
     paintInvValue();
     clearTimeout(P.timer);
-    P.timer = setTimeout(commitLog, src === 'modal' ? 0 : 1500);
+    P.timer = setTimeout(autoLog, 1500);
     document.dispatchEvent(new CustomEvent('pricechange', { detail: P.v }));
   }
 
@@ -5739,19 +5857,23 @@ const Hub = (() => {
 
   function renderLog() {
     $('#prcChart').innerHTML = chartSvg();
-    const rows = P.log.slice().reverse().slice(0, 90);
-    const head = `<div class="hb-lr hb-lh"><span>Date</span><span>၁၅ ပဲရည်</span><span>၁၆ ပဲရည်</span><span></span></div>`;
+    const asc = P.log;
+    const rows = asc.slice().reverse().slice(0, 150);
+    const head = `<div class="hb-lr hb-lh"><span>Date · time</span><span>၁၅ ပဲရည်</span><span>၁၆ ပဲရည်</span><span></span><span></span></div>`;
     $('#prcLog').innerHTML = rows.length ? head + rows.map(x => {
-      const idx = P.log.findIndex(y => y.d === x.d);
-      const prev = idx > 0 ? P.log[idx - 1] : null;
+      const idx = asc.indexOf(x);
+      const prev = idx > 0 ? asc[idx - 1] : null;
       let c = '', cls = '';
       if (prev) {
         const diff = logVal(x) - logVal(prev);
         if (diff) { c = `${diff > 0 ? '▲' : '▼'} ${fmtInt(Math.abs(diff))}`; cls = diff > 0 ? 'up' : 'dn'; }
       }
-      return `<div class="hb-lr"><span class="d">${esc(x.d)}</span><span class="p">${fmtInt(p15of(x))}<i class="c ${cls}">${c}</i></span><span class="p">${fmtInt(x.p)}</span><button type="button" class="x" data-del="${esc(x.d)}" aria-label="Delete ${esc(x.d)}">${ic('x')}</button></div>`;
+      return `<div class="hb-lr${editId === x.id ? ' ed' : ''}"><span class="d">${esc(x.d)}<small>${esc(x.t)}</small></span><span class="p">${fmtInt(x.p15)}<i class="c ${cls}">${c}</i></span><span class="p">${fmtInt(x.p)}</span><button type="button" class="x" data-edit="${x.id}" aria-label="Edit entry">${ic('file')}</button><button type="button" class="x" data-del="${x.id}" aria-label="Delete entry">${ic('x')}</button></div>`;
     }).join('') : '';
-    $('#prcMeta').textContent = P.log.length ? `Last saved: ${P.log[P.log.length - 1].d} · ${P.log.length} day${P.log.length === 1 ? '' : 's'} logged` : '';
+    const l = asc[asc.length - 1];
+    $('#prcMeta').textContent = l ? `Current price from: ${l.d} ${l.t} · ${asc.length} entr${asc.length === 1 ? 'y' : 'ies'}` : '';
+    $('#prcSave').lastChild.textContent = editId ? 'Update entry' : 'Save price';
+    $('#prcCancel').classList.toggle('hidden', !editId);
   }
 
   let mb = '15';
@@ -5765,9 +5887,16 @@ const Hub = (() => {
     $('#prcDerived').textContent = v > 0 ? `${mb === '15' ? '၁၆' : '၁၅'} ပဲရည် ≈ ${fmtInt(o)} Ks` : '';
   }
 
-  function openPrice() {
+  function resetForm() {
+    editId = null;
     mb = P.basis || '15';
     $('#prcIn').value = (mb === '15' ? P.v15 : P.v) > 0 ? String(mb === '15' ? P.v15 : P.v) : '';
+    $('#prcLd').value = day();
+    $('#prcLt').value = nowT();
+  }
+
+  function openPrice() {
+    resetForm();
     paintModalPrice();
     renderLog();
     Modal.open('priceModal', $('#prcIn'));
@@ -5776,15 +5905,41 @@ const Hub = (() => {
   function savePriceFromModal() {
     const v = parseFloat($('#prcIn').value.replace(/[^\d.]/g, ''));
     if (!(v > 0)) { toast('Enter a price above zero'); return; }
-    setPrice(v, 'modal', mb);
-    commitLog();
+    const d = $('#prcLd').value || day(), t = $('#prcLt').value || nowT();
+    const e = mkEntry(Math.round(v), mb, d, t, false);
+    if (editId) {
+      const i = P.log.findIndex(x => x.id === editId);
+      if (i >= 0) { e.id = editId; P.log[i] = e; }
+      toast('Entry updated');
+    } else {
+      P.log.push(e);
+      toast(`${mb}-pe price saved: ${fmtInt(v)} Ks`);
+    }
+    P.log.sort(cmpLog);
+    saveLog();
+    editId = null;
+    applyLatest();
+    resetForm();
+    paintModalPrice();
     renderLog();
-    toast(`${mb}-pe price saved: ${fmtInt(v)} Ks`);
+  }
+
+  function editEntry(id) {
+    const x = P.log.find(y => y.id === id);
+    if (!x) return;
+    editId = id;
+    mb = x.b;
+    $('#prcIn').value = String(mb === '15' ? x.p15 : x.p);
+    $('#prcLd').value = x.d;
+    $('#prcLt').value = x.t;
+    paintModalPrice();
+    renderLog();
+    $('#prcIn').focus();
   }
 
   function logCsv() {
     if (!P.log.length) { toast('No prices logged yet'); return; }
-    const rows = ['date,price_15pe_ks_per_kyat,price_16pe_ks_per_kyat', ...P.log.map(x => `${x.d},${p15of(x)},${x.p}`)];
+    const rows = ['date,time,price_15pe_ks_per_kyat,price_16pe_ks_per_kyat', ...P.log.map(x => `${x.d},${x.t},${x.p15},${x.p}`)];
     downloadBlob('\uFEFF' + rows.join('\r\n'), `GoldPriceLog_${day()}.csv`, 'text/csv;charset=utf-8');
   }
 
@@ -5953,22 +6108,54 @@ const Hub = (() => {
   }
 
   let items = [];
+  let curQr = null, qrSeq = 0, qrMsg = '';
+  const B = { logo: '', wm: '', op: 12, txt: '' };
+  const num = v => parseFloat(String(v).replace(/[^\d.]/g, '')) || 0;
+  const incs = () => ({ p: $('#prIncP').checked, r: $('#prIncR').checked, s: $('#prIncS').checked, t: $('#prIncT').checked });
+
+  function subLines(d) {
+    if (!d) return '';
+    const inc = incs(), L = [];
+    if (d.kind === 'gold') {
+      if (inc.p && d.price) L.push([`ပေါက်ဈေး ${fmtInt(d.price)}${d.goldW ? ' · ' + d.goldW : ''}`, d.gold]);
+      if (inc.r && d.red) L.push([`လျော့တွက် ${d.redW || ''}`, d.red]);
+      if (inc.s && d.smith) L.push(['လက်ခ', d.smith]);
+      if (inc.t && d.stone) L.push(['ကျောက်ဖိုး', d.stone]);
+    } else if (d.kind === 'diamond') {
+      if (inc.p && d.price) L.push([`ပေါက်ဈေး ${fmtInt(d.price)}${d.note ? ' · ' + d.note : ''}`, d.gold]);
+    }
+    return L.map(x => `<div class="sl"><span>${esc(x[0])}</span><span>${fmtInt(x[1])}</span></div>`).join('');
+  }
+
+  const lineTotal = () => items.reduce((s, i) => s + (Number(i.amount) || 0), 0);
 
   function sheetHtml() {
     const th = $('#prPaper').value === 'th';
-    const total = items.reduce((s, i) => s + (Number(i.amount) || 0), 0);
+    const total = lineTotal();
     const name = $('#prShop').value.trim(), ph = $('#prPhone').value.trim();
     const cust = $('#prCust').value.trim(), cph = $('#prCPhone').value.trim(), note = $('#prNote').value.trim();
-    const rows = items.map((i, n) => `<tr><td>${n + 1}</td><td>${esc(i.title)}</td><td class="r">${fmtInt(i.amount)}</td></tr>`).join('');
+    const useQty = items.some(i => i.qty);
+    const shown = items.filter(i => i.name || i.title || i.amount || i.qty || i.unit);
+    const rows = shown.map((i, n) => {
+      const main = i.name || i.title || '';
+      const sub = i.name && i.title ? `<small>${esc(i.title)}</small>` : '';
+      return `<tr><td>${n + 1}</td><td>${esc(main)}${sub}${subLines(i.detail)}</td>${useQty ? `<td class="r">${i.qty ? esc(String(i.qty)) : ''}</td>` : ''}<td class="r">${i.amount ? fmtInt(i.amount) : ''}</td></tr>`;
+    }).join('');
+    const op = (B.op / 100).toFixed(2);
+    const qr = curQr && $('#prQr').checked
+      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><div><b>Scan to verify</b><span>${esc($('#prNo').value)}</span><span>Key ${esc(curQr.payload.k)}</span></div></div>` : '';
     return `<div class="pr-sheet${th ? ' th' : ''}">
+      ${B.wm ? `<img class="wm" src="${B.wm}" style="opacity:${op}" alt="">` : ''}${B.txt ? `<div class="wmt" style="opacity:${op}">${esc(B.txt)}</div>` : ''}
+      ${B.logo ? `<div class="logo"><img src="${B.logo}" alt=""></div>` : ''}
       <h2>${esc(name || 'Gold Shop')}</h2>${ph ? `<div class="sub">${esc(ph)}</div>` : ''}
       <div class="ttl">ဘောင်ချာ · INVOICE</div>
       <div class="meta"><div><b>No:</b> ${esc($('#prNo').value)}</div><div><b>Date:</b> ${esc($('#prDate').value)}</div>${cust ? `<div><b>Customer:</b> ${esc(cust)}</div>` : ''}${cph ? `<div><b>Phone:</b> ${esc(cph)}</div>` : ''}</div>
-      <table><thead><tr><th>#</th><th>Item</th><th class="r">Amount (Ks)</th></tr></thead><tbody>${rows}</tbody></table>
+      <table><thead><tr><th>#</th><th>Item</th>${useQty ? '<th class="r">Qty</th>' : ''}<th class="r">Amount (Ks)</th></tr></thead><tbody>${rows}</tbody></table>
       <div class="tot"><span>Total</span><span>${fmtInt(total)} Ks</span></div>
       <div class="words">${esc(Shwe.numToBurmeseText(total))}</div>
       ${note ? `<div class="note">${esc(note)}</div>` : ''}
       ${th ? '' : '<div class="sig"><span>Customer</span><span>Seller</span></div>'}
+      ${qr}
       <div class="thx">ကျေးဇူးတင်ပါသည်</div></div>`;
   }
 
@@ -5978,8 +6165,135 @@ const Hub = (() => {
     $('#prPrev').style.maxWidth = th ? '300px' : '720px';
   }
 
-  function openInvoice(list) {
-    items = list.slice();
+  function renderLines() {
+    $('#prLines').innerHTML = items.length ? items.map((x, i) => `<div class="hb-ln" data-i="${i}">
+      <input class="input" data-f="name" type="text" placeholder="Product bought" value="${esc(x.name || '')}" aria-label="Product name">
+      <input class="input" data-f="qty" type="text" inputmode="decimal" placeholder="Qty" value="${x.qty ? esc(String(x.qty)) : ''}" aria-label="Quantity">
+      <input class="input" data-f="unit" type="text" inputmode="decimal" placeholder="Unit price" value="${x.unit ? esc(String(x.unit)) : ''}" aria-label="Unit price">
+      <input class="input" data-f="amount" type="text" inputmode="decimal" placeholder="Amount" value="${x.amount ? esc(String(x.amount)) : ''}" aria-label="Amount">
+      <button type="button" class="x" data-rm aria-label="Remove line">×</button>
+      ${x.title ? `<div class="hb-lt">${esc(x.title)}</div>` : ''}</div>`).join('') : '<div class="hb-empty">No product lines yet.</div>';
+  }
+
+  function onLine(e) {
+    const row = e.target.closest('.hb-ln');
+    const f = e.target.dataset.f;
+    if (!row || !f) return;
+    const it = items[Number(row.dataset.i)];
+    if (!it) return;
+    if (f === 'name') it.name = e.target.value;
+    else {
+      e.target.value = e.target.value.replace(/[^\d.]/g, '');
+      it[f] = num(e.target.value);
+      if (f !== 'amount' && it.qty > 0 && it.unit > 0) {
+        it.amount = Math.round(it.qty * it.unit);
+        row.querySelector('[data-f=amount]').value = String(it.amount);
+      }
+    }
+    paintSheet();
+    queueQr();
+  }
+
+  function saveInc() {
+    const i = incs();
+    jset('gs.prInc', { p: i.p, r: i.r, s: i.s, t: i.t });
+  }
+
+  function paintBrand() {
+    const set = (img, rm, v) => { img.classList.toggle('hidden', !v); if (v) img.src = v; else img.removeAttribute('src'); rm.classList.toggle('hidden', !v); };
+    set($('#prLogoImg'), $('#prLogoRm'), B.logo);
+    set($('#prWmImg'), $('#prWmRm'), B.wm);
+    $('#prWmTxt').value = B.txt;
+    $('#prWmOp').value = String(B.op);
+  }
+
+  function shrink(file, max) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file);
+      const im = new Image();
+      im.onload = () => {
+        const sc = Math.min(1, max / Math.max(im.naturalWidth, im.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(im.naturalWidth * sc));
+        c.height = Math.max(1, Math.round(im.naturalHeight * sc));
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        let u = c.toDataURL('image/png');
+        if (u.length > 900000) u = c.toDataURL('image/jpeg', 0.85);
+        res(u);
+      };
+      im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('bad image')); };
+      im.src = url;
+    });
+  }
+
+  async function pickImage(file, key, field, max) {
+    if (!file) return;
+    try {
+      const u = await shrink(file, max);
+      localStorage.setItem(key, u);
+      B[field] = u;
+      paintBrand();
+      paintSheet();
+      toast('Saved on this device');
+    } catch (e) { toast('That image could not be saved. Try a smaller file.'); }
+  }
+
+  function clearImage(key, field) {
+    try { localStorage.removeItem(key); } catch (e) {}
+    B[field] = '';
+    paintBrand();
+    paintSheet();
+  }
+
+  function loadBrand() {
+    const g = k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
+    B.logo = g('gs.logo');
+    B.wm = g('gs.wm');
+    B.txt = g('gs.wmTxt');
+    const o = parseInt(g('gs.wmOp'), 10);
+    B.op = o >= 4 && o <= 40 ? o : 12;
+  }
+
+  function buildPayload() {
+    const p = { v: 1 };
+    const set = (k, v) => { if (v !== '' && v != null) p[k] = v; };
+    set('i', $('#prNo').value.trim());
+    set('d', $('#prDate').value);
+    set('c', $('#prCust').value.trim());
+    set('cp', $('#prCPhone').value.trim());
+    set('s', $('#prShop').value.trim());
+    set('n', $('#prNote').value.trim());
+    const its = items.filter(x => x.name || x.title || x.amount || x.qty || x.unit);
+    if (its.length) p.it = its.map(x => [x.name || x.title || '', x.qty || '', x.unit || '', Math.round(x.amount || 0)]);
+    const t = Math.round(lineTotal());
+    if (t) p.t = t;
+    return p;
+  }
+
+  function setQrInfo(t) { qrMsg = t; $('#prQrInfo').textContent = t; }
+
+  async function refreshQr() {
+    const my = ++qrSeq;
+    if (!$('#prQr').checked) { curQr = null; setQrInfo(''); paintSheet(); return; }
+    try {
+      const r = await Rcpt.issue(buildPayload());
+      if (my !== qrSeq) return;
+      const url = await Rcpt.qrUrl(r.text);
+      if (my !== qrSeq) return;
+      curQr = { url, text: r.text, payload: r.payload };
+      setQrInfo(r.text.length > 2200 ? `QR ready, but it holds ${r.text.length} characters and may be hard to scan. Remove some detail.` : `QR ready · key ${r.fp} · no expiry`);
+    } catch (e) {
+      if (my !== qrSeq) return;
+      curQr = null;
+      setQrInfo(e && e.message ? e.message : 'The QR code could not be made.');
+    }
+    paintSheet();
+  }
+  const queueQr = debounce(() => { if ($('#prQr').checked) refreshQr(); }, 400);
+
+  function openInvoice(list, opt) {
+    items = list.map(x => Object.assign({ name: '', qty: 0, unit: 0, amount: 0 }, x));
     const s = shop();
     $('#prShop').value = s.name || '';
     $('#prPhone').value = s.phone || '';
@@ -5989,13 +6303,37 @@ const Hub = (() => {
     $('#prDate').value = day();
     $('#prNo').value = invoiceNo(true);
     $('#prPaper').value = jget('gs.paper', 'a4');
+    const inc = jget('gs.prInc', { p: true, r: true, s: true, t: true });
+    $('#prIncP').checked = inc.p !== false;
+    $('#prIncR').checked = inc.r !== false;
+    $('#prIncS').checked = inc.s !== false;
+    $('#prIncT').checked = inc.t !== false;
+    $('#prQr').checked = !!(opt && opt.qr) || jget('gs.prQr', false) === true;
+    loadBrand();
+    paintBrand();
+    renderLines();
+    curQr = null;
+    setQrInfo('');
     paintSheet();
     Modal.open('printModal', $('#prCust'));
+    refreshQr();
   }
 
-  function printNow() {
+  async function ensureQrNow() {
+    if ($('#prQr').checked) await refreshQr();
+    else { $('#prQr').checked = true; await refreshQr(); }
+    return curQr;
+  }
+
+  async function printNow() {
     jset('gs.shop', { name: $('#prShop').value.trim(), phone: $('#prPhone').value.trim() });
     jset('gs.paper', $('#prPaper').value);
+    jset('gs.prQr', $('#prQr').checked);
+    if ($('#prQr').checked) {
+      await refreshQr();
+      if (curQr) Rcpt.saveReceipt(curQr.text, curQr.payload, 'issued');
+      else toast('Printed without the QR code. ' + qrMsg);
+    }
     const typed = $('#prNo').value;
     if (typed === invoiceNo(true)) invoiceNo(false);
     let st = $('#prPage');
@@ -6005,7 +6343,22 @@ const Hub = (() => {
     document.body.classList.add('printing');
     const done = () => { document.body.classList.remove('printing'); $('#printRoot').innerHTML = ''; window.removeEventListener('afterprint', done); };
     window.addEventListener('afterprint', done);
-    setTimeout(() => { try { window.print(); } catch (e) { done(); } if (!('onafterprint' in window)) done(); }, 60);
+    setTimeout(() => { try { window.print(); } catch (e) { done(); } if (!('onafterprint' in window)) done(); }, 80);
+  }
+
+  async function saveReceiptNow() {
+    const q = await ensureQrNow();
+    if (!q) { toast(qrMsg || 'The QR code could not be made'); return; }
+    Rcpt.saveReceipt(q.text, q.payload, 'issued');
+    const typed = $('#prNo').value;
+    if (typed === invoiceNo(true)) invoiceNo(false);
+    toast('Receipt saved. Find it in the Receipts tab.');
+  }
+
+  async function downloadQrNow() {
+    const q = curQr || await ensureQrNow();
+    if (!q) { toast(qrMsg || 'The QR code could not be made'); return; }
+    Rcpt.downloadQr(q.url, 'receipt-' + ($('#prNo').value || 'qr'));
   }
 
   function bind() {
@@ -6035,14 +6388,19 @@ const Hub = (() => {
       renderLog();
     });
     $('#prcCsv').addEventListener('click', logCsv);
-    $('#prcClear').addEventListener('click', () => { if (!P.log.length) return; if (confirm('Delete the whole price log?')) { P.log = []; jset('gs.priceLog', []); renderLog(); } });
+    $('#prcClear').addEventListener('click', () => { if (!P.log.length) return; if (confirm('Delete the whole price log?')) { P.log = []; saveLog(); resetForm(); paintModalPrice(); renderLog(); } });
     $('#prcLog').addEventListener('click', e => {
+      const ed = e.target.closest('[data-edit]');
+      if (ed) { editEntry(Number(ed.dataset.edit)); return; }
       const b = e.target.closest('[data-del]');
       if (!b) return;
-      P.log = P.log.filter(x => x.d !== b.dataset.del);
-      jset('gs.priceLog', P.log);
+      P.log = P.log.filter(x => x.id !== Number(b.dataset.del));
+      if (editId === Number(b.dataset.del)) { resetForm(); paintModalPrice(); }
+      saveLog();
+      applyLatest();
       renderLog();
     });
+    $('#prcCancel').addEventListener('click', () => { resetForm(); paintModalPrice(); renderLog(); });
     $('#lkQ').addEventListener('input', debounce(renderLookup, 150));
     $('#lkOut').addEventListener('click', onLookupClick);
     $('#dtBackup').addEventListener('click', makeBackup);
@@ -6052,8 +6410,33 @@ const Hub = (() => {
       if (e.target.closest('#dtCancel')) { pending = null; $('#dtFile').value = ''; $('#dtPrev').classList.add('hidden'); }
     });
     $('#dtCheck').addEventListener('click', checkUpdate);
-    ['prShop', 'prPhone', 'prCust', 'prCPhone', 'prDate', 'prNo', 'prPaper', 'prNote'].forEach(id => $('#' + id).addEventListener('input', paintSheet));
+    ['prShop', 'prPhone', 'prCust', 'prCPhone', 'prDate', 'prNo', 'prPaper', 'prNote'].forEach(id => $('#' + id).addEventListener('input', () => { paintSheet(); queueQr(); }));
     $('#prPaper').addEventListener('change', paintSheet);
+    ['prIncP', 'prIncR', 'prIncS', 'prIncT'].forEach(id => $('#' + id).addEventListener('change', () => { saveInc(); paintSheet(); }));
+    $('#prLines').addEventListener('input', onLine);
+    $('#prLines').addEventListener('click', e => {
+      const rm = e.target.closest('[data-rm]');
+      if (!rm) return;
+      items.splice(Number(rm.closest('.hb-ln').dataset.i), 1);
+      renderLines();
+      paintSheet();
+      queueQr();
+    });
+    $('#prAddLine').addEventListener('click', () => {
+      items.push({ title: '', amount: 0, name: '', qty: 0, unit: 0 });
+      renderLines();
+      const r = $('#prLines').querySelectorAll('.hb-ln');
+      if (r.length) r[r.length - 1].querySelector('input').focus();
+    });
+    $('#prLogo').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; pickImage(f, 'gs.logo', 'logo', 400); });
+    $('#prWm').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; pickImage(f, 'gs.wm', 'wm', 800); });
+    $('#prLogoRm').addEventListener('click', () => clearImage('gs.logo', 'logo'));
+    $('#prWmRm').addEventListener('click', () => clearImage('gs.wm', 'wm'));
+    $('#prWmTxt').addEventListener('input', e => { B.txt = e.target.value; try { localStorage.setItem('gs.wmTxt', B.txt); } catch (x) {} paintSheet(); });
+    $('#prWmOp').addEventListener('input', e => { B.op = parseInt(e.target.value, 10) || 12; try { localStorage.setItem('gs.wmOp', String(B.op)); } catch (x) {} paintSheet(); });
+    $('#prQr').addEventListener('change', () => { jset('gs.prQr', $('#prQr').checked); refreshQr(); });
+    $('#prQrDl').addEventListener('click', downloadQrNow);
+    $('#prSaveRc').addEventListener('click', saveReceiptNow);
     $('#prGo').addEventListener('click', printNow);
     $('#dataModal').addEventListener('modalclose', () => { pending = null; $('#dtFile').value = ''; $('#dtPrev').classList.add('hidden'); });
     document.addEventListener('invrender', paintInvValue);
@@ -6078,7 +6461,466 @@ const Hub = (() => {
     paintBackupState();
   }
 
-  return { init, openInvoice, setPrice, get price() { return P.v; }, get log() { return P.log; }, makeBackup, _setLog(a) { P.log = a; jset('gs.priceLog', a); } };
+  return { init, openInvoice, setPrice, get price() { return P.v; }, get log() { return P.log; }, makeBackup, _setLog(a) { P.log = normLog(a); saveLog(); } };
+})();
+const Rcpt = (() => {
+  const jget = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+  const jset = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const subtle = () => (window.crypto && window.crypto.subtle) || null;
+  const ALG = { name: 'ECDSA', namedCurve: 'P-256' };
+  const SIG = { name: 'ECDSA', hash: 'SHA-256' };
+  const MAX_LEN = 2900;
+
+  const b64u = u8 => {
+    let s = '';
+    for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));
+    return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  };
+  const unb64u = t => {
+    t = t.replace(/-/g, '+').replace(/_/g, '/');
+    while (t.length % 4) t += '=';
+    const s = atob(t), u = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+    return u;
+  };
+  const hex = u8 => Array.from(u8, b => b.toString(16).padStart(2, '0')).join('');
+  const clean = j => { const c = { kty: 'EC', crv: 'P-256', x: j.x, y: j.y }; if (j.d) c.d = j.d; return c; };
+  const pubOf = j => ({ kty: 'EC', crv: 'P-256', x: j.x, y: j.y });
+
+  async function fpOf(j) {
+    const d = await subtle().digest('SHA-256', enc.encode(JSON.stringify({ crv: 'P-256', kty: 'EC', x: j.x, y: j.y })));
+    return hex(new Uint8Array(d)).slice(0, 8).toUpperCase();
+  }
+
+  const canZip = () => typeof CompressionStream === 'function' && typeof DecompressionStream === 'function';
+  async function pipe(u8, Ctor, fmt) {
+    const s = new Blob([u8]).stream().pipeThrough(new Ctor(fmt));
+    return new Uint8Array(await new Response(s).arrayBuffer());
+  }
+
+  const keys = () => jget('gs.keys', null);
+  const imported = () => jget('gs.trusted', []);
+  function trustedList() {
+    const t = imported(), k = keys();
+    if (k && !t.some(x => x.fp === k.fp)) return [{ fp: k.fp, jwk: k.pub, label: 'This device', own: true }].concat(t);
+    return t;
+  }
+
+  async function generateKeys() {
+    if (!subtle()) throw new Error('This browser cannot create secure keys. Open the page over https or localhost.');
+    const kp = await subtle().generateKey(ALG, true, ['sign', 'verify']);
+    return storeKeys(clean(await subtle().exportKey('jwk', kp.privateKey)));
+  }
+
+  async function storeKeys(priv) {
+    await subtle().importKey('jwk', priv, ALG, false, ['sign']);
+    const pub = pubOf(priv);
+    const rec = { priv, pub, fp: await fpOf(pub), ts: Date.now() };
+    if (!jset('gs.keys', rec)) throw new Error('Could not save the key on this device.');
+    return rec;
+  }
+
+  const ensureKeys = async () => keys() || generateKeys();
+
+  async function encode(payload, priv) {
+    const raw = enc.encode(JSON.stringify(payload));
+    const key = await subtle().importKey('jwk', priv, ALG, false, ['sign']);
+    const sig = new Uint8Array(await subtle().sign(SIG, key, raw));
+    let tag = 'GSI1', body = raw;
+    if (canZip()) {
+      try {
+        const z = await pipe(raw, CompressionStream, 'deflate-raw');
+        if (z.length < raw.length) { tag = 'GSI2'; body = z; }
+      } catch (e) {}
+    }
+    return `${tag}.${b64u(body)}.${b64u(sig)}`;
+  }
+
+  async function decode(text) {
+    const m = /^(GSI[12])\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
+    if (!m) return null;
+    let body = unb64u(m[2]);
+    const sig = unb64u(m[3]);
+    if (m[1] === 'GSI2') body = await pipe(body, DecompressionStream, 'deflate-raw');
+    let payload = null;
+    try { payload = JSON.parse(dec.decode(body)); } catch (e) {}
+    return { raw: body, sig, payload };
+  }
+
+  async function verifyText(text) {
+    let d = null;
+    try { d = await decode(text); } catch (e) {}
+    if (!d) return { state: 'bad', reason: 'This is not a valid Gold Shop receipt code, or its data is damaged.' };
+    if (!d.payload || typeof d.payload !== 'object') return { state: 'bad', reason: 'The receipt data is damaged.' };
+    if (!subtle()) return { state: 'bad', payload: d.payload, reason: 'This browser cannot check signatures. Open the page over https or localhost.' };
+    const list = trustedList();
+    const k = d.payload.k;
+    const order = list.filter(t => t.fp === k).concat(list.filter(t => t.fp !== k));
+    if (!order.length) return { state: 'nokey', payload: d.payload, reason: 'No issuer public key is installed on this device. Import it in Keys & sync, then scan again.' };
+    for (const t of order) {
+      try {
+        const key = await subtle().importKey('jwk', pubOf(t.jwk), ALG, false, ['verify']);
+        if (await subtle().verify(SIG, key, d.sig, d.raw)) return { state: 'ok', payload: d.payload, key: t };
+      } catch (e) {}
+    }
+    return { state: 'bad', payload: d.payload, reason: 'The signature does not match. The receipt was changed, or it was not signed by a trusted key.' };
+  }
+
+  async function issue(payload) {
+    const k = await ensureKeys();
+    const p = Object.assign({}, payload, { k: k.fp });
+    const text = await encode(p, k.priv);
+    if (text.length > MAX_LEN) throw new Error('Too much data for one QR code. Remove some product lines or shorten the note.');
+    return { text, payload: p, fp: k.fp };
+  }
+
+  const ensureQr = () => loadLib('qrcode', () => !!(window.QRCode && typeof window.QRCode.toDataURL === 'function'), [
+    'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js',
+    'https://unpkg.com/qrcode@1.5.3/build/qrcode.min.js',
+    'https://cdn.jsdelivr.net/gh/soldair/node-qrcode@v1.5.3/build/qrcode.min.js'
+  ]);
+  const ensureJsqr = () => loadLib('jsqr', () => typeof window.jsQR === 'function', [
+    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js',
+    'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js'
+  ]);
+
+  async function qrUrl(text) {
+    await ensureQr();
+    return window.QRCode.toDataURL(text, { errorCorrectionLevel: 'L', margin: 2, width: 420 });
+  }
+
+  function dataUrlBytes(u) {
+    const s = atob(u.split(',')[1]), a = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i);
+    return a;
+  }
+  function downloadQr(url, name) { downloadBlob(dataUrlBytes(url), `${name || 'receipt'}.png`, 'image/png'); }
+
+  const list = () => jget('gs.receipts', []);
+  const sigOf = t => String(t).split('.')[2] || '';
+
+  function saveReceipt(text, payload, src) {
+    const l = list();
+    const sig = sigOf(text);
+    const p = payload || {};
+    const rec = { id: Date.now() * 1000 + Math.floor(Math.random() * 1000), ts: Date.now(), sig, text, src, i: p.i || '', d: p.d || '', t: p.t || 0, c: p.c || '' };
+    let at = l.findIndex(r => r.sig === sig);
+    if (at < 0 && src === 'issued' && p.i) at = l.findIndex(r => r.src === 'issued' && r.i === p.i);
+    if (at >= 0) { rec.id = l[at].id; if (src !== 'issued') rec.src = l[at].src; l[at] = rec; }
+    else l.unshift(rec);
+    if (l.length > 400) l.length = 400;
+    jset('gs.receipts', l);
+    if (ready) renderSaved();
+    return rec;
+  }
+
+  const money = n => (n === '' || n == null ? '' : fmtInt(n));
+
+  function detailsHtml(p) {
+    const row = (a, b) => (b ? `<div class="rc-r"><span>${a}</span><b>${esc(b)}</b></div>` : '');
+    const its = Array.isArray(p.it) ? p.it : [];
+    const body = its.map(x => `<tr><td>${esc(x[0] || '—')}</td><td class="r">${x[1] ? esc(x[1]) : ''}</td><td class="r">${x[2] ? money(x[2]) : ''}</td><td class="r">${x[3] ? money(x[3]) : ''}</td></tr>`).join('');
+    return row('Invoice ID', p.i) + row('Date', p.d) + row('Customer', p.c) + row('Customer phone', p.cp) + row('Shop', p.s) + row('Note', p.n) +
+      (body ? `<table class="rc-t"><thead><tr><th>Product</th><th class="r">Qty</th><th class="r">Unit price</th><th class="r">Total</th></tr></thead><tbody>${body}</tbody></table>` : '') +
+      (p.t ? `<div class="rc-tot"><span>Total</span><b>${money(p.t)} Ks</b></div>` : '') + row('Issuer key', p.k);
+  }
+
+  function resultHtml(v) {
+    if (v.state === 'ok') {
+      return `<div class="rc-v ok" role="status">${ic('shield')}<div><div class="rc-badge">AUTHENTIC</div><div class="rc-sub">Signed by key ${esc(v.key.fp)}${v.key.label ? ' · ' + esc(v.key.label) : ''}. This receipt has no expiry date.</div></div></div><div class="rc-d">${detailsHtml(v.payload)}</div>`;
+    }
+    const title = v.state === 'nokey' ? 'NOT AUTHENTIC · ISSUER KEY NOT TRUSTED' : 'NOT AUTHENTIC / TAMPERED';
+    return `<div class="rc-v bad" role="alert">${ic('alert')}<div><div class="rc-badge">${title}</div><div class="rc-sub">${esc(v.reason)}</div></div></div>` +
+      (v.payload ? `<div class="rc-d dim"><div class="rc-warn">Unverified details. Do not rely on them.</div>${detailsHtml(v.payload)}</div>` : '');
+  }
+
+  let ready = false, stream = null, raf = 0, det = null, busy = false, lastT = 0, openId = null;
+
+  async function handleText(text) {
+    const v = await verifyText(text);
+    const box = $('#rcRes');
+    box.innerHTML = resultHtml(v);
+    box.dataset.state = v.state;
+    if (v.state === 'ok') saveReceipt(String(text).trim(), v.payload, 'scanned');
+    try { box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
+    return v;
+  }
+
+  function stopCam() {
+    cancelAnimationFrame(raf);
+    if (stream) stream.getTracks().forEach(t => t.stop());
+    stream = null;
+    const v = $('#rcVid');
+    if (v) v.srcObject = null;
+    $('#rcCam').classList.remove('on');
+    $('#rcCamBtn').classList.remove('hidden');
+    $('#rcStop').classList.add('hidden');
+  }
+
+  async function decodeSource(src, w, h, maxSide, invert) {
+    if (det) {
+      try { const r = await det.detect(src); if (r && r.length) return r[0].rawValue; } catch (e) {}
+    }
+    if (typeof window.jsQR === 'function') {
+      const cv = $('#rcCv'), ctx = cv.getContext('2d', { willReadFrequently: true });
+      const sc = Math.min(1, maxSide / Math.max(w, h));
+      const cw = Math.max(1, Math.round(w * sc)), ch = Math.max(1, Math.round(h * sc));
+      cv.width = cw; cv.height = ch;
+      ctx.drawImage(src, 0, 0, cw, ch);
+      const r = window.jsQR(ctx.getImageData(0, 0, cw, ch).data, cw, ch, { inversionAttempts: invert ? 'attemptBoth' : 'dontInvert' });
+      return r ? r.data : '';
+    }
+    return '';
+  }
+
+  function loop() {
+    raf = requestAnimationFrame(async t => {
+      if (!stream) return;
+      const v = $('#rcVid');
+      if (t - lastT > 150 && !busy && v.readyState >= 2 && v.videoWidth) {
+        lastT = t;
+        busy = true;
+        let text = '';
+        try { text = await decodeSource(v, v.videoWidth, v.videoHeight, 720, false); } catch (e) {}
+        busy = false;
+        if (text) {
+          stopCam();
+          if (navigator.vibrate) navigator.vibrate(60);
+          handleText(text);
+          return;
+        }
+      }
+      loop();
+    });
+  }
+
+  async function startCam() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Camera is not available here. Upload a QR image or paste the text.'); return; }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
+    } catch (e) {
+      stream = null;
+      toast('Camera permission was blocked. Upload a QR image or paste the text.');
+      return;
+    }
+    const v = $('#rcVid');
+    v.srcObject = stream;
+    try { await v.play(); } catch (e) {}
+    $('#rcCam').classList.add('on');
+    $('#rcCamBtn').classList.add('hidden');
+    $('#rcStop').classList.remove('hidden');
+    if (!det && 'BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
+    if (!det) ensureJsqr().catch(() => toast('Scanner library could not load. Upload a QR image or paste the text.'));
+    loop();
+  }
+
+  async function scanImage(file) {
+    if (!file) return;
+    if (!det && 'BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
+    try { await ensureJsqr(); } catch (e) { if (!det) { toast('Scanner library could not load. Paste the QR text instead.'); return; } }
+    let bmp;
+    try {
+      bmp = await createImageBitmap(file);
+    } catch (e) {
+      bmp = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = URL.createObjectURL(file); }).catch(() => null);
+    }
+    if (!bmp) { toast('That image could not be read.'); return; }
+    const w = bmp.width || bmp.naturalWidth, h = bmp.height || bmp.naturalHeight;
+    let text = '';
+    try { text = await decodeSource(bmp, w, h, 1400, true); } catch (e) {}
+    if (!text) { try { text = await decodeSource(bmp, w, h, 700, true); } catch (e) {} }
+    if (!text) {
+      $('#rcRes').innerHTML = `<div class="rc-v bad" role="alert">${ic('alert')}<div><div class="rc-badge">NO QR CODE FOUND</div><div class="rc-sub">Try a sharper, closer photo, or paste the QR text.</div></div></div>`;
+      return;
+    }
+    handleText(text);
+  }
+
+  function setTab(name) {
+    $$('[data-rt]').forEach(b => b.classList.toggle('on', b.dataset.rt === name));
+    ['scan', 'saved', 'keys'].forEach(n => $('#rc' + n[0].toUpperCase() + n.slice(1)).classList.toggle('hidden', n !== name));
+    if (name !== 'scan') stopCam();
+    if (name === 'saved') renderSaved();
+    if (name === 'keys') renderKeys();
+  }
+
+  async function renderSaved() {
+    const box = $('#rcList');
+    const l = list();
+    if (!l.length) { box.innerHTML = '<div class="hb-empty">No receipts yet. Issue one with New receipt, or scan a code.</div>'; return; }
+    box.innerHTML = l.map(r => `<button type="button" class="rc-row" data-id="${r.id}"><b>${esc(r.i || 'Receipt')}${r.c ? ' · ' + esc(r.c) : ''}</b><i class="rc-st" data-st="${r.id}">Checking</i><small>${esc(r.d || new Date(r.ts).toLocaleDateString())} · ${r.src === 'issued' ? 'Issued here' : 'Scanned'}</small><small>${r.t ? fmtInt(r.t) + ' Ks' : ''}</small></button>`).join('');
+    for (const r of l) {
+      const v = await verifyText(r.text);
+      const el = box.querySelector(`[data-st="${r.id}"]`);
+      if (el) { el.textContent = v.state === 'ok' ? 'Authentic' : 'Not authentic'; el.className = 'rc-st ' + (v.state === 'ok' ? 'ok' : 'bad'); }
+    }
+  }
+
+  async function openReceipt(id) {
+    const r = list().find(x => x.id === id);
+    if (!r) return;
+    openId = id;
+    $('#rcMBody').innerHTML = '<div class="hb-empty">Checking signature…</div>';
+    $('#rcMQr').classList.add('hidden');
+    Modal.open('rcModal');
+    const v = await verifyText(r.text);
+    if (openId !== id) return;
+    $('#rcMBody').innerHTML = resultHtml(v);
+    try {
+      const u = await qrUrl(r.text);
+      if (openId !== id) return;
+      $('#rcMImg').src = u;
+      $('#rcMQr').classList.remove('hidden');
+    } catch (e) {}
+  }
+
+  async function renderKeys() {
+    const k = keys();
+    $('#rcKeyBox').innerHTML = k
+      ? `Signing key ready · ID <b>${esc(k.fp)}</b> · created ${esc(new Date(k.ts).toLocaleDateString())}`
+      : 'No signing key on this device yet. One is created automatically the first time you add a QR to an invoice, or you can import your own.';
+    $('#rcExpPub').disabled = !k;
+    $('#rcExpPriv').disabled = !k;
+    const t = trustedList();
+    $('#rcTrusted').innerHTML = t.length ? t.map(x => `<div class="rc-trow"><span><b>${esc(x.fp)}</b> · ${esc(x.label || 'Issuer')}</span>${x.own ? '<small>This device</small>' : `<button type="button" class="btn btn-sm" data-rmk="${esc(x.fp)}">Remove</button>`}</div>`).join('') : '<div class="hb-empty">No trusted keys yet.</div>';
+  }
+
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  const shopName = () => (jget('gs.shop', { name: '' }).name || '').trim();
+
+  function exportPublic() {
+    const k = keys();
+    if (!k) return;
+    downloadBlob(JSON.stringify({ gsKey: 1, kind: 'public', fp: k.fp, label: shopName() || 'Issuer', jwk: k.pub }, null, 2), `GoldShop_PublicKey_${k.fp}.json`, 'application/json');
+  }
+  function exportPrivate() {
+    const k = keys();
+    if (!k) return;
+    if (!confirm('The private key lets anyone sign receipts in your name. Save it somewhere safe. Export it?')) return;
+    downloadBlob(JSON.stringify({ gsKey: 1, kind: 'private', fp: k.fp, jwk: k.priv }, null, 2), `GoldShop_PrivateKey_${k.fp}.json`, 'application/json');
+  }
+  function exportBundle(withPriv, withReceipts) {
+    const k = keys();
+    const b = { gsBundle: 1, ts: Date.now(), receipts: withReceipts ? list() : [], trusted: trustedList().filter(x => !x.own).map(x => ({ fp: x.fp, jwk: x.jwk, label: x.label })) };
+    if (k) b.trusted.push({ fp: k.fp, jwk: k.pub, label: shopName() || 'Issuer' });
+    if (withPriv && k) b.priv = k.priv;
+    downloadBlob(JSON.stringify(b, null, 2), `GoldShop_Receipts_${stamp()}.json`, 'application/json');
+  }
+
+  async function addTrusted(jwk, label) {
+    const pub = pubOf(jwk);
+    await subtle().importKey('jwk', pub, ALG, false, ['verify']);
+    const fp = await fpOf(pub);
+    const own = keys();
+    if (own && own.fp === fp) return false;
+    const t = imported();
+    const at = t.findIndex(x => x.fp === fp);
+    const rec = { fp, jwk: pub, label: label || 'Issuer', ts: Date.now() };
+    if (at >= 0) t[at] = rec; else t.push(rec);
+    jset('gs.trusted', t);
+    return true;
+  }
+
+  async function importObject(j) {
+    if (!subtle()) throw new Error('This browser cannot import keys here. Open the page over https or localhost.');
+    const done = [];
+    if (j && j.gsBundle) {
+      const have = list();
+      let n = 0;
+      for (const r of Array.isArray(j.receipts) ? j.receipts : []) {
+        if (!r || !/^GSI[12]\.[\w-]+\.[\w-]+$/.test(r.text || '')) continue;
+        const sig = sigOf(r.text);
+        if (have.some(x => x.sig === sig)) continue;
+        have.push({ id: r.id || Date.now() * 1000 + n, ts: r.ts || Date.now(), sig, text: r.text, src: r.src || 'scanned', i: r.i || '', d: r.d || '', t: r.t || 0, c: r.c || '' });
+        n++;
+      }
+      have.sort((a, b) => b.ts - a.ts);
+      jset('gs.receipts', have);
+      if (n) done.push(`${n} receipt${n === 1 ? '' : 's'}`);
+      let m = 0;
+      for (const t of Array.isArray(j.trusted) ? j.trusted : []) { try { if (t && t.jwk && await addTrusted(t.jwk, t.label)) m++; } catch (e) {} }
+      if (m) done.push(`${m} trusted key${m === 1 ? '' : 's'}`);
+      if (j.priv && confirm('This file contains a private signing key. Replace the key on this device?')) {
+        await storeKeys(clean(j.priv));
+        done.push('private key');
+      }
+    } else if (j && j.gsKey && j.kind === 'public' && j.jwk) {
+      if (await addTrusted(j.jwk, j.label)) done.push('trusted key');
+    } else if (j && j.gsKey && j.kind === 'private' && j.jwk) {
+      if (keys() && !confirm('Replace the signing key on this device? Receipts signed with the old key stay valid only if its public key is trusted.')) return 'cancelled';
+      await storeKeys(clean(j.jwk));
+      done.push('private key');
+    } else {
+      throw new Error('This file is not a Gold Shop receipt or key file.');
+    }
+    return done.length ? 'Imported ' + done.join(', ') : 'Nothing new to import';
+  }
+
+  async function importText(txt) {
+    let j;
+    try { j = JSON.parse(txt); } catch (e) { toast('That text is not valid.'); return; }
+    try {
+      const m = await importObject(j);
+      if (m !== 'cancelled') toast(m);
+    } catch (e) { toast(e.message || 'Import failed'); }
+    renderKeys();
+    renderSaved();
+  }
+
+  function bind() {
+    $$('[data-rt]').forEach(b => b.addEventListener('click', () => setTab(b.dataset.rt)));
+    $('#rcNew').addEventListener('click', () => Hub.openInvoice([{ title: '', amount: 0 }], { qr: true }));
+    $('#rcCamBtn').addEventListener('click', startCam);
+    $('#rcStop').addEventListener('click', stopCam);
+    $('#rcImg').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; scanImage(f); });
+    $('#rcPasteBtn').addEventListener('click', () => { const t = $('#rcPaste').value.trim(); if (!t) { toast('Paste the QR text first'); return; } handleText(t); });
+    $('#rcList').addEventListener('click', e => { const b = e.target.closest('[data-id]'); if (b) openReceipt(Number(b.dataset.id)); });
+    $('#rcMDel').addEventListener('click', () => {
+      if (!openId || !confirm('Delete this receipt from this device?')) return;
+      jset('gs.receipts', list().filter(r => r.id !== openId));
+      openId = null;
+      Modal.close('rcModal');
+      renderSaved();
+    });
+    $('#rcMDl').addEventListener('click', () => { const u = $('#rcMImg').src; if (u && u.startsWith('data:')) { const r = list().find(x => x.id === openId); downloadQr(u, 'receipt-' + (r && r.i ? r.i : 'qr')); } });
+    $('#rcExp').addEventListener('click', () => { if (!list().length) { toast('No receipts to export'); return; } exportBundle(false, true); });
+    $('#rcImp').addEventListener('change', async e => { const f = e.target.files[0]; e.target.value = ''; if (f) importText(await f.text()); });
+    $('#rcKeyFile').addEventListener('change', async e => { const f = e.target.files[0]; e.target.value = ''; if (f) importText(await f.text()); });
+    $('#rcPubAdd').addEventListener('click', () => { const t = $('#rcPubTxt').value.trim(); if (!t) { toast('Paste a public key first'); return; } importText(t); $('#rcPubTxt').value = ''; });
+    $('#rcGen').addEventListener('click', async () => {
+      if (keys() && !confirm('Create a new key pair? New receipts will use the new key. Verifiers must trust the new public key.')) return;
+      try { await generateKeys(); toast('New key pair created'); } catch (e) { toast(e.message); }
+      renderKeys();
+    });
+    $('#rcExpPub').addEventListener('click', exportPublic);
+    $('#rcExpPriv').addEventListener('click', exportPrivate);
+    $('#rcExpAll').addEventListener('click', () => {
+      const withPriv = !!keys() && confirm('Include the private key so the other device can also issue receipts? Press Cancel to share only the public key and receipts.');
+      exportBundle(withPriv, true);
+    });
+    $('#rcTrusted').addEventListener('click', e => {
+      const b = e.target.closest('[data-rmk]');
+      if (!b) return;
+      jset('gs.trusted', imported().filter(x => x.fp !== b.dataset.rmk));
+      renderKeys();
+      renderSaved();
+    });
+    document.addEventListener('viewchange', e => {
+      if (e.detail === 'verify') { renderSaved(); renderKeys(); } else stopCam();
+    });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stopCam(); });
+    $('#rcModal').addEventListener('modalclose', () => { openId = null; });
+  }
+
+  function init() {
+    bind();
+    ready = true;
+    renderKeys();
+  }
+
+  return { init, issue, qrUrl, downloadQr, saveReceipt, verifyText, ensureKeys, trustedList, _importText: importText };
 })();
 const PWA = (() => {
   let reg = null, wantReload = false, refreshing = false;
@@ -6157,6 +6999,7 @@ const PWA = (() => {
   Calc.init();
   Shwe.init();
   Hub.init();
+  Rcpt.init();
   Router.init();
 })();
 </script></body></html>
