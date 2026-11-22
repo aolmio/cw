@@ -929,28 +929,31 @@ body.printing #printRoot{display:block}
 .pr-sheet>*:not(.wm):not(.wmt){position:relative;z-index:1}
 .pr-sheet .wm{position:absolute;object-fit:contain;pointer-events:none;z-index:0}
 .pr-sheet .wmt{position:absolute;font-weight:800;white-space:nowrap;color:#000;pointer-events:none;z-index:0}
-.pr-sheet .artb{margin-top:14px;padding-top:10px;border-top:1px dashed #999;text-align:center}
-.pr-sheet .artb img{width:100%;display:block}
-.pr-sheet .artb span{display:block;font-size:11px;color:#444;margin-top:4px}
 .pr-sheet .logo{text-align:center;margin-bottom:6px}
 .pr-sheet .logo img{max-height:64px;max-width:60%;object-fit:contain}
 .pr-sheet td small{display:block;color:#555;font-size:11.5px;margin-top:2px}
 .pr-sheet .sl{display:flex;justify-content:space-between;gap:10px;color:#444;font-size:11.5px;margin-top:2px}
-.pr-sheet .qrb{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:10px;border-top:1px dashed #999}
-.pr-sheet .qrb img{width:112px;height:112px;flex:none}
-.pr-sheet .qrb div{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:#333}
-.pr-sheet.th .qrb{flex-direction:column;text-align:center}
 .hb-sec{margin-top:12px;border:1px solid var(--border);border-radius:var(--r-md);padding:0 12px 12px;background:var(--surface)}
 .hb-sec>summary{cursor:pointer;font-weight:750;padding:12px 0;list-style:none}
 .hb-sec>summary::-webkit-details-marker{display:none}
 .hb-sec>summary::after{content:"+";float:right;font-weight:800;color:var(--ink-3)}
 .hb-sec[open]>summary::after{content:"–"}
+.pr-sheet .vrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;padding-top:8px;border-top:1px dashed #999;break-inside:avoid;page-break-inside:avoid}
+.pr-sheet .qrb{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#333;flex:none}
+.pr-sheet .qrb img{width:96px;height:96px}
+.pr-sheet .artb{flex:1;min-width:0;display:flex;justify-content:flex-end}
+.pr-sheet .artb img{width:100%;max-width:240px;display:block}
+.pr-sheet.th .vrow{flex-direction:column}
+.pr-sheet.th .artb img{max-width:100%}
+.pr-sheet .sig{margin-top:26px}
+.pr-sheet .thx{margin-top:10px}
+.hb-amt{height:44px;display:flex;align-items:center;justify-content:flex-end;padding:0 8px;font-weight:750;font-variant-numeric:tabular-nums;border-radius:10px;background:var(--surface-2);min-width:0}
 .hb-lines{display:grid;gap:10px;margin-bottom:10px}
-.hb-ln{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,.7fr) minmax(0,1fr) minmax(0,1fr) 34px;gap:6px;align-items:center}
+.hb-ln{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,.7fr) minmax(0,1fr) 34px;gap:6px;align-items:center}
 .hb-ln .input{min-width:0;padding-left:8px;padding-right:8px}
 .hb-ln .x{height:36px;border:0;background:transparent;color:var(--ink-3);font-size:18px;border-radius:8px}
 .hb-lt{grid-column:1/-1;font-size:12px;color:var(--ink-3);margin-top:-2px}
-@media (max-width:560px){.hb-ln{grid-template-columns:1fr 1fr 34px}.hb-ln [data-f=name]{grid-column:1/-1}.hb-ln [data-f=qty]{grid-column:1}.hb-ln [data-f=unit]{grid-column:2/3}.hb-ln [data-f=amount]{grid-column:1/3}.hb-ln .x{grid-column:3;grid-row:2}}
+@media (max-width:560px){.hb-ln{grid-template-columns:1fr 1fr 34px}.hb-ln [data-f=name]{grid-column:1/-1}.hb-ln .x{grid-column:3;grid-row:2}}
 .hb-chk{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .hb-chk label,.hb-chk1{display:flex;align-items:center;gap:8px;font-weight:650;min-height:36px}
 .hb-chk input,.hb-chk1 input{width:18px;height:18px}
@@ -6163,7 +6166,7 @@ const Hub = (() => {
     const name = $('#prShop').value.trim(), ph = $('#prPhone').value.trim();
     const cust = $('#prCust').value.trim(), cph = $('#prCPhone').value.trim(), note = $('#prNote').value.trim();
     const useQty = items.some(i => i.qty);
-    const shown = items.filter(i => i.name || i.title || i.amount || i.qty || i.unit);
+    const shown = items.filter(i => i.name || i.title || i.amount || i.qty);
     const rows = shown.map((i, n) => {
       const main = i.name || i.title || '';
       const sub = i.name && i.title ? `<small>${esc(i.title)}</small>` : '';
@@ -6171,9 +6174,10 @@ const Hub = (() => {
     }).join('');
     const op = (B.op / 100).toFixed(2);
     const qr = curQr && $('#prQr').checked
-      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><div><b>Scan to verify</b><span>${esc($('#prNo').value)}</span></div></div>` : '';
+      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><span>Scan to verify</span></div>` : '';
     const art = curArt && $('#prArt').checked
-      ? `<div class="artb"><img src="${curArt.url}" alt="Verification art card"><span>Verification art card · ${esc($('#prNo').value)}</span></div>` : '';
+      ? `<div class="artb"><img src="${curArt.url}" alt="Verification art card"></div>` : '';
+    const ver = qr || art ? `<div class="vrow">${qr}${art}</div>` : '';
     return `<div class="pr-sheet${th ? ' th' : ''}">
       ${wmHtml(th, op)}
       ${B.logo ? `<div class="logo"><img src="${B.logo}" alt=""></div>` : ''}
@@ -6185,7 +6189,7 @@ const Hub = (() => {
       <div class="words">${esc(Shwe.numToBurmeseText(total))}</div>
       ${note ? `<div class="note">${esc(note)}</div>` : ''}
       ${th ? '' : '<div class="sig"><span>Customer</span><span>Seller</span></div>'}
-      ${qr}${art}
+      ${ver}
       <div class="thx">ကျေးဇူးတင်ပါသည်</div></div>`;
   }
 
@@ -6199,8 +6203,7 @@ const Hub = (() => {
     $('#prLines').innerHTML = items.length ? items.map((x, i) => `<div class="hb-ln" data-i="${i}">
       <input class="input" data-f="name" type="text" placeholder="Product bought" value="${esc(x.name || '')}" aria-label="Product name">
       <input class="input" data-f="qty" type="text" inputmode="decimal" placeholder="Qty" value="${x.qty ? esc(String(x.qty)) : ''}" aria-label="Quantity">
-      <input class="input" data-f="unit" type="text" inputmode="decimal" placeholder="Unit price" value="${x.unit ? esc(String(x.unit)) : ''}" aria-label="Unit price">
-      <input class="input" data-f="amount" type="text" inputmode="decimal" placeholder="Amount" value="${x.amount ? esc(String(x.amount)) : ''}" aria-label="Amount">
+      ${x.title ? `<div class="hb-amt" aria-label="Price from the invoice list">${fmtInt(x.amount)} Ks</div>` : `<input class="input" data-f="amount" type="text" inputmode="decimal" placeholder="Price" value="${x.amount ? esc(String(x.amount)) : ''}" aria-label="Price">`}
       <button type="button" class="x" data-rm aria-label="Remove line">×</button>
       ${x.title ? `<div class="hb-lt">${esc(x.title)}</div>` : ''}</div>`).join('') : '<div class="hb-empty">No product lines yet.</div>';
   }
@@ -6215,10 +6218,6 @@ const Hub = (() => {
     else {
       e.target.value = e.target.value.replace(/[^\d.]/g, '');
       it[f] = num(e.target.value);
-      if (f !== 'amount' && it.qty > 0 && it.unit > 0) {
-        it.amount = Math.round(it.qty * it.unit);
-        row.querySelector('[data-f=amount]').value = String(it.amount);
-      }
     }
     paintSheet();
     queueQr();
@@ -6296,8 +6295,8 @@ const Hub = (() => {
     set('cp', $('#prCPhone').value.trim());
     set('s', $('#prShop').value.trim());
     set('n', $('#prNote').value.trim());
-    const its = items.filter(x => x.name || x.title || x.amount || x.qty || x.unit);
-    if (its.length) p.it = its.map(x => [x.name || x.title || '', x.qty || '', x.unit || '', Math.round(x.amount || 0)]);
+    const its = items.filter(x => x.name || x.title || x.amount || x.qty);
+    if (its.length) p.it = its.map(x => [x.name || x.title || '', x.qty || '', '', Math.round(x.amount || 0)]);
     const t = Math.round(lineTotal());
     if (t) p.t = t;
     return p;
@@ -6348,7 +6347,7 @@ const Hub = (() => {
   const queueQr = debounce(() => { if ($('#prQr').checked) refreshQr(); if ($('#prArt').checked) refreshArt(); }, 450);
 
   function openInvoice(list, opt) {
-    items = list.map(x => Object.assign({ name: '', qty: 0, unit: 0, amount: 0 }, x));
+    items = list.map(x => Object.assign({ name: '', qty: 0, amount: 0 }, x));
     const rem = jget('gs.shopRem', true) !== false;
     $('#prRem').checked = rem;
     const s = rem ? shop() : { name: '', phone: '' };
@@ -6494,7 +6493,7 @@ const Hub = (() => {
       queueQr();
     });
     $('#prAddLine').addEventListener('click', () => {
-      items.push({ title: '', amount: 0, name: '', qty: 0, unit: 0 });
+      items.push({ title: '', amount: 0, name: '', qty: 0 });
       renderLines();
       const r = $('#prLines').querySelectorAll('.hb-ln');
       if (r.length) r[r.length - 1].querySelector('input').focus();
@@ -8014,7 +8013,7 @@ const Art = (() => {
   const K0 = Math.floor((BYTES - 2 * NSYM) / 2) + 1;
   const K1 = BYTES - 2 * NSYM - K0;
   const CAP = K0 + K1;
-  const D = 18;
+  const D = 12;
   const RING = [255, 40, 140];
   const enc = new TextEncoder(), dec = new TextDecoder();
 
@@ -8203,13 +8202,19 @@ const Art = (() => {
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
   function procedural() {
-    const pal = [[196, 154, 62], [232, 214, 170], [34, 48, 82], [38, 112, 120], [244, 238, 224]];
     const base = [];
+    const BAY = 8;
     for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-      const t = Math.abs(c - 27.5) * 0.75 + Math.abs(r - 20.5);
-      const band = Math.floor(t / 3.2) % pal.length;
-      const sh = ((c + r) % 2 ? 6 : -6) + (Math.floor(t) % 3) * 3;
-      base.push(pal[band].map(x => clamp(x + sh, 0, 255)));
+      const lx = ((c + 4) % BAY) - (BAY - 1) / 2;
+      const ry = (r + 3) % 10;
+      const row = Math.floor((r + 3) / 10);
+      const v = 196 - r * 0.7 + (row % 2) * 3;
+      let col = [v, v - 5, v - 16];
+      const dist = Math.hypot(lx, ry - 5);
+      if (ry <= 5 && Math.abs(dist - 3.3) < 0.75) col = [168 - r * 0.5, 142 - r * 0.5, 96 - r * 0.4];
+      else if (ry <= 5 && dist < 3.3) col = [v - 22, v - 22, v - 26];
+      else if (Math.abs(lx) > BAY / 2 - 1) col = [v + 14, v + 11, v + 4];
+      base.push(col.map(x => clamp(x, 0, 255)));
     }
     return base;
   }
