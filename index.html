@@ -2150,6 +2150,7 @@ body.printing #printRoot{display:block}
         <label class="hb-chk1"><input type="checkbox" id="prQr"> Add a QR code that proves this invoice is genuine</label>
         <div class="hb-hint" id="prQrInfo"></div>
         <label class="hb-chk1"><input type="checkbox" id="prArt"> Add a hidden-data art card (survives screenshots and chat apps)</label>
+        <div class="field"><label for="prArtStyle">Art card style</label><select id="prArtStyle" class="input"><option value="holo">Holographic foil</option><option value="cert">Certificate gold border</option></select></div>
         <div class="hb-brand"><div class="hb-bi"><div class="hb-bt">Art card photo</div><div class="hb-bp"><img id="prArtImg" alt="" class="hidden"></div><div class="rc-btns"><label class="btn btn-sm" for="prArtPh">Choose photo</label><input type="file" id="prArtPh" accept="image/*" class="sr-only"><button type="button" class="btn btn-sm hidden" id="prArtRm">Remove</button></div></div></div>
         <div class="hb-hint" id="prArtInfo"></div>
         <div class="rc-btns"><button type="button" class="btn btn-sm" id="prQrDl"><svg class="ic"><use href="#i-download"/></svg>Download QR</button><button type="button" class="btn btn-sm" id="prArtDl"><svg class="ic"><use href="#i-download"/></svg>Download art card</button><button type="button" class="btn btn-sm" id="prSaveRc"><svg class="ic"><use href="#i-shield"/></svg>Save receipt</button></div>
@@ -6341,7 +6342,7 @@ const Hub = (() => {
     const my = ++artSeq;
     if (!$('#prArt').checked) { curArt = null; setArtInfo(''); paintSheet(); return; }
     try {
-      const r = await Art.make(buildPayload(), B.art);
+      const r = await Art.make(buildPayload(), B.art, $('#prArtStyle').value);
       if (my !== artSeq) return;
       curArt = { url: r.url, text: r.text, payload: r.payload };
       setArtInfo(`Art card ready · ${r.used} of ${r.cap} bytes used${r.trimmed ? '. Gold and price details were left out to fit; the QR code keeps them.' : ''}`);
@@ -6377,6 +6378,7 @@ const Hub = (() => {
     paintBrand();
     renderLines();
     $('#prArt').checked = jget('gs.prArt', false) === true;
+    $('#prArtStyle').value = jget('gs.artStyle', 'holo');
     curQr = null;
     curArt = null;
     setQrInfo('');
@@ -6517,6 +6519,7 @@ const Hub = (() => {
     $('#prQr').addEventListener('change', () => { jset('gs.prQr', $('#prQr').checked); refreshQr(); });
     $('#prQrDl').addEventListener('click', downloadQrNow);
     $('#prArtDl').addEventListener('click', downloadArtNow);
+    $('#prArtStyle').addEventListener('change', () => { jset('gs.artStyle', $('#prArtStyle').value); refreshArt(); });
     $('#prArt').addEventListener('change', () => { jset('gs.prArt', $('#prArt').checked); refreshArt(); });
     $('#prArtPh').addEventListener('change', async e => {
       const f = e.target.files[0];
@@ -8273,42 +8276,128 @@ const Art = (() => {
 
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
-  function guilloche() {
+  function hologram() {
+    const GW = 560, GH = 420, cx = GW / 2, cy = GH / 2 - 6;
+    const c = document.createElement('canvas');
+    c.width = GW; c.height = GH;
+    const x = c.getContext('2d');
+    const hsl = (h, s2, l, a) => `hsla(${((h % 360) + 360) % 360},${s2}%,${l}%,${a === undefined ? 1 : a})`;
+    const g = x.createLinearGradient(0, 0, GW, GH);
+    [[0, '#aab4d6'], [0.2, '#dfe3f3'], [0.38, '#9fb0d8'], [0.55, '#efe6f6'], [0.72, '#a9bad9'], [0.9, '#dcd6ef'], [1, '#b4bcd8']].forEach(p => g.addColorStop(p[0], p[1]));
+    x.fillStyle = g;
+    x.fillRect(0, 0, GW, GH);
+    x.save();
+    x.rotate(-0.45);
+    for (let i = -30; i < 50; i++) {
+      x.fillStyle = hsl(180 + i * 31, 85, 66, 0.2);
+      x.fillRect(i * 24, -200, 10, 900);
+    }
+    x.restore();
+    x.strokeStyle = 'rgba(70,80,170,0.38)';
+    x.lineWidth = 2.4;
+    for (let gx = -GH; gx < GW + GH; gx += 40) {
+      x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx + GH, GH); x.stroke();
+      x.beginPath(); x.moveTo(gx, GH); x.lineTo(gx + GH, 0); x.stroke();
+    }
+    for (let gy = 20; gy < GH; gy += 40) for (let gx = 20; gx < GW; gx += 40) {
+      x.strokeStyle = hsl(gx * 0.7 + gy, 80, 45, 0.35);
+      x.lineWidth = 2.6;
+      x.beginPath(); x.arc(gx, gy, 10, 0, Math.PI * 2); x.stroke();
+    }
+    x.save();
+    x.translate(cx, cy);
+    x.globalCompositeOperation = 'source-over';
+    const disc = x.createRadialGradient(0, 0, 10, 0, 0, 190);
+    disc.addColorStop(0, 'rgba(255,248,200,0.95)');
+    disc.addColorStop(0.5, 'rgba(255,225,255,0.55)');
+    disc.addColorStop(1, 'rgba(210,225,255,0)');
+    x.fillStyle = disc;
+    x.beginPath(); x.arc(0, 0, 190, 0, Math.PI * 2); x.fill();
+    const petals = 12;
+    for (let k = 14; k >= 0; k--) {
+      const f = k / 14, R = 34 + f * 152;
+      x.strokeStyle = hsl(48 + f * 230, 95, k % 2 ? 64 : 46, 0.95);
+      x.lineWidth = 6;
+      x.beginPath();
+      for (let i = 0; i <= 360; i++) {
+        const t = (i / 360) * Math.PI * 2;
+        const r = R * (0.62 + 0.38 * Math.cos(petals * t + k * 0.3)) * (0.9 + 0.1 * Math.cos(2 * t));
+        const px = r * Math.cos(t), py = r * Math.sin(t);
+        if (i) x.lineTo(px, py); else x.moveTo(px, py);
+      }
+      x.stroke();
+    }
+    for (let k = 0; k < 8; k++) {
+      x.strokeStyle = hsl(260 + k * 26, 90, 58, 0.75);
+      x.lineWidth = 2.6;
+      x.beginPath(); x.arc(0, 0, 150 + k * 7, 0, Math.PI * 2); x.stroke();
+    }
+    x.fillStyle = 'rgba(255,250,215,0.95)';
+    x.beginPath(); x.arc(0, 0, 30, 0, Math.PI * 2); x.fill();
+    x.strokeStyle = 'rgba(60,40,140,0.85)';
+    x.lineWidth = 6;
+    x.beginPath(); x.arc(0, 0, 30, 0, Math.PI * 2); x.stroke();
+    x.restore();
+    const sp = x.createLinearGradient(0, GH, GW, 0);
+    sp.addColorStop(0.3, 'rgba(255,255,255,0)');
+    sp.addColorStop(0.46, 'rgba(255,255,255,0.5)');
+    sp.addColorStop(0.54, 'rgba(255,255,255,0.1)');
+    sp.addColorStop(0.7, 'rgba(255,255,255,0)');
+    x.fillStyle = sp;
+    x.fillRect(0, 0, GW, GH);
+    x.strokeStyle = 'rgba(255,255,255,0.85)';
+    x.lineWidth = 6;
+    x.strokeRect(12, 12, GW - 24, GH - 24);
+    return c;
+  }
+
+  function certificate() {
     const GW = 560, GH = 420;
     const c = document.createElement('canvas');
     c.width = GW; c.height = GH;
     const x = c.getContext('2d');
-    const g = x.createLinearGradient(0, 0, GW, GH);
-    g.addColorStop(0, '#ece6d4');
-    g.addColorStop(0.5, '#dfe5d6');
-    g.addColorStop(1, '#e8dcc2');
-    x.fillStyle = g;
+    const bg = x.createRadialGradient(GW / 2, GH / 2, 40, GW / 2, GH / 2, 330);
+    bg.addColorStop(0, '#fbf8ee');
+    bg.addColorStop(1, '#eee4cb');
+    x.fillStyle = bg;
     x.fillRect(0, 0, GW, GH);
-    x.lineJoin = 'round';
-    const roset = (cx, cy, R, r, dd, turns, col, lw, rot) => {
-      x.strokeStyle = col; x.lineWidth = lw; x.beginPath();
-      const steps = 1600, k = (R - r) / r;
-      for (let i = 0; i <= steps; i++) {
-        const t = (i / steps) * Math.PI * 2 * turns;
-        const px = (R - r) * Math.cos(t) + dd * Math.cos(k * t);
-        const py = (R - r) * Math.sin(t) - dd * Math.sin(k * t);
-        const rx = px * Math.cos(rot) - py * Math.sin(rot) + cx, ry = px * Math.sin(rot) + py * Math.cos(rot) + cy;
-        if (i) x.lineTo(rx, ry); else x.moveTo(rx, ry);
+    x.fillStyle = 'rgba(196,152,72,0.55)';
+    x.fillRect(10, 10, GW - 20, GH - 20);
+    x.fillStyle = '#f9f5e8';
+    x.fillRect(74, 74, GW - 148, GH - 148);
+    const gold = 'rgba(158,112,36,0.9)', pale = 'rgba(250,228,170,0.95)';
+    const wave = (horiz, centre) => {
+      for (let b = 0; b < 6; b++) {
+        x.strokeStyle = b % 2 ? gold : pale;
+        x.lineWidth = 3.4;
+        x.beginPath();
+        const len = horiz ? GW : GH;
+        for (let p = 12; p <= len - 12; p += 3) {
+          const o = 13 * Math.sin(p * 0.085 + b * 0.9) + (b - 2.5) * 6;
+          if (horiz) { if (p > 12) x.lineTo(p, centre + o); else x.moveTo(p, centre + o); }
+          else { if (p > 12) x.lineTo(centre + o, p); else x.moveTo(centre + o, p); }
+        }
+        x.stroke();
       }
-      x.stroke();
     };
-    const teal = 'rgba(36,88,100,0.62)', brass = 'rgba(160,122,52,0.6)', navy = 'rgba(40,52,92,0.45)';
-    for (let i = 0; i < 5; i++) roset(GW / 2, GH / 2, 170, 50, 44 + i * 14, 5, i % 2 ? brass : teal, 3, i * 0.26);
-    for (let i = 0; i < 3; i++) roset(GW * 0.2, GH * 0.5, 100, 40, 26 + i * 16, 2, i % 2 ? navy : teal, 2.6, i * 0.5);
-    for (let i = 0; i < 3; i++) roset(GW * 0.8, GH * 0.5, 100, 40, 26 + i * 16, 2, i % 2 ? navy : brass, 2.6, i * 0.5);
-    for (const y0 of [32, GH - 32]) for (let b = 0; b < 5; b++) {
-      x.strokeStyle = b % 2 ? teal : brass; x.lineWidth = 2.4; x.beginPath();
-      for (let px = 0; px <= GW; px += 4) {
-        const py = y0 + 14 * Math.sin(px * 0.045 + b * 0.55) + (b - 2) * 7;
-        if (px) x.lineTo(px, py); else x.moveTo(px, py);
+    wave(true, 42); wave(true, GH - 42); wave(false, 42); wave(false, GW - 42);
+    x.strokeStyle = gold;
+    x.lineWidth = 3;
+    x.strokeRect(74, 74, GW - 148, GH - 148);
+    x.save();
+    x.translate(GW / 2, GH / 2);
+    for (let k = 0; k < 9; k++) {
+      x.strokeStyle = k % 2 ? 'rgba(170,125,48,0.32)' : 'rgba(210,175,100,0.4)';
+      x.lineWidth = 4;
+      x.beginPath();
+      for (let i = 0; i <= 360; i++) {
+        const t = (i / 360) * Math.PI * 2;
+        const r = (30 + k * 11) * (0.7 + 0.3 * Math.cos(10 * t + k * 0.4));
+        if (i) x.lineTo(r * Math.cos(t), r * Math.sin(t)); else x.moveTo(r * Math.cos(t), r * Math.sin(t));
       }
       x.stroke();
     }
+    x.restore();
     return c;
   }
 
@@ -8382,7 +8471,7 @@ const Art = (() => {
     return { raw, sig, stored, comp, pk, q };
   }
 
-  async function make(p, photo) {
+  async function make(p, photo, style) {
     let b = await build(p, photo, true), trimmed = false;
     if (b.pk.length > CAP && (p.it || []).some(x => x[4])) { b = await build(p, photo, false); trimmed = true; }
     if (b.pk.length > CAP) throw new Error(`Too much data for the art card (${b.pk.length} of ${CAP} bytes). Shorten product names or remove lines. The QR code can hold more.`);
@@ -8391,7 +8480,7 @@ const Art = (() => {
     const slots = bitsOf(interleave(data));
     let base = null;
     if (photo) { const im = await loadImg(photo); if (im) base = fromPhoto(im); }
-    if (!base) base = mosaicBase(guilloche());
+    if (!base) base = mosaicBase(style === 'cert' ? certificate() : hologram());
     const tiles = base.map(x => x.slice());
     for (let k = 0; k < PAIRS; k++) {
       const [c, r] = PAIR_LIST[k];
@@ -8663,7 +8752,7 @@ const Art = (() => {
     im.src = url;
   });
 
-  return { make, decode, pack, unpack, shrinkPhoto, capacity: CAP, _rs: { rsEncode, rsCorrect }, _crc: crc16 };
+  return { _dbg: { findFinders, findQrs, binarize }, make, decode, pack, unpack, shrinkPhoto, capacity: CAP, _rs: { rsEncode, rsCorrect }, _crc: crc16 };
 })();
 const PWA = (() => {
   let reg = null, wantReload = false, refreshing = false;
