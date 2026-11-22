@@ -940,7 +940,7 @@ body.printing #printRoot{display:block}
 .hb-sec[open]>summary::after{content:"–"}
 .pr-sheet .vrow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:12px;padding-top:8px;border-top:1px dashed #999;break-inside:avoid;page-break-inside:avoid}
 .pr-sheet .qrb{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#333;flex:none}
-.pr-sheet .qrb img{width:96px;height:96px}
+.pr-sheet .qrb img{max-width:100%;image-rendering:pixelated}
 .pr-sheet .artb{flex:1;min-width:0;display:flex;justify-content:flex-end}
 .pr-sheet .artb img{width:100%;max-width:240px;display:block}
 .pr-sheet.th .vrow{flex-direction:column}
@@ -6197,7 +6197,7 @@ const Hub = (() => {
     }).join('');
     const op = (B.op / 100).toFixed(2);
     const qr = curQr && $('#prQr').checked
-      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><span>Scan to verify</span></div>` : '';
+      ? `<div class="qrb"><img src="${curQr.url}" style="width:${Math.min(66, Math.max(34, Math.round((curQr.n + 8) * 0.5)))}mm;height:auto" alt="Verification QR"><span>Scan to verify</span></div>` : '';
     const art = curArt && $('#prArt').checked
       ? `<div class="artb"><img src="${curArt.url}" alt="Verification art card"></div>` : '';
     const ver = qr || art ? `<div class="vrow">${qr}${art}</div>` : '';
@@ -6357,7 +6357,7 @@ const Hub = (() => {
       if (text.length > 2800) throw new Error('Too much data for one QR code. Remove some product lines or shorten the note.');
       const url = await Rcpt.qrUrl(text);
       if (my !== qrSeq) return;
-      curQr = { url, text, payload: p, preview: !(committed && committed.no === p.i) };
+      curQr = { url, text, payload: p, n: LocalQR.count(text), preview: !(committed && committed.no === p.i) };
       setQrInfo(curQr.preview ? 'QR preview. The signed code is made once when you print or save.' : 'QR signed and ready · no expiry');
     } catch (e) {
       if (my !== qrSeq) return;
@@ -7535,13 +7535,18 @@ module.exports = QRCode;
     if (!CACHE[n]) { const m = { exports: {} }; CACHE[n] = m; SRC[n](m, req); }
     return CACHE[n].exports;
   }
-  function dataUrl(text, width) {
+  function make(text) {
     const QR = req('index');
     const q = new QR(0, 1);
     q.addData(text);
     q.make();
-    const n = q.getModuleCount(), margin = 2;
-    const px = Math.max(2, Math.floor(width / (n + margin * 2)));
+    return q;
+  }
+  function count(text) { return make(text).getModuleCount(); }
+  function dataUrl(text, width) {
+    const q = make(text);
+    const n = q.getModuleCount(), margin = 4;
+    const px = Math.max(8, Math.floor((width || 0) / (n + margin * 2)));
     const size = px * (n + margin * 2);
     const c = document.createElement('canvas');
     c.width = size; c.height = size;
@@ -7552,7 +7557,7 @@ module.exports = QRCode;
     for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (q.isDark(r, k)) x.fillRect((k + margin) * px, (r + margin) * px, px, px);
     return c.toDataURL('image/png');
   }
-  return { dataUrl, req };
+  return { dataUrl, count, req };
 })();
 const Rcpt = (() => {
   const jget = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
@@ -7690,7 +7695,7 @@ const Rcpt = (() => {
   ]);
 
   async function qrUrl(text) {
-    return LocalQR.dataUrl(text, 420);
+    return LocalQR.dataUrl(text, 900);
   }
 
   function dataUrlBytes(u) {
