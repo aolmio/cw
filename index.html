@@ -5957,7 +5957,7 @@ const Hub = (() => {
 
   function backupKeys() {
     const ks = new Set(FIXED_KEYS);
-    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('gs.') && k !== 'gs.lastBackup') ks.add(k); } } catch (e) {}
+    try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith('gs.') && k !== 'gs.lastBackup' && k !== 'gs.dev') ks.add(k); } } catch (e) {}
     $$('#view-shwe input[id], #view-shwe select[id]').forEach(e => { if (e.type !== 'checkbox') ks.add(e.id.slice(3)); });
     return ks;
   }
@@ -6029,7 +6029,7 @@ const Hub = (() => {
   function applyRestore() {
     if (!pending) return;
     const allowed = backupKeys();
-    Object.keys(pending.data).forEach(k => { if (k.startsWith('gs.') && k !== 'gs.lastBackup') allowed.add(k); else if (FIXED_KEYS.includes(k)) allowed.add(k); });
+    Object.keys(pending.data).forEach(k => { if (k.startsWith('gs.') && k !== 'gs.lastBackup' && k !== 'gs.dev') allowed.add(k); else if (FIXED_KEYS.includes(k)) allowed.add(k); });
     allowed.forEach(k => { if (!(k in pending.data)) { try { localStorage.removeItem(k); } catch (e) {} } });
     Object.keys(pending.data).forEach(k => { if (allowed.has(k) && typeof pending.data[k] === 'string') { try { localStorage.setItem(k, pending.data[k]); } catch (e) {} } });
     try { localStorage.setItem('gs.lastBackup', pending.createdAt || new Date().toISOString()); } catch (e) {}
@@ -6112,13 +6112,33 @@ const Hub = (() => {
 
   const shop = () => jget('gs.shop', { name: '', phone: '' });
 
-  function invoiceNo(peek) {
-    const d = day();
-    const s = jget('gs.invSeq', { d: '', n: 0 });
-    const n = (s.d === d ? s.n : 0) + 1;
-    if (!peek) jset('gs.invSeq', { d, n });
-    return `INV-${d.replace(/-/g, '')}-${String(n).padStart(2, '0')}`;
+  const usedMap = () => jget('gs.issued', {});
+  function devTag() {
+    let t = '';
+    try { t = localStorage.getItem('gs.dev') || ''; } catch (e) {}
+    if (!/^[A-Z0-9]{2}$/.test(t)) {
+      const a = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      const r = new Uint8Array(2);
+      (window.crypto || {}).getRandomValues ? crypto.getRandomValues(r) : r.forEach((_, k) => { r[k] = Math.random() * 256; });
+      t = a[r[0] % a.length] + a[r[1] % a.length];
+      try { localStorage.setItem('gs.dev', t); } catch (e) {}
+    }
+    return t;
   }
+  function isUsed(no) {
+    if (usedMap()[no]) return true;
+    return jget('gs.receipts', []).some(r => r.src === 'issued' && r.i === no);
+  }
+  function invoiceNo(peek) {
+    const d = day(), tag = devTag();
+    const s = jget('gs.invSeq', { d: '', n: 0 });
+    let n = (s.d === d ? s.n : 0) + 1;
+    const fmt = k => `INV-${d.replace(/-/g, '')}-${tag}-${String(k).padStart(2, '0')}`;
+    while (isUsed(fmt(n))) n++;
+    if (!peek) jset('gs.invSeq', { d, n });
+    return fmt(n);
+  }
+  const hashRaw = u => { let h = 2166136261; for (let k = 0; k < u.length; k++) { h ^= u[k]; h = Math.imul(h, 16777619) >>> 0; } return h.toString(16).padStart(8, '0') + u.length.toString(16); };
 
   let items = [];
   let curQr = null, qrSeq = 0, qrMsg = '', curArt = null, artSeq = 0, artMsg = '';
@@ -6289,6 +6309,12 @@ const Hub = (() => {
     B.op = o >= 4 && o <= 40 ? o : 12;
   }
 
+  function fromVal(v, price) {
+    if (!v || !price) return [0, 0, 0];
+    const t = Math.round(v / price * 128);
+    return [Math.floor(t / 128), Math.floor((t % 128) / 8), t % 8];
+  }
+
   function buildPayload() {
     const p = { v: 1 };
     const set = (k, v) => { if (v !== '' && v != null) p[k] = v; };
@@ -6302,7 +6328,7 @@ const Hub = (() => {
     if (its.length) p.it = its.map(x => {
       const row = [x.name || x.title || '', x.qty || '', '', Math.round(x.amount || 0)];
       const d = x.detail;
-      if (d && d.kind === 'gold') row.push(['g', Math.round(d.price || 0), d.gw || [0, 0, 0], d.rw || [0, 0, 0], Math.round(d.smith || 0), Math.round(d.stone || 0)]);
+      if (d && d.kind === 'gold') row.push(['g', Math.round(d.price || 0), d.gw || fromVal(d.gold, d.price), d.rw || fromVal(d.red, d.price), Math.round(d.smith || 0), Math.round(d.stone || 0)]);
       else if (d && d.kind === 'diamond') row.push(['d', Math.round(d.price || 0), d.note || '', Math.round(d.gold || 0)]);
       return row;
     });
@@ -6319,16 +6345,20 @@ const Hub = (() => {
 
   function setQrInfo(t) { qrMsg = t; $('#prQrInfo').textContent = t; }
 
+  let committed = null;
+
   async function refreshQr() {
     const my = ++qrSeq;
     if (!$('#prQr').checked) { curQr = null; setQrInfo(''); paintSheet(); return; }
     try {
-      const r = await Rcpt.issue(buildPayload());
+      const p = buildPayload();
+      const b = committed && committed.no === p.i && committed.b ? committed.b : await Art.build(p, false);
+      const text = Art.textOf(b);
+      if (text.length > 2800) throw new Error('Too much data for one QR code. Remove some product lines or shorten the note.');
+      const url = await Rcpt.qrUrl(text);
       if (my !== qrSeq) return;
-      const url = await Rcpt.qrUrl(r.text);
-      if (my !== qrSeq) return;
-      curQr = { url, text: r.text, payload: r.payload };
-      setQrInfo(r.text.length > 2200 ? `QR ready, but it holds ${r.text.length} characters and may be hard to scan. Remove some detail.` : `QR ready · key ${r.fp} · no expiry`);
+      curQr = { url, text, payload: p, preview: !(committed && committed.no === p.i) };
+      setQrInfo(curQr.preview ? 'QR preview. The signed code is made once when you print or save.' : 'QR signed and ready · no expiry');
     } catch (e) {
       if (my !== qrSeq) return;
       curQr = null;
@@ -6342,10 +6372,13 @@ const Hub = (() => {
     const my = ++artSeq;
     if (!$('#prArt').checked) { curArt = null; setArtInfo(''); paintSheet(); return; }
     try {
-      const r = await Art.make(buildPayload(), B.art, $('#prArtStyle').value);
+      const p = buildPayload();
+      const own = committed && committed.no === p.i && committed.b;
+      const b = own ? committed.b : await Art.build(p, false);
+      const r = await Art.draw(b, p, B.art, $('#prArtStyle').value);
       if (my !== artSeq) return;
-      curArt = { url: r.url, text: r.text, payload: r.payload };
-      setArtInfo(`Art card ready · ${r.used} of ${r.cap} bytes used${r.trimmed ? '. Gold and price details were left out to fit; the QR code keeps them.' : ''}`);
+      curArt = { url: r.url, text: r.text, payload: p, preview: !own };
+      setArtInfo(`${own ? 'Art card signed and ready' : 'Art card preview'} · ${r.used} of ${r.cap} bytes used`);
     } catch (e) {
       if (my !== artSeq) return;
       curArt = null;
@@ -6353,7 +6386,7 @@ const Hub = (() => {
     }
     paintSheet();
   }
-  const queueQr = debounce(() => { if ($('#prQr').checked) refreshQr(); if ($('#prArt').checked) refreshArt(); }, 450);
+  const queueQr = debounce(() => { committed = null; if ($('#prQr').checked) refreshQr(); if ($('#prArt').checked) refreshArt(); }, 450);
 
   function openInvoice(list, opt) {
     items = list.map(x => Object.assign({ name: '', qty: 0, amount: 0 }, x));
@@ -6381,6 +6414,7 @@ const Hub = (() => {
     $('#prArtStyle').value = jget('gs.artStyle', 'holo');
     curQr = null;
     curArt = null;
+    committed = null;
     setQrInfo('');
     setArtInfo('');
     paintSheet();
@@ -6389,10 +6423,55 @@ const Hub = (() => {
     refreshArt();
   }
 
-  async function ensureQrNow() {
+  async function commit(needCode) {
+    let no = $('#prNo').value.trim();
+    if (!no) { no = invoiceNo(true); $('#prNo').value = no; }
+    let p = buildPayload();
+    let b0 = await Art.build(p, false);
+    let h = hashRaw(b0.raw);
+    const reg = usedMap();
+    const rec = reg[no];
+    if (rec && rec.h === h && rec.text) {
+      const b = Art.parse(rec.text);
+      if (b) { committed = { no, b, text: rec.text }; return { text: rec.text, payload: p, b, reused: true }; }
+    }
+    if ((rec && !(rec.h === h && !rec.text)) || (!rec && isUsed(no))) {
+      const nn = invoiceNo(true);
+      toast(`Invoice no. ${no} was already used, so this voucher now has ${nn}.`);
+      no = nn;
+      $('#prNo').value = nn;
+      paintSheet();
+      p = buildPayload();
+      h = hashRaw(await rawOf(p));
+    }
+    if (!needCode) {
+      const r2 = usedMap();
+      r2[no] = { h, text: '', ts: Date.now() };
+      jset('gs.issued', r2);
+      return null;
+    }
+    const b = await Art.build(p, true);
+    const text = Art.textOf(b);
+    const r2 = usedMap();
+    r2[no] = { h, text, ts: Date.now() };
+    jset('gs.issued', r2);
+    committed = { no, b, text };
+    Rcpt.saveReceipt(text, p, 'issued');
+    return { text, payload: p, b };
+  }
+
+  const rawOf = async p => (await Art.build(p, false)).raw;
+
+  async function showCommitted() {
     if ($('#prQr').checked) await refreshQr();
-    else { $('#prQr').checked = true; await refreshQr(); }
-    return curQr;
+    if ($('#prArt').checked) await refreshArt();
+  }
+
+  async function ensureCode() {
+    if (!$('#prQr').checked && !$('#prArt').checked) { $('#prQr').checked = true; jset('gs.prQr', true); }
+    const c = await commit(true);
+    await showCommitted();
+    return c;
   }
 
   async function printNow() {
@@ -6400,14 +6479,11 @@ const Hub = (() => {
     jset('gs.paper', $('#prPaper').value);
     jset('gs.prQr', $('#prQr').checked);
     jset('gs.prArt', $('#prArt').checked);
-    if ($('#prQr').checked) await refreshQr();
-    if ($('#prArt').checked) await refreshArt();
-    const got = curQr && $('#prQr').checked ? curQr : curArt && $('#prArt').checked ? curArt : null;
-    if (got) Rcpt.saveReceipt(got.text, got.payload, 'issued');
+    const want = $('#prQr').checked || $('#prArt').checked;
+    try { await commit(want); } catch (e) { toast(e && e.message ? e.message : 'The receipt could not be signed.'); return; }
+    if (want) await showCommitted();
     if ($('#prQr').checked && !curQr) toast('Printed without the QR code. ' + qrMsg);
     if ($('#prArt').checked && !curArt) toast('Printed without the art card. ' + artMsg);
-    const typed = $('#prNo').value;
-    if (typed === invoiceNo(true)) invoiceNo(false);
     let st = $('#prPage');
     if (!st) { st = document.createElement('style'); st.id = 'prPage'; document.head.appendChild(st); }
     st.textContent = $('#prPaper').value === 'th' ? '@page{size:80mm auto;margin:4mm}' : '@page{size:A4;margin:14mm}';
@@ -6419,26 +6495,24 @@ const Hub = (() => {
   }
 
   async function saveReceiptNow() {
-    let q;
-    if ($('#prArt').checked && !$('#prQr').checked) { await refreshArt(); q = curArt; if (!q) { toast(artMsg || 'The art card could not be made'); return; } }
-    else { q = await ensureQrNow(); if (!q) { toast(qrMsg || 'The QR code could not be made'); return; } }
-    Rcpt.saveReceipt(q.text, q.payload, 'issued');
-    const typed = $('#prNo').value;
-    if (typed === invoiceNo(true)) invoiceNo(false);
+    try { const c = await ensureCode(); if (!c) { toast('The receipt could not be saved'); return; } } catch (e) { toast(e && e.message ? e.message : 'The receipt could not be signed.'); return; }
     toast('Receipt saved. Find it in the Receipts tab.');
   }
 
   async function downloadArtNow() {
     if (!$('#prArt').checked) { $('#prArt').checked = true; jset('gs.prArt', true); }
-    await refreshArt();
+    try { await commit(true); } catch (e) { toast(e && e.message ? e.message : 'The receipt could not be signed.'); return; }
+    await showCommitted();
     if (!curArt) { toast(artMsg || 'The art card could not be made'); return; }
     Rcpt.downloadQr(curArt.url, 'art-card-' + ($('#prNo').value || 'receipt'));
   }
 
   async function downloadQrNow() {
-    const q = curQr || await ensureQrNow();
-    if (!q) { toast(qrMsg || 'The QR code could not be made'); return; }
-    Rcpt.downloadQr(q.url, 'receipt-' + ($('#prNo').value || 'qr'));
+    if (!$('#prQr').checked) { $('#prQr').checked = true; jset('gs.prQr', true); }
+    try { await commit(true); } catch (e) { toast(e && e.message ? e.message : 'The receipt could not be signed.'); return; }
+    await showCommitted();
+    if (!curQr) { toast(qrMsg || 'The QR code could not be made'); return; }
+    Rcpt.downloadQr(curQr.url, 'receipt-' + ($('#prNo').value || 'qr'));
   }
 
   function bind() {
@@ -7656,15 +7730,15 @@ const Rcpt = (() => {
     if (!Array.isArray(d)) return '';
     const L = [];
     if (d[0] === 'g') {
-      const price = d[1] || 0;
+      const price = d[1] || 0, gw = d[2] || [], rw = d[3] || [];
       L.push(['ပေါက်ဈေး', money(price)]);
-      L.push(['ရွှေဖိုး' + (wtText(d[2] || []) ? ' · ' + wtText(d[2] || []) : ''), money(Math.round(wtDec(d[2] || []) * price))]);
-      if (wtDec(d[3] || []) > 0) L.push(['လျော့တွက်ဖိုး · ' + wtText(d[3]), money(Math.round(wtDec(d[3]) * price))]);
-      if (d[4]) L.push(['လက်ခ', money(d[4])]);
-      if (d[5]) L.push(['ကျောက်ဖိုး', money(d[5])]);
+      L.push(['ရွှေဖိုး' + (wtText(gw) ? ' · ' + wtText(gw) : ''), money(Math.round(wtDec(gw) * price))]);
+      L.push(['လျော့တွက်ဖိုး' + (wtText(rw) ? ' · ' + wtText(rw) : ''), money(Math.round(wtDec(rw) * price))]);
+      L.push(['လက်ခ', money(d[4] || 0)]);
+      L.push(['ကျောက်ဖိုး', money(d[5] || 0)]);
     } else if (d[0] === 'd') {
-      L.push(['ပေါက်ဈေး', money(d[1])]);
-      L.push(['စိန်/ရတနာဖိုး' + (d[2] ? ' · ' + d[2] : ''), money(d[3])]);
+      L.push(['ပေါက်ဈေး', money(d[1] || 0)]);
+      L.push(['စိန်/ရတနာဖိုး' + (d[2] ? ' · ' + d[2] : ''), money(d[3] || 0)]);
     }
     return L.map(r => `<tr class="rc-sr"><td colspan="${span - 1}">${esc(r[0])}</td><td class="r">${r[1]}</td></tr>`).join('');
   }
@@ -8037,7 +8111,7 @@ const Rcpt = (() => {
     renderKeys();
   }
 
-  return { init, issue, signBytes, deflate, b64u, qrUrl, downloadQr, saveReceipt, verifyText, ensureKeys, trustedList, _importText: importText };
+  return { init, issue, signBytes, unb64u, deflate, b64u, qrUrl, downloadQr, saveReceipt, verifyText, ensureKeys, trustedList, _importText: importText };
 })();
 const Art = (() => {
   const COLS = 56, ROWS = 42, T = 22, W = COLS * T, H = ROWS * T;
@@ -8459,21 +8533,41 @@ const Art = (() => {
     }
   }
 
-  async function build(p, photo, withDetail) {
+  async function build(p, signIt) {
     const q = { v: p.v, i: p.i, d: p.d, c: p.c, cp: p.cp, s: p.s, n: p.n, t: p.t };
     Object.keys(q).forEach(k => { if (q[k] === undefined) delete q[k]; });
-    q.it = (p.it || []).map(x => (withDetail ? x : x.slice(0, 4)));
+    q.it = (p.it || []).map(x => x.slice());
     const raw = pack(q);
-    const sig = await Rcpt.signBytes(raw);
+    const sig = signIt ? await Rcpt.signBytes(raw) : new Uint8Array(64);
     const z = await Rcpt.deflate(raw);
     const stored = z || raw, comp = z ? 1 : 0;
     const pk = packet(comp, stored, sig);
     return { raw, sig, stored, comp, pk, q };
   }
 
+  function textOf(b) {
+    const body = new Uint8Array(1 + b.stored.length);
+    body[0] = b.comp;
+    body.set(b.stored, 1);
+    return `GSB2.${Rcpt.b64u(body)}.${Rcpt.b64u(b.sig)}`;
+  }
+
+  function parse(text) {
+    const m = /^GSB2\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
+    if (!m) return null;
+    const body = Rcpt.unb64u(m[1]), sig = Rcpt.unb64u(m[2]);
+    if (sig.length !== 64 || !body.length) return null;
+    const comp = body[0], stored = body.subarray(1);
+    return { sig, stored, comp, pk: packet(comp, stored, sig) };
+  }
+
   async function make(p, photo, style) {
-    let b = await build(p, photo, true), trimmed = false;
-    if (b.pk.length > CAP && (p.it || []).some(x => x[4])) { b = await build(p, photo, false); trimmed = true; }
+    const b = await build(p, true);
+    return draw(b, p, photo, style);
+  }
+
+  async function draw(b, p, photo, style) {
+    const trimmed = false;
     if (b.pk.length > CAP) throw new Error(`Too much data for the art card (${b.pk.length} of ${CAP} bytes). Shorten product names or remove lines. The QR code can hold more.`);
     const data = b.pk.slice();
     while (data.length < CAP) data.push(0);
@@ -8509,10 +8603,7 @@ const Art = (() => {
       x.fillRect(px + T - 3, py, 3, T);
     }
     drawCornerQrs(x, 'GSA2:' + String(p.i || '').replace(/[^\w-]/g, ''));
-    const body = new Uint8Array(1 + b.stored.length);
-    body[0] = b.comp;
-    body.set(b.stored, 1);
-    return { url: cv.toDataURL('image/png'), text: `GSB2.${Rcpt.b64u(body)}.${Rcpt.b64u(b.sig)}`, payload: p, used: b.pk.length, cap: CAP, trimmed };
+    return { url: cv.toDataURL('image/png'), text: textOf(b), payload: p, used: b.pk.length, cap: CAP, trimmed };
   }
 
   function lsqHomography(pairs) {
@@ -8752,7 +8843,7 @@ const Art = (() => {
     im.src = url;
   });
 
-  return { _dbg: { findFinders, findQrs, binarize }, make, decode, pack, unpack, shrinkPhoto, capacity: CAP, _rs: { rsEncode, rsCorrect }, _crc: crc16 };
+  return { _dbg: { findFinders, findQrs, binarize }, make, build, draw, textOf, parse, decode, pack, unpack, shrinkPhoto, capacity: CAP, _rs: { rsEncode, rsCorrect }, _crc: crc16 };
 })();
 const PWA = (() => {
   let reg = null, wantReload = false, refreshing = false;
