@@ -927,9 +927,11 @@ body.printing #printRoot{display:block}
 .hb-lr.ed{background:var(--brand-soft)}
 .pr-sheet{position:relative;overflow:hidden}
 .pr-sheet>*:not(.wm):not(.wmt){position:relative;z-index:1}
-.pr-sheet .wm{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62%;max-height:70%;object-fit:contain;pointer-events:none;z-index:0}
-.pr-sheet .wmt{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-30deg);font-size:56px;font-weight:800;white-space:nowrap;color:#000;pointer-events:none;z-index:0}
-.pr-sheet.th .wmt{font-size:30px}
+.pr-sheet .wm{position:absolute;object-fit:contain;pointer-events:none;z-index:0}
+.pr-sheet .wmt{position:absolute;font-weight:800;white-space:nowrap;color:#000;pointer-events:none;z-index:0}
+.pr-sheet .artb{margin-top:14px;padding-top:10px;border-top:1px dashed #999;text-align:center}
+.pr-sheet .artb img{width:100%;display:block}
+.pr-sheet .artb span{display:block;font-size:11px;color:#444;margin-top:4px}
 .pr-sheet .logo{text-align:center;margin-bottom:6px}
 .pr-sheet .logo img{max-height:64px;max-width:60%;object-fit:contain}
 .pr-sheet td small{display:block;color:#555;font-size:11.5px;margin-top:2px}
@@ -1855,8 +1857,8 @@ body.printing #printRoot{display:block}
         <div class="rc-btns">
           <button type="button" class="btn btn-primary" id="rcCamBtn"><svg class="ic"><use href="#i-camera"/></svg>Start camera</button>
           <button type="button" class="btn hidden" id="rcStop">Stop camera</button>
-          <label class="btn" for="rcImg"><svg class="ic"><use href="#i-upload"/></svg>Upload QR image</label>
-          <input type="file" id="rcImg" accept="image/*" class="sr-only">
+          <label class="btn" for="rcImg"><svg class="ic"><use href="#i-upload"/></svg>Upload image or PDF</label>
+          <input type="file" id="rcImg" accept="image/*,application/pdf,.pdf" class="sr-only">
         </div>
         <div class="field"><label for="rcPaste">Or paste the QR text</label><textarea id="rcPaste" class="input" rows="3" placeholder="GSI2.…" spellcheck="false"></textarea></div>
         <div class="rc-btns"><button type="button" class="btn" id="rcPasteBtn">Verify text</button></div>
@@ -2143,7 +2145,10 @@ body.printing #printRoot{display:block}
       <details class="hb-sec"><summary>Verification QR</summary>
         <label class="hb-chk1"><input type="checkbox" id="prQr"> Add a QR code that proves this invoice is genuine</label>
         <div class="hb-hint" id="prQrInfo"></div>
-        <div class="rc-btns"><button type="button" class="btn btn-sm" id="prQrDl"><svg class="ic"><use href="#i-download"/></svg>Download QR</button><button type="button" class="btn btn-sm" id="prSaveRc"><svg class="ic"><use href="#i-shield"/></svg>Save receipt</button></div>
+        <label class="hb-chk1"><input type="checkbox" id="prArt"> Add a hidden-data art card (survives screenshots and chat apps)</label>
+        <div class="hb-brand"><div class="hb-bi"><div class="hb-bt">Art card photo</div><div class="hb-bp"><img id="prArtImg" alt="" class="hidden"></div><div class="rc-btns"><label class="btn btn-sm" for="prArtPh">Choose photo</label><input type="file" id="prArtPh" accept="image/*" class="sr-only"><button type="button" class="btn btn-sm hidden" id="prArtRm">Remove</button></div></div></div>
+        <div class="hb-hint" id="prArtInfo"></div>
+        <div class="rc-btns"><button type="button" class="btn btn-sm" id="prQrDl"><svg class="ic"><use href="#i-download"/></svg>Download QR</button><button type="button" class="btn btn-sm" id="prArtDl"><svg class="ic"><use href="#i-download"/></svg>Download art card</button><button type="button" class="btn btn-sm" id="prSaveRc"><svg class="ic"><use href="#i-shield"/></svg>Save receipt</button></div>
       </details>
       <div class="hb-paper"><div id="prPrev"></div></div>
     </div>
@@ -6110,8 +6115,8 @@ const Hub = (() => {
   }
 
   let items = [];
-  let curQr = null, qrSeq = 0, qrMsg = '';
-  const B = { logo: '', wm: '', op: 12, txt: '' };
+  let curQr = null, qrSeq = 0, qrMsg = '', curArt = null, artSeq = 0, artMsg = '';
+  const B = { logo: '', wm: '', op: 12, txt: '', art: '' };
   const num = v => parseFloat(String(v).replace(/[^\d.]/g, '')) || 0;
   const incs = () => ({ p: $('#prIncP').checked, r: $('#prIncR').checked, s: $('#prIncS').checked, t: $('#prIncT').checked });
 
@@ -6131,6 +6136,27 @@ const Hub = (() => {
 
   const lineTotal = () => items.reduce((s, i) => s + (Number(i.amount) || 0), 0);
 
+  function rng(seed) {
+    let h = 1779033703 ^ seed.length;
+    for (let i = 0; i < seed.length; i++) { h = Math.imul(h ^ seed.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+    let a = h >>> 0;
+    return () => { a = (a + 0x6d2b79f5) >>> 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+
+  function wmHtml(th, op) {
+    if (!B.wm && !B.txt) return '';
+    const R = rng($('#prNo').value + '|' + (B.txt || 'i')), cols = th ? 2 : 3, rows = th ? 5 : 4;
+    let s = '';
+    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+      const x = ((c + 0.2 + 0.6 * R()) / cols * 100).toFixed(1), y = ((r + 0.2 + 0.6 * R()) / rows * 100).toFixed(1);
+      const rot = Math.round(-40 + 80 * R());
+      const st = `left:${x}%;top:${y}%;opacity:${op};transform:translate(-50%,-50%) rotate(${rot}deg)`;
+      if (B.wm) s += `<img class="wm" src="${B.wm}" style="${st};width:${Math.round((th ? 30 : 17) + R() * (th ? 10 : 9))}%" alt="">`;
+      else s += `<div class="wmt" style="${st};font-size:${Math.round((th ? 18 : 26) + R() * (th ? 8 : 16))}px">${esc(B.txt)}</div>`;
+    }
+    return s;
+  }
+
   function sheetHtml() {
     const th = $('#prPaper').value === 'th';
     const total = lineTotal();
@@ -6145,9 +6171,11 @@ const Hub = (() => {
     }).join('');
     const op = (B.op / 100).toFixed(2);
     const qr = curQr && $('#prQr').checked
-      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><div><b>Scan to verify</b><span>${esc($('#prNo').value)}</span><span>Key ${esc(curQr.payload.k)}</span></div></div>` : '';
+      ? `<div class="qrb"><img src="${curQr.url}" alt="Verification QR"><div><b>Scan to verify</b><span>${esc($('#prNo').value)}</span></div></div>` : '';
+    const art = curArt && $('#prArt').checked
+      ? `<div class="artb"><img src="${curArt.url}" alt="Verification art card"><span>Verification art card · ${esc($('#prNo').value)}</span></div>` : '';
     return `<div class="pr-sheet${th ? ' th' : ''}">
-      ${B.wm ? `<img class="wm" src="${B.wm}" style="opacity:${op}" alt="">` : ''}${B.txt ? `<div class="wmt" style="opacity:${op}">${esc(B.txt)}</div>` : ''}
+      ${wmHtml(th, op)}
       ${B.logo ? `<div class="logo"><img src="${B.logo}" alt=""></div>` : ''}
       <h2>${esc(name || 'Gold Shop')}</h2>${ph ? `<div class="sub">${esc(ph)}</div>` : ''}
       <div class="ttl">ဘောင်ချာ · INVOICE</div>
@@ -6157,7 +6185,7 @@ const Hub = (() => {
       <div class="words">${esc(Shwe.numToBurmeseText(total))}</div>
       ${note ? `<div class="note">${esc(note)}</div>` : ''}
       ${th ? '' : '<div class="sig"><span>Customer</span><span>Seller</span></div>'}
-      ${qr}
+      ${qr}${art}
       <div class="thx">ကျေးဇူးတင်ပါသည်</div></div>`;
   }
 
@@ -6205,6 +6233,7 @@ const Hub = (() => {
     const set = (img, rm, v) => { img.classList.toggle('hidden', !v); if (v) img.src = v; else img.removeAttribute('src'); rm.classList.toggle('hidden', !v); };
     set($('#prLogoImg'), $('#prLogoRm'), B.logo);
     set($('#prWmImg'), $('#prWmRm'), B.wm);
+    set($('#prArtImg'), $('#prArtRm'), B.art);
     $('#prWmTxt').value = B.txt;
     $('#prWmOp').value = String(B.op);
   }
@@ -6252,6 +6281,7 @@ const Hub = (() => {
     const g = k => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } };
     B.logo = g('gs.logo');
     B.wm = g('gs.wm');
+    B.art = g('gs.art');
     B.txt = g('gs.wmTxt');
     const o = parseInt(g('gs.wmOp'), 10);
     B.op = o >= 4 && o <= 40 ? o : 12;
@@ -6298,7 +6328,24 @@ const Hub = (() => {
     }
     paintSheet();
   }
-  const queueQr = debounce(() => { if ($('#prQr').checked) refreshQr(); }, 400);
+  function setArtInfo(t) { artMsg = t; $('#prArtInfo').textContent = t; }
+
+  async function refreshArt() {
+    const my = ++artSeq;
+    if (!$('#prArt').checked) { curArt = null; setArtInfo(''); paintSheet(); return; }
+    try {
+      const r = await Art.make(buildPayload(), B.art);
+      if (my !== artSeq) return;
+      curArt = { url: r.url, text: r.text, payload: r.payload };
+      setArtInfo(`Art card ready · ${r.used} of ${r.cap} bytes used`);
+    } catch (e) {
+      if (my !== artSeq) return;
+      curArt = null;
+      setArtInfo(e && e.message ? e.message : 'The art card could not be made.');
+    }
+    paintSheet();
+  }
+  const queueQr = debounce(() => { if ($('#prQr').checked) refreshQr(); if ($('#prArt').checked) refreshArt(); }, 450);
 
   function openInvoice(list, opt) {
     items = list.map(x => Object.assign({ name: '', qty: 0, unit: 0, amount: 0 }, x));
@@ -6322,11 +6369,15 @@ const Hub = (() => {
     loadBrand();
     paintBrand();
     renderLines();
+    $('#prArt').checked = jget('gs.prArt', false) === true;
     curQr = null;
+    curArt = null;
     setQrInfo('');
+    setArtInfo('');
     paintSheet();
     Modal.open('printModal', $('#prCust'));
     refreshQr();
+    refreshArt();
   }
 
   async function ensureQrNow() {
@@ -6339,11 +6390,13 @@ const Hub = (() => {
     saveShop();
     jset('gs.paper', $('#prPaper').value);
     jset('gs.prQr', $('#prQr').checked);
-    if ($('#prQr').checked) {
-      await refreshQr();
-      if (curQr) Rcpt.saveReceipt(curQr.text, curQr.payload, 'issued');
-      else toast('Printed without the QR code. ' + qrMsg);
-    }
+    jset('gs.prArt', $('#prArt').checked);
+    if ($('#prQr').checked) await refreshQr();
+    if ($('#prArt').checked) await refreshArt();
+    const got = curQr && $('#prQr').checked ? curQr : curArt && $('#prArt').checked ? curArt : null;
+    if (got) Rcpt.saveReceipt(got.text, got.payload, 'issued');
+    if ($('#prQr').checked && !curQr) toast('Printed without the QR code. ' + qrMsg);
+    if ($('#prArt').checked && !curArt) toast('Printed without the art card. ' + artMsg);
     const typed = $('#prNo').value;
     if (typed === invoiceNo(true)) invoiceNo(false);
     let st = $('#prPage');
@@ -6357,12 +6410,20 @@ const Hub = (() => {
   }
 
   async function saveReceiptNow() {
-    const q = await ensureQrNow();
-    if (!q) { toast(qrMsg || 'The QR code could not be made'); return; }
+    let q;
+    if ($('#prArt').checked && !$('#prQr').checked) { await refreshArt(); q = curArt; if (!q) { toast(artMsg || 'The art card could not be made'); return; } }
+    else { q = await ensureQrNow(); if (!q) { toast(qrMsg || 'The QR code could not be made'); return; } }
     Rcpt.saveReceipt(q.text, q.payload, 'issued');
     const typed = $('#prNo').value;
     if (typed === invoiceNo(true)) invoiceNo(false);
     toast('Receipt saved. Find it in the Receipts tab.');
+  }
+
+  async function downloadArtNow() {
+    if (!$('#prArt').checked) { $('#prArt').checked = true; jset('gs.prArt', true); }
+    await refreshArt();
+    if (!curArt) { toast(artMsg || 'The art card could not be made'); return; }
+    Rcpt.downloadQr(curArt.url, 'art-card-' + ($('#prNo').value || 'receipt'));
   }
 
   async function downloadQrNow() {
@@ -6448,6 +6509,16 @@ const Hub = (() => {
     $('#prRem').addEventListener('change', saveShop);
     $('#prQr').addEventListener('change', () => { jset('gs.prQr', $('#prQr').checked); refreshQr(); });
     $('#prQrDl').addEventListener('click', downloadQrNow);
+    $('#prArtDl').addEventListener('click', downloadArtNow);
+    $('#prArt').addEventListener('change', () => { jset('gs.prArt', $('#prArt').checked); refreshArt(); });
+    $('#prArtPh').addEventListener('change', async e => {
+      const f = e.target.files[0];
+      e.target.value = '';
+      if (!f) return;
+      try { const u = await Art.shrinkPhoto(f); localStorage.setItem('gs.art', u); B.art = u; paintBrand(); toast('Photo saved on this device'); refreshArt(); }
+      catch (x) { toast('That photo could not be saved. Try a smaller file.'); }
+    });
+    $('#prArtRm').addEventListener('click', () => { try { localStorage.removeItem('gs.art'); } catch (x) {} B.art = ''; paintBrand(); refreshArt(); });
     $('#prSaveRc').addEventListener('click', saveReceiptNow);
     $('#prGo').addEventListener('click', printNow);
     $('#dataModal').addEventListener('modalclose', () => { pending = null; $('#dtFile').value = ''; $('#dtPrev').classList.add('hidden'); });
@@ -7474,10 +7545,16 @@ const Rcpt = (() => {
   }
 
   async function decode(text) {
-    const m = /^(GSI[12])\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
+    const m = /^(GSI[12]|GSB1)\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
     if (!m) return null;
     let body = unb64u(m[2]);
     const sig = unb64u(m[3]);
+    if (m[1] === 'GSB1') {
+      const raw = body[0] & 1 ? await pipe(body.subarray(1), DecompressionStream, 'deflate-raw') : body.subarray(1);
+      let payload = null;
+      try { payload = Art.unpack(raw); } catch (e) {}
+      return { raw, sig, payload };
+    }
     if (m[1] === 'GSI2') body = await pipe(body, DecompressionStream, 'deflate-raw');
     let payload = null;
     try { payload = JSON.parse(dec.decode(body)); } catch (e) {}
@@ -7501,6 +7578,16 @@ const Rcpt = (() => {
       } catch (e) {}
     }
     return { state: 'bad', payload: d.payload, reason: 'The signature does not match. The receipt was changed, or it was not signed by a trusted key.' };
+  }
+
+  async function signBytes(raw) {
+    const k = await ensureKeys();
+    const key = await subtle().importKey('jwk', k.priv, ALG, false, ['sign']);
+    return new Uint8Array(await subtle().sign(SIG, key, raw));
+  }
+  async function deflate(u8) {
+    if (!canZip()) return null;
+    try { const z = await pipe(u8, CompressionStream, 'deflate-raw'); return z.length < u8.length ? z : null; } catch (e) { return null; }
   }
 
   async function issue(payload) {
@@ -7567,7 +7654,7 @@ const Rcpt = (() => {
       (v.payload ? `<div class="rc-d dim"><div class="rc-warn">Unverified details. Do not rely on them.</div>${detailsHtml(v.payload)}</div>` : '');
   }
 
-  let ready = false, stream = null, raf = 0, det = null, busy = false, lastT = 0, openId = null;
+  let artTick = 0, ready = false, stream = null, raf = 0, det = null, busy = false, lastT = 0, openId = null;
 
   async function handleText(text) {
     const v = await verifyText(text);
@@ -7616,6 +7703,7 @@ const Rcpt = (() => {
         let text = '';
         try { text = await decodeSource(v, v.videoWidth, v.videoHeight, 720, false); } catch (e) {}
         busy = false;
+        if (!text && ++artTick % 4 === 0) { try { text = await Art.decode(v, v.videoWidth, v.videoHeight); } catch (e) {} }
         if (text) {
           stopCam();
           if (navigator.vibrate) navigator.vibrate(60);
@@ -7628,12 +7716,12 @@ const Rcpt = (() => {
   }
 
   async function startCam() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Camera is not available here. Upload a QR image or paste the text.'); return; }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { toast('Camera is not available here. Upload an image or PDF, or paste the text.'); return; }
     try {
       stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
     } catch (e) {
       stream = null;
-      toast('Camera permission was blocked. Upload a QR image or paste the text.');
+      toast('Camera permission was blocked. Upload an image or PDF, or paste the text.');
       return;
     }
     const v = $('#rcVid');
@@ -7643,14 +7731,77 @@ const Rcpt = (() => {
     $('#rcCamBtn').classList.add('hidden');
     $('#rcStop').classList.remove('hidden');
     if (!det && 'BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
-    if (!det) ensureJsqr().catch(() => toast('Scanner library could not load. Upload a QR image or paste the text.'));
+    if (!det) ensureJsqr().catch(() => toast('Scanner library could not load. Upload an image or PDF, or paste the text.'));
     loop();
+  }
+
+  const PDFJS = [
+    ['https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'],
+    ['https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js', 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js'],
+    ['https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js', 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js']
+  ];
+  let pdfReady = null;
+  function ensurePdf() {
+    if (window.pdfjsLib && window.pdfjsLib.getDocument) return Promise.resolve();
+    if (!pdfReady) {
+      pdfReady = (async () => {
+        for (const [lib, worker] of PDFJS) {
+          try {
+            await loadScript(lib);
+            if (!window.pdfjsLib) continue;
+            let src = worker;
+            try { const r = await fetch(worker); if (r.ok) src = URL.createObjectURL(await r.blob()); } catch (e) {}
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = src;
+            return;
+          } catch (e) {}
+        }
+        throw new Error('The PDF reader could not load. Check your internet connection and try again.');
+      })().catch(err => { pdfReady = null; throw err; });
+    }
+    return pdfReady;
+  }
+
+  const notFound = (why, sub) => { $('#rcRes').innerHTML = `<div class="rc-v bad" role="alert">${ic('alert')}<div><div class="rc-badge">${why}</div><div class="rc-sub">${sub}</div></div></div>`; };
+
+  async function scanPdf(file) {
+    $('#rcRes').innerHTML = '<div class="hb-empty">Reading PDF…</div>';
+    try { await ensurePdf(); } catch (e) { notFound('PDF READER NOT AVAILABLE', esc(e.message)); return; }
+    try { await ensureJsqr(); } catch (e) {}
+    if (!det && 'BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
+    let doc;
+    try { doc = await window.pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise; }
+    catch (e) { notFound('PDF COULD NOT BE OPENED', 'The file may be damaged or password protected.'); return; }
+    const pages = Math.min(doc.numPages, 12);
+    for (let n = 1; n <= pages; n++) {
+      $('#rcRes').innerHTML = `<div class="hb-empty">Checking page ${n} of ${pages}…</div>`;
+      const page = await doc.getPage(n);
+      const base = page.getViewport({ scale: 1 });
+      const sc = Math.min(3, 2800 / Math.max(base.width, base.height));
+      const vp = page.getViewport({ scale: Math.max(1.2, sc) });
+      const cv = document.createElement('canvas');
+      cv.width = Math.round(vp.width); cv.height = Math.round(vp.height);
+      const cx = cv.getContext('2d', { willReadFrequently: true });
+      cx.fillStyle = '#fff';
+      cx.fillRect(0, 0, cv.width, cv.height);
+      try { await page.render({ canvasContext: cx, viewport: vp }).promise; } catch (e) { continue; }
+      let text = '';
+      try { text = await decodeSource(cv, cv.width, cv.height, 2800, true); } catch (e) {}
+      if (!text) { try { text = await Art.decode(cv, cv.width, cv.height); } catch (e) {} }
+      if (text) { handleText(text); return; }
+    }
+    notFound('NO QR CODE OR ART CARD FOUND IN THIS PDF', 'Checked ' + pages + ' page' + (pages === 1 ? '' : 's') + '. Make sure the invoice was printed with a verification code.');
+  }
+
+  async function scanFile(file) {
+    if (!file) return;
+    if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) scanPdf(file);
+    else scanImage(file);
   }
 
   async function scanImage(file) {
     if (!file) return;
     if (!det && 'BarcodeDetector' in window) { try { det = new BarcodeDetector({ formats: ['qr_code'] }); } catch (e) { det = null; } }
-    try { await ensureJsqr(); } catch (e) { if (!det) { toast('Scanner library could not load. Paste the QR text instead.'); return; } }
+    try { await ensureJsqr(); } catch (e) {}
     let bmp;
     try {
       bmp = await createImageBitmap(file);
@@ -7662,8 +7813,9 @@ const Rcpt = (() => {
     let text = '';
     try { text = await decodeSource(bmp, w, h, 1400, true); } catch (e) {}
     if (!text) { try { text = await decodeSource(bmp, w, h, 700, true); } catch (e) {} }
+    if (!text) { try { text = await Art.decode(bmp, w, h); } catch (e) {} }
     if (!text) {
-      $('#rcRes').innerHTML = `<div class="rc-v bad" role="alert">${ic('alert')}<div><div class="rc-badge">NO QR CODE FOUND</div><div class="rc-sub">Try a sharper, closer photo, or paste the QR text.</div></div></div>`;
+      $('#rcRes').innerHTML = `<div class="rc-v bad" role="alert">${ic('alert')}<div><div class="rc-badge">NO QR CODE OR ART CARD FOUND</div><div class="rc-sub">Try a sharper, closer photo, or paste the QR text.</div></div></div>`;
       return;
     }
     handleText(text);
@@ -7761,7 +7913,7 @@ const Rcpt = (() => {
       const have = list();
       let n = 0;
       for (const r of Array.isArray(j.receipts) ? j.receipts : []) {
-        if (!r || !/^GSI[12]\.[\w-]+\.[\w-]+$/.test(r.text || '')) continue;
+        if (!r || !/^GS[IB][12]\.[\w-]+\.[\w-]+$/.test(r.text || '')) continue;
         const sig = sigOf(r.text);
         if (have.some(x => x.sig === sig)) continue;
         have.push({ id: r.id || Date.now() * 1000 + n, ts: r.ts || Date.now(), sig, text: r.text, src: r.src || 'scanned', i: r.i || '', d: r.d || '', t: r.t || 0, c: r.c || '' });
@@ -7805,7 +7957,7 @@ const Rcpt = (() => {
     $('#rcNew').addEventListener('click', () => Hub.openInvoice([{ title: '', amount: 0 }], { qr: true }));
     $('#rcCamBtn').addEventListener('click', startCam);
     $('#rcStop').addEventListener('click', stopCam);
-    $('#rcImg').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; scanImage(f); });
+    $('#rcImg').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; scanFile(f); });
     $('#rcPasteBtn').addEventListener('click', () => { const t = $('#rcPaste').value.trim(); if (!t) { toast('Paste the QR text first'); return; } handleText(t); });
     $('#rcList').addEventListener('click', e => { const b = e.target.closest('[data-id]'); if (b) openReceipt(Number(b.dataset.id)); });
     $('#rcMDel').addEventListener('click', () => {
@@ -7851,7 +8003,443 @@ const Rcpt = (() => {
     renderKeys();
   }
 
-  return { init, issue, qrUrl, downloadQr, saveReceipt, verifyText, ensureKeys, trustedList, _importText: importText };
+  return { init, issue, signBytes, deflate, b64u, qrUrl, downloadQr, saveReceipt, verifyText, ensureKeys, trustedList, _importText: importText };
+})();
+const Art = (() => {
+  const COLS = 56, ROWS = 42, T = 22, W = COLS * T, H = ROWS * T;
+  const PAIRS = ((COLS - 2) / 2) * (ROWS - 2);
+  const SLOTS = PAIRS * 3;
+  const BYTES = SLOTS / 8;
+  const NSYM = 20;
+  const K0 = Math.floor((BYTES - 2 * NSYM) / 2) + 1;
+  const K1 = BYTES - 2 * NSYM - K0;
+  const CAP = K0 + K1;
+  const D = 18;
+  const RING = [255, 40, 140];
+  const enc = new TextEncoder(), dec = new TextDecoder();
+
+  const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
+  (() => {
+    let x = 1;
+    for (let i = 0; i < 255; i++) { EXP[i] = x; LOG[x] = i; x <<= 1; if (x & 256) x ^= 0x11d; }
+    for (let i = 255; i < 512; i++) EXP[i] = EXP[i - 255];
+  })();
+  const gmul = (a, b) => (a && b ? EXP[LOG[a] + LOG[b]] : 0);
+  const gdiv = (a, b) => (a === 0 ? 0 : EXP[(LOG[a] + 255 - LOG[b]) % 255]);
+  const ginv = a => EXP[255 - LOG[a]];
+  const gpow2 = n => EXP[(((n % 255) + 255) % 255)];
+  const pscale = (p, x) => p.map(v => gmul(v, x));
+  const padd = (p, q) => {
+    const r = new Array(Math.max(p.length, q.length)).fill(0);
+    for (let i = 0; i < p.length; i++) r[i + r.length - p.length] = p[i];
+    for (let i = 0; i < q.length; i++) r[i + r.length - q.length] ^= q[i];
+    return r;
+  };
+  const pmul = (p, q) => {
+    const r = new Array(p.length + q.length - 1).fill(0);
+    for (let j = 0; j < q.length; j++) for (let i = 0; i < p.length; i++) r[i + j] ^= gmul(p[i], q[j]);
+    return r;
+  };
+  const peval = (p, x) => { let y = p[0]; for (let i = 1; i < p.length; i++) y = gmul(y, x) ^ p[i]; return y; };
+
+  function rsEncode(data, nsym) {
+    let g = [1];
+    for (let i = 0; i < nsym; i++) g = pmul(g, [1, EXP[i]]);
+    const msg = data.concat(new Array(nsym).fill(0));
+    for (let i = 0; i < data.length; i++) {
+      const c = msg[i];
+      if (c) for (let j = 1; j < g.length; j++) msg[i + j] ^= gmul(g[j], c);
+    }
+    return data.concat(msg.slice(data.length));
+  }
+
+  function synd(msg, nsym) {
+    const s = [0];
+    for (let i = 0; i < nsym; i++) s.push(peval(msg, EXP[i]));
+    return s;
+  }
+
+  function rsCorrect(input, nsym) {
+    let msg = input.slice();
+    const sy = synd(msg, nsym);
+    if (Math.max.apply(null, sy) === 0) return msg.slice(0, msg.length - nsym);
+    let errLoc = [1], oldLoc = [1];
+    for (let i = 0; i < nsym; i++) {
+      const K = i + 1;
+      let delta = sy[K];
+      for (let j = 1; j < errLoc.length; j++) delta ^= gmul(errLoc[errLoc.length - 1 - j], sy[K - j]);
+      oldLoc = oldLoc.concat([0]);
+      if (delta !== 0) {
+        if (oldLoc.length > errLoc.length) {
+          const nl = pscale(oldLoc, delta);
+          oldLoc = pscale(errLoc, ginv(delta));
+          errLoc = nl;
+        }
+        errLoc = padd(errLoc, pscale(oldLoc, delta));
+      }
+    }
+    while (errLoc.length && errLoc[0] === 0) errLoc.shift();
+    const errs = errLoc.length - 1;
+    if (errs * 2 > nsym) return null;
+    const rev = errLoc.slice().reverse();
+    const pos = [];
+    for (let i = 0; i < msg.length; i++) if (peval(rev, EXP[i % 255]) === 0) pos.push(msg.length - 1 - i);
+    if (pos.length !== errs) return null;
+    const coef = pos.map(p => msg.length - 1 - p);
+    let eloc = [1];
+    for (const c of coef) eloc = pmul(eloc, padd([1], [EXP[c % 255], 0]));
+    const prod = pmul(sy.slice().reverse(), eloc);
+    const m = eloc.length;
+    let rem = prod.slice(Math.max(0, prod.length - m));
+    while (rem.length < m) rem.unshift(0);
+    const ev = rem.slice().reverse();
+    const X = coef.map(c => gpow2(-(255 - c)));
+    const E = new Array(msg.length).fill(0);
+    for (let i = 0; i < X.length; i++) {
+      const xi = X[i], xinv = ginv(xi);
+      let lp = 1;
+      for (let j = 0; j < X.length; j++) if (j !== i) lp = gmul(lp, 1 ^ gmul(xinv, X[j]));
+      let y = peval(ev.slice().reverse(), xinv);
+      y = gmul(xi, y);
+      if (lp === 0) return null;
+      E[pos[i]] = gdiv(y, lp);
+    }
+    msg = padd(msg, E);
+    const s2 = synd(msg, nsym);
+    if (Math.max.apply(null, s2) > 0) return null;
+    return msg.slice(0, msg.length - nsym);
+  }
+
+  function crc16(a) {
+    let c = 0xffff;
+    for (let i = 0; i < a.length; i++) {
+      c ^= a[i] << 8;
+      for (let j = 0; j < 8; j++) c = c & 0x8000 ? ((c << 1) ^ 0x1021) & 0xffff : (c << 1) & 0xffff;
+    }
+    return c;
+  }
+
+  const PERM = (() => {
+    const p = Array.from({ length: SLOTS }, (_, i) => i);
+    let s = 0x2f6e2b1;
+    for (let i = SLOTS - 1; i > 0; i--) {
+      s = (Math.imul(s, 1103515245) + 12345) >>> 0;
+      const j = s % (i + 1);
+      const t = p[i]; p[i] = p[j]; p[j] = t;
+    }
+    return p;
+  })();
+
+  function pack(p) {
+    const out = [];
+    const v = n => { n = Math.max(0, Math.round(n)); while (n >= 128) { out.push((n % 128) | 128); n = Math.floor(n / 128); } out.push(n); };
+    const str = s => { const b = enc.encode(s); v(b.length); for (const x of b) out.push(x); };
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(p.d || '');
+    const fl = (p.i ? 1 : 0) | (m ? 2 : 0) | (p.c ? 4 : 0) | (p.cp ? 8 : 0) | (p.s ? 16 : 0) | (p.n ? 32 : 0) | (p.t ? 64 : 0);
+    out.push(fl);
+    if (p.i) str(p.i);
+    if (m) v(Number(m[1] + m[2] + m[3]));
+    if (p.c) str(p.c);
+    if (p.cp) str(p.cp);
+    if (p.s) str(p.s);
+    if (p.n) str(p.n);
+    if (p.t) v(p.t);
+    const its = Array.isArray(p.it) ? p.it : [];
+    v(its.length);
+    for (const x of its) { str(String(x[0] || '')); v((Number(x[1]) || 0) * 100); v(Number(x[2]) || 0); v(Number(x[3]) || 0); }
+    return new Uint8Array(out);
+  }
+
+  function unpack(u) {
+    let i = 0;
+    const v = () => { let n = 0, m = 1, b; do { b = u[i++]; if (b === undefined) throw new Error('short'); n += (b & 127) * m; m *= 128; } while (b & 128); return n; };
+    const str = () => { const l = v(); if (i + l > u.length) throw new Error('short'); const s = dec.decode(u.subarray(i, i + l)); i += l; return s; };
+    const fl = u[i++];
+    const p = { v: 1 };
+    if (fl & 1) p.i = str();
+    if (fl & 2) { const n = String(v()).padStart(8, '0'); p.d = `${n.slice(0, 4)}-${n.slice(4, 6)}-${n.slice(6, 8)}`; }
+    if (fl & 4) p.c = str();
+    if (fl & 8) p.cp = str();
+    if (fl & 16) p.s = str();
+    if (fl & 32) p.n = str();
+    if (fl & 64) p.t = v();
+    const n = v();
+    if (n > 200) throw new Error('bad');
+    p.it = [];
+    for (let k = 0; k < n; k++) { const nm = str(); const q = v() / 100, un = v(), tt = v(); p.it.push([nm, q || '', un || '', tt]); }
+    return p;
+  }
+
+  function packet(raw, comp, stored, sig) {
+    const a = [0x52, 0xb2, comp, stored.length >> 8, stored.length & 255];
+    for (const x of stored) a.push(x);
+    for (const x of sig) a.push(x);
+    const c = crc16(a);
+    a.push(c >> 8, c & 255);
+    return a;
+  }
+
+  function interleave(data) {
+    const c0 = rsEncode(data.slice(0, K0), NSYM), c1 = rsEncode(data.slice(K0, K0 + K1), NSYM);
+    const out = [];
+    for (let i = 0; i < c0.length; i++) { out.push(c0[i]); if (i < c1.length) out.push(c1[i]); }
+    return out;
+  }
+
+  function deinterleave(arr) {
+    const c0 = [], c1 = [];
+    const n0 = K0 + NSYM;
+    let p = 0;
+    for (let i = 0; i < n0; i++) { c0.push(arr[p++]); if (i < K1 + NSYM) c1.push(arr[p++]); }
+    return [c0, c1];
+  }
+
+  function bitsOf(bytes) {
+    const slots = new Uint8Array(SLOTS);
+    for (let i = 0; i < bytes.length; i++) for (let j = 0; j < 8; j++) slots[PERM[i * 8 + j]] = (bytes[i] >> (7 - j)) & 1;
+    return slots;
+  }
+
+  const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+
+  function procedural() {
+    const pal = [[196, 154, 62], [232, 214, 170], [34, 48, 82], [38, 112, 120], [244, 238, 224]];
+    const base = [];
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const t = Math.abs(c - 27.5) * 0.75 + Math.abs(r - 20.5);
+      const band = Math.floor(t / 3.2) % pal.length;
+      const sh = ((c + r) % 2 ? 6 : -6) + (Math.floor(t) % 3) * 3;
+      base.push(pal[band].map(x => clamp(x + sh, 0, 255)));
+    }
+    return base;
+  }
+
+  function fromPhoto(img) {
+    const w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
+    const ar = COLS / ROWS;
+    let sw = w, sh = w / ar;
+    if (sh > h) { sh = h; sw = h * ar; }
+    const sx = (w - sw) / 2, sy = (h - sh) / 2;
+    const mk = (cw, ch) => { const c = document.createElement('canvas'); c.width = cw; c.height = ch; return c; };
+    const a = mk(224, 168), ax = a.getContext('2d');
+    ax.imageSmoothingQuality = 'high';
+    ax.drawImage(img, sx, sy, sw, sh, 0, 0, 224, 168);
+    const b = mk(COLS, ROWS), bx = b.getContext('2d');
+    bx.imageSmoothingQuality = 'high';
+    bx.drawImage(a, 0, 0, COLS, ROWS);
+    const d = bx.getImageData(0, 0, COLS, ROWS).data, base = [];
+    for (let i = 0; i < COLS * ROWS; i++) base.push([d[i * 4], d[i * 4 + 1], d[i * 4 + 2]]);
+    return base;
+  }
+
+  function loadImg(src) {
+    return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+  }
+
+  async function make(p, photo) {
+    const raw = pack(p);
+    const sig = await Rcpt.signBytes(raw);
+    const z = await Rcpt.deflate(raw);
+    const stored = z || raw, comp = z ? 1 : 0;
+    const pk = packet(raw, comp, stored, sig);
+    if (pk.length > CAP) throw new Error(`Too much data for the art card (${pk.length} of ${CAP} bytes). Shorten product names or remove lines.`);
+    const data = pk.slice();
+    while (data.length < CAP) data.push(0);
+    const slots = bitsOf(interleave(data));
+    let base = null;
+    if (photo) { const im = await loadImg(photo); if (im) base = fromPhoto(im); }
+    if (!base) base = procedural();
+    const tiles = base.map(x => x.slice());
+    for (let k = 0; k < PAIRS; k++) {
+      const r = 1 + Math.floor(k / ((COLS - 2) / 2)), c = 1 + 2 * (k % ((COLS - 2) / 2));
+      const a = r * COLS + c, b = a + 1;
+      for (let ch = 0; ch < 3; ch++) {
+        const avg = clamp((base[a][ch] + base[b][ch]) / 2, D + 8, 247 - D);
+        const s = slots[k * 3 + ch] ? 1 : -1;
+        tiles[a][ch] = avg + s * D;
+        tiles[b][ch] = avg - s * D;
+      }
+    }
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = H;
+    const x = cv.getContext('2d');
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const edge = r === 0 || c === 0 || r === ROWS - 1 || c === COLS - 1;
+      const t = edge ? RING : tiles[r * COLS + c];
+      const px = c * T, py = r * T;
+      x.fillStyle = `rgb(${Math.round(t[0])},${Math.round(t[1])},${Math.round(t[2])})`;
+      x.fillRect(px, py, T, T);
+      x.fillStyle = 'rgba(255,255,255,0.16)';
+      x.fillRect(px, py, T, 3);
+      x.fillRect(px, py, 3, T);
+      x.fillStyle = 'rgba(0,0,0,0.16)';
+      x.fillRect(px, py + T - 3, T, 3);
+      x.fillRect(px + T - 3, py, 3, T);
+    }
+    const body = new Uint8Array(1 + stored.length);
+    body[0] = comp;
+    body.set(stored, 1);
+    return { url: cv.toDataURL('image/png'), text: `GSB1.${Rcpt.b64u(body)}.${Rcpt.b64u(sig)}`, payload: p, used: pk.length, cap: CAP };
+  }
+
+  function homography(dst) {
+    const src = [[0, 0], [W, 0], [W, H], [0, H]];
+    const A = [];
+    for (let i = 0; i < 4; i++) {
+      const [u, v] = src[i], [x, y] = dst[i];
+      A.push([u, v, 1, 0, 0, 0, -u * x, -v * x, x]);
+      A.push([0, 0, 0, u, v, 1, -u * y, -v * y, y]);
+    }
+    for (let c = 0; c < 8; c++) {
+      let m = c;
+      for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[m][c])) m = r;
+      const t = A[c]; A[c] = A[m]; A[m] = t;
+      if (Math.abs(A[c][c]) < 1e-9) return null;
+      for (let r = 0; r < 8; r++) {
+        if (r === c) continue;
+        const f = A[r][c] / A[c][c];
+        for (let k = c; k < 9; k++) A[r][k] -= f * A[c][k];
+      }
+    }
+    return A.map((row, i) => row[8] / row[i]);
+  }
+
+  function locate(img, cw, ch) {
+    const step = Math.max(1, Math.ceil(Math.max(cw, ch) / 480));
+    const gw = Math.floor(cw / step), gh = Math.floor(ch / step);
+    const d = img.data, mask = new Uint8Array(gw * gh);
+    for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
+      const o = ((gy * step + (step >> 1)) * cw + gx * step + (step >> 1)) * 4;
+      const r = d[o], g = d[o + 1], b = d[o + 2];
+      if (r > 175 && g < 105 && b > 50 && b < 195 && r - g > 105) mask[gy * gw + gx] = 1;
+    }
+    const lab = new Int32Array(gw * gh);
+    let best = null, bestN = 0, id = 0;
+    for (let s = 0; s < mask.length; s++) {
+      if (!mask[s] || lab[s]) continue;
+      id++;
+      const st = [s], cells = [];
+      lab[s] = id;
+      while (st.length) {
+        const p = st.pop();
+        cells.push(p);
+        const px = p % gw, py = (p / gw) | 0;
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+          const nx = px + dx, ny = py + dy;
+          if (nx < 0 || ny < 0 || nx >= gw || ny >= gh) continue;
+          const q = ny * gw + nx;
+          if (mask[q] && !lab[q]) { lab[q] = id; st.push(q); }
+        }
+      }
+      if (cells.length > bestN) { bestN = cells.length; best = cells; }
+    }
+    if (!best || bestN < 60) return null;
+    let tl = null, tr = null, br = null, bl = null;
+    for (const p of best) {
+      const x = p % gw, y = (p / gw) | 0;
+      if (!tl || x + y < tl[0] + tl[1]) tl = [x, y];
+      if (!br || x + y > br[0] + br[1]) br = [x, y];
+      if (!tr || x - y > tr[0] - tr[1]) tr = [x, y];
+      if (!bl || x - y < bl[0] - bl[1]) bl = [x, y];
+    }
+    const h = step / 2;
+    const f = (p, sx, sy) => [p[0] * step + h + sx * h, p[1] * step + h + sy * h];
+    return [f(tl, -1, -1), f(tr, 1, -1), f(br, 1, 1), f(bl, -1, 1)];
+  }
+
+  function sampleDecode(img, cw, ch, corners) {
+    const Hm = homography(corners);
+    if (!Hm) return null;
+    const wTop = Math.hypot(corners[1][0] - corners[0][0], corners[1][1] - corners[0][1]);
+    const hLeft = Math.hypot(corners[3][0] - corners[0][0], corners[3][1] - corners[0][1]);
+    if (!(hLeft > 0) || Math.abs(wTop / hLeft - W / H) > 0.18 * (W / H)) return null;
+    const tilePx = wTop / COLS;
+    if (tilePx < 2.2) return null;
+    const rad = Math.max(1, Math.floor(tilePx * 0.2));
+    const d = img.data;
+    const map = (u, v) => {
+      const q = Hm[6] * u + Hm[7] * v + 1;
+      return [(Hm[0] * u + Hm[1] * v + Hm[2]) / q, (Hm[3] * u + Hm[4] * v + Hm[5]) / q];
+    };
+    const mean = (c, r) => {
+      const [x, y] = map((c + 0.5) * T, (r + 0.5) * T);
+      const xi = Math.round(x), yi = Math.round(y);
+      let R = 0, G = 0, B = 0, n = 0;
+      for (let yy = yi - rad; yy <= yi + rad; yy++) for (let xx = xi - rad; xx <= xi + rad; xx++) {
+        if (xx < 0 || yy < 0 || xx >= cw || yy >= ch) continue;
+        const o = (yy * cw + xx) * 4;
+        R += d[o]; G += d[o + 1]; B += d[o + 2]; n++;
+      }
+      return n ? [R / n, G / n, B / n] : [0, 0, 0];
+    };
+    const slots = new Uint8Array(SLOTS);
+    const per = (COLS - 2) / 2;
+    for (let k = 0; k < PAIRS; k++) {
+      const r = 1 + Math.floor(k / per), c = 1 + 2 * (k % per);
+      const a = mean(c, r), b = mean(c + 1, r);
+      for (let ch2 = 0; ch2 < 3; ch2++) slots[k * 3 + ch2] = a[ch2] > b[ch2] ? 1 : 0;
+    }
+    const bytes = new Array(BYTES).fill(0);
+    for (let i = 0; i < BYTES; i++) {
+      let v = 0;
+      for (let j = 0; j < 8; j++) v = (v << 1) | slots[PERM[i * 8 + j]];
+      bytes[i] = v;
+    }
+    const [c0, c1] = deinterleave(bytes);
+    const d0 = rsCorrect(c0, NSYM), d1 = rsCorrect(c1, NSYM);
+    if (!d0 || !d1) return null;
+    const pk = d0.concat(d1);
+    if (pk[0] !== 0x52 || pk[1] !== 0xb2) return null;
+    const len = (pk[3] << 8) | pk[4];
+    const total = 5 + len + 64 + 2;
+    if (total > pk.length) return null;
+    const crc = (pk[total - 2] << 8) | pk[total - 1];
+    if (crc16(pk.slice(0, total - 2)) !== crc) return null;
+    const stored = Uint8Array.from(pk.slice(5, 5 + len)), sig = Uint8Array.from(pk.slice(5 + len, 5 + len + 64));
+    const body = new Uint8Array(1 + stored.length);
+    body[0] = pk[2];
+    body.set(stored, 1);
+    return `GSB1.${Rcpt.b64u(body)}.${Rcpt.b64u(sig)}`;
+  }
+
+  async function decode(src, w, h) {
+    if (!w || !h) return '';
+    const sc = Math.min(1, 1600 / Math.max(w, h));
+    const cw = Math.max(1, Math.round(w * sc)), ch = Math.max(1, Math.round(h * sc));
+    const cv = document.createElement('canvas');
+    cv.width = cw; cv.height = ch;
+    const x = cv.getContext('2d', { willReadFrequently: true });
+    x.drawImage(src, 0, 0, cw, ch);
+    const img = x.getImageData(0, 0, cw, ch);
+    const tries = [];
+    const loc = locate(img, cw, ch);
+    if (loc) tries.push(loc);
+    if (Math.abs(cw / ch - W / H) < 0.2 * (W / H)) tries.push([[0, 0], [cw, 0], [cw, ch], [0, ch]]);
+    for (const c of tries) {
+      let t = null;
+      try { t = sampleDecode(img, cw, ch, c); } catch (e) {}
+      if (t) return t;
+    }
+    return '';
+  }
+
+  const shrinkPhoto = file => new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const im = new Image();
+    im.onload = () => {
+      const sc = Math.min(1, W / Math.max(im.naturalWidth, im.naturalHeight));
+      const c = document.createElement('canvas');
+      c.width = Math.max(1, Math.round(im.naturalWidth * sc));
+      c.height = Math.max(1, Math.round(im.naturalHeight * sc));
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg', 0.82));
+    };
+    im.onerror = () => { URL.revokeObjectURL(url); rej(new Error('bad image')); };
+    im.src = url;
+  });
+
+  return { make, decode, pack, unpack, shrinkPhoto, capacity: CAP, _rs: { rsEncode, rsCorrect }, _crc: crc16 };
 })();
 const PWA = (() => {
   let reg = null, wantReload = false, refreshing = false;
