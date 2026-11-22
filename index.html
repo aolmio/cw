@@ -1004,6 +1004,7 @@ body.printing #printRoot{display:block}
 .rc-qrbox img{width:240px;max-width:100%;background:#fff;padding:8px;border-radius:10px}
 .rc-trow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:12px}
 .hb-span{grid-column:1/-1;min-height:0}
+.rc-t .rc-sr td{font-size:12.5px;color:var(--ink-3);border-bottom:1px solid var(--border);padding:2px 4px 4px}
 </style>
 </head>
 <body>
@@ -5337,7 +5338,7 @@ const Shwe = (() => {
     const total = gold * price + red * price + smith + stone;
     const html = R.title('ရွှေတွက်ချက်မှု') + R.row('ယနေ့ဈေး:', price.toLocaleString()) + R.row('ရွှေဖိုး:', fmt(gold * price)) + R.note(weightStr(pk, pp, py)) +
       R.row('လျော့တွက်ဖိုး:', fmt(red * price)) + R.note(weightStr(rk, rp, ry)) + R.row('လက်ခ+ကျောက်:', (smith + stone).toLocaleString()) + R.total(total);
-    commit('gold', [price, pk, pp, py, rk, rp, ry, smith, stone].join(','), html, total, `ရွှေ (${pk}K ${pp}P ${py}Y)`, { kind: 'gold', price, goldW: weightStr(pk, pp, py), gold: Math.round(gold * price), redW: weightStr(rk, rp, ry), red: Math.round(red * price), smith, stone });
+    commit('gold', [price, pk, pp, py, rk, rp, ry, smith, stone].join(','), html, total, `ရွှေ (${pk}K ${pp}P ${py}Y)`, { kind: 'gold', price, gw: [pk, pp, py], rw: [rk, rp, ry], goldW: weightStr(pk, pp, py), gold: Math.round(gold * price), redW: weightStr(rk, rp, ry), red: Math.round(red * price), smith, stone });
   }
 
   function calcDiamond() {
@@ -5961,7 +5962,7 @@ const Hub = (() => {
   }
 
   function hasData() {
-    return (jget('calcHistory', []).length + jget('invoiceList', []).length + P.log.length + jget('gold-logs', []).length) > 0;
+    return (jget('calcHistory', []).length + jget('invoiceList', []).length + P.log.length + jget('gold-logs', []).length + jget('gs.receipts', []).length + (jget('gs.keys', null) ? 1 : 0)) > 0;
   }
 
   function lastBackup() {
@@ -5991,7 +5992,7 @@ const Hub = (() => {
     const now = new Date();
     const payload = {
       app: 'gold-shop-suite', schema: 1, createdAt: now.toISOString(), appVersion: $('#dtVer').dataset.v || '',
-      counts: { history: jget('calcHistory', []).length, invoices: jget('invoiceList', []).length, priceDays: P.log.length },
+      counts: { history: jget('calcHistory', []).length, invoices: jget('invoiceList', []).length, priceDays: P.log.length, receipts: jget('gs.receipts', []).length, trusted: jget('gs.trusted', []).length, signingKey: jget('gs.keys', null) ? 1 : 0 },
       data
     };
     const stamp = `${day(now)}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
@@ -6015,7 +6016,8 @@ const Hub = (() => {
       box.classList.remove('hidden');
       box.innerHTML = `<div><b>Backup made on ${esc(fmtDT(j.createdAt))}</b></div>
         <div class="muted">${esc(ago(j.createdAt))} · ${fmtInt(c.history || 0)} calculations · ${fmtInt(c.invoices || 0)} invoice lines · ${fmtInt(c.priceDays || 0)} price days</div>
-        <div class="muted">Restoring replaces the calculator history, invoices, price log and settings on this device.</div>
+        <div class="muted">${fmtInt(c.receipts || 0)} receipts · ${fmtInt(c.trusted || 0)} trusted keys · ${c.signingKey ? 'signing key included' : 'no signing key'}</div>
+        <div class="muted">Restoring replaces the calculator history, invoices, price log, receipts, keys and settings on this device.</div>
         <div class="btn-row"><button type="button" class="btn" id="dtCancel">Cancel</button><button type="button" class="btn btn-primary" id="dtRestore">Restore this backup</button></div>`;
     } catch (e) {
       box.classList.remove('hidden');
@@ -6296,7 +6298,13 @@ const Hub = (() => {
     set('s', $('#prShop').value.trim());
     set('n', $('#prNote').value.trim());
     const its = items.filter(x => x.name || x.title || x.amount || x.qty);
-    if (its.length) p.it = its.map(x => [x.name || x.title || '', x.qty || '', '', Math.round(x.amount || 0)]);
+    if (its.length) p.it = its.map(x => {
+      const row = [x.name || x.title || '', x.qty || '', '', Math.round(x.amount || 0)];
+      const d = x.detail;
+      if (d && d.kind === 'gold') row.push(['g', Math.round(d.price || 0), d.gw || [0, 0, 0], d.rw || [0, 0, 0], Math.round(d.smith || 0), Math.round(d.stone || 0)]);
+      else if (d && d.kind === 'diamond') row.push(['d', Math.round(d.price || 0), d.note || '', Math.round(d.gold || 0)]);
+      return row;
+    });
     const t = Math.round(lineTotal());
     if (t) p.t = t;
     return p;
@@ -6336,7 +6344,7 @@ const Hub = (() => {
       const r = await Art.make(buildPayload(), B.art);
       if (my !== artSeq) return;
       curArt = { url: r.url, text: r.text, payload: r.payload };
-      setArtInfo(`Art card ready · ${r.used} of ${r.cap} bytes used`);
+      setArtInfo(`Art card ready · ${r.used} of ${r.cap} bytes used${r.trimmed ? '. Gold and price details were left out to fit; the QR code keeps them.' : ''}`);
     } catch (e) {
       if (my !== artSeq) return;
       curArt = null;
@@ -7544,14 +7552,14 @@ const Rcpt = (() => {
   }
 
   async function decode(text) {
-    const m = /^(GSI[12]|GSB1)\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
+    const m = /^(GSI[12]|GSB[12])\.([\w-]+)\.([\w-]+)$/.exec(String(text || '').trim());
     if (!m) return null;
     let body = unb64u(m[2]);
     const sig = unb64u(m[3]);
-    if (m[1] === 'GSB1') {
+    if (m[1] === 'GSB1' || m[1] === 'GSB2') {
       const raw = body[0] & 1 ? await pipe(body.subarray(1), DecompressionStream, 'deflate-raw') : body.subarray(1);
       let payload = null;
-      try { payload = Art.unpack(raw); } catch (e) {}
+      try { payload = Art.unpack(raw, m[1] === 'GSB1' ? 1 : 2); } catch (e) {}
       return { raw, sig, payload };
     }
     if (m[1] === 'GSI2') body = await pipe(body, DecompressionStream, 'deflate-raw');
@@ -7635,12 +7643,36 @@ const Rcpt = (() => {
 
   const money = n => (n === '' || n == null ? '' : fmtInt(n));
 
+  const wtText = w => {
+    const [k, p, y] = [w[0] || 0, w[1] || 0, w[2] || 0];
+    return [k > 0 && `${k} ကျပ်`, p > 0 && `${p} ပဲ`, y > 0 && `${y} ရွေး`].filter(Boolean).join(' ');
+  };
+  const wtDec = w => (w[0] || 0) + (w[1] || 0) / 16 + (w[2] || 0) / 128;
+
+  function subRows(d, span) {
+    if (!Array.isArray(d)) return '';
+    const L = [];
+    if (d[0] === 'g') {
+      const price = d[1] || 0;
+      L.push(['ပေါက်ဈေး', money(price)]);
+      L.push(['ရွှေဖိုး' + (wtText(d[2] || []) ? ' · ' + wtText(d[2] || []) : ''), money(Math.round(wtDec(d[2] || []) * price))]);
+      if (wtDec(d[3] || []) > 0) L.push(['လျော့တွက်ဖိုး · ' + wtText(d[3]), money(Math.round(wtDec(d[3]) * price))]);
+      if (d[4]) L.push(['လက်ခ', money(d[4])]);
+      if (d[5]) L.push(['ကျောက်ဖိုး', money(d[5])]);
+    } else if (d[0] === 'd') {
+      L.push(['ပေါက်ဈေး', money(d[1])]);
+      L.push(['စိန်/ရတနာဖိုး' + (d[2] ? ' · ' + d[2] : ''), money(d[3])]);
+    }
+    return L.map(r => `<tr class="rc-sr"><td colspan="${span - 1}">${esc(r[0])}</td><td class="r">${r[1]}</td></tr>`).join('');
+  }
+
   function detailsHtml(p) {
     const row = (a, b) => (b ? `<div class="rc-r"><span>${a}</span><b>${esc(b)}</b></div>` : '');
     const its = Array.isArray(p.it) ? p.it : [];
-    const body = its.map(x => `<tr><td>${esc(x[0] || '—')}</td><td class="r">${x[1] ? esc(x[1]) : ''}</td><td class="r">${x[2] ? money(x[2]) : ''}</td><td class="r">${x[3] ? money(x[3]) : ''}</td></tr>`).join('');
+    const hasUnit = its.some(x => x[2]);
+    const body = its.map(x => `<tr><td>${esc(x[0] || '—')}</td><td class="r">${x[1] ? esc(x[1]) : ''}</td>${hasUnit ? `<td class="r">${x[2] ? money(x[2]) : ''}</td>` : ''}<td class="r">${x[3] ? money(x[3]) : ''}</td></tr>${subRows(x[4], hasUnit ? 4 : 3)}`).join('');
     return row('Invoice ID', p.i) + row('Date', p.d) + row('Customer', p.c) + row('Customer phone', p.cp) + row('Shop', p.s) + row('Note', p.n) +
-      (body ? `<table class="rc-t"><thead><tr><th>Product</th><th class="r">Qty</th><th class="r">Unit price</th><th class="r">Total</th></tr></thead><tbody>${body}</tbody></table>` : '') +
+      (body ? `<table class="rc-t"><thead><tr><th>Product</th><th class="r">Qty</th>${hasUnit ? '<th class="r">Unit price</th>' : ''}<th class="r">Total</th></tr></thead><tbody>${body}</tbody></table>` : '') +
       (p.t ? `<div class="rc-tot"><span>Total</span><b>${money(p.t)} Ks</b></div>` : '') + row('Issuer key', p.k);
   }
 
@@ -8006,16 +8038,21 @@ const Rcpt = (() => {
 })();
 const Art = (() => {
   const COLS = 56, ROWS = 42, T = 22, W = COLS * T, H = ROWS * T;
-  const PAIRS = ((COLS - 2) / 2) * (ROWS - 2);
-  const SLOTS = PAIRS * 3;
-  const BYTES = SLOTS / 8;
+  const BLK = 10;
+  const MOD = 8;
+  const QMOD = 25;
+  const D = 16;
   const NSYM = 20;
-  const K0 = Math.floor((BYTES - 2 * NSYM) / 2) + 1;
-  const K1 = BYTES - 2 * NSYM - K0;
-  const CAP = K0 + K1;
-  const D = 12;
-  const RING = [255, 40, 140];
   const enc = new TextEncoder(), dec = new TextDecoder();
+  const isCorner = (c, r) => (c < BLK || c >= COLS - BLK) && (r < BLK || r >= ROWS - BLK);
+  const PAIR_LIST = [];
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c += 2) if (!isCorner(c, r)) PAIR_LIST.push([c, r]);
+  const PAIRS = PAIR_LIST.length;
+  const BYTES = Math.floor(PAIRS * 3 / 8);
+  const SLOTS = BYTES * 8;
+  const DATA = BYTES - 2 * NSYM;
+  const K0 = Math.ceil(DATA / 2), K1 = DATA - K0;
+  const CAP = DATA;
 
   const EXP = new Uint8Array(512), LOG = new Uint8Array(256);
   (() => {
@@ -8129,9 +8166,11 @@ const Art = (() => {
     return p;
   })();
 
+  const wvar = (out, n) => { n = Math.max(0, Math.round(n)); while (n >= 128) { out.push((n % 128) | 128); n = Math.floor(n / 128); } out.push(n); };
+
   function pack(p) {
     const out = [];
-    const v = n => { n = Math.max(0, Math.round(n)); while (n >= 128) { out.push((n % 128) | 128); n = Math.floor(n / 128); } out.push(n); };
+    const v = n => wvar(out, n);
     const str = s => { const b = enc.encode(s); v(b.length); for (const x of b) out.push(x); };
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(p.d || '');
     const fl = (p.i ? 1 : 0) | (m ? 2 : 0) | (p.c ? 4 : 0) | (p.cp ? 8 : 0) | (p.s ? 16 : 0) | (p.n ? 32 : 0) | (p.t ? 64 : 0);
@@ -8145,11 +8184,28 @@ const Art = (() => {
     if (p.t) v(p.t);
     const its = Array.isArray(p.it) ? p.it : [];
     v(its.length);
-    for (const x of its) { str(String(x[0] || '')); v((Number(x[1]) || 0) * 100); v(Number(x[2]) || 0); v(Number(x[3]) || 0); }
+    for (const x of its) {
+      str(String(x[0] || ''));
+      v((Number(x[1]) || 0) * 100);
+      v(Number(x[2]) || 0);
+      v(Number(x[3]) || 0);
+      const d = x[4];
+      if (Array.isArray(d) && d[0] === 'g') {
+        out.push(1);
+        v(d[1]);
+        for (const w of [d[2] || [], d[3] || []]) for (let k = 0; k < 3; k++) v((Number(w[k]) || 0) * 10);
+        v(d[4]); v(d[5]);
+      } else if (Array.isArray(d) && d[0] === 'd') {
+        out.push(2);
+        v(d[1]);
+        str(String(d[2] || ''));
+        v(d[3]);
+      } else out.push(0);
+    }
     return new Uint8Array(out);
   }
 
-  function unpack(u) {
+  function unpack(u, ver) {
     let i = 0;
     const v = () => { let n = 0, m = 1, b; do { b = u[i++]; if (b === undefined) throw new Error('short'); n += (b & 127) * m; m *= 128; } while (b & 128); return n; };
     const str = () => { const l = v(); if (i + l > u.length) throw new Error('short'); const s = dec.decode(u.subarray(i, i + l)); i += l; return s; };
@@ -8165,11 +8221,26 @@ const Art = (() => {
     const n = v();
     if (n > 200) throw new Error('bad');
     p.it = [];
-    for (let k = 0; k < n; k++) { const nm = str(); const q = v() / 100, un = v(), tt = v(); p.it.push([nm, q || '', un || '', tt]); }
+    for (let k = 0; k < n; k++) {
+      const row = [str(), 0, 0, 0];
+      const q = v() / 100, un = v(), tt = v();
+      row[1] = q || ''; row[2] = un || ''; row[3] = tt;
+      if (ver !== 1) {
+        const kind = u[i++];
+        if (kind === 1) {
+          const price = v(), a = [v() / 10, v() / 10, v() / 10], b = [v() / 10, v() / 10, v() / 10], sm = v(), st = v();
+          row.push(['g', price, a, b, sm, st]);
+        } else if (kind === 2) {
+          const price = v(), note = str(), tot = v();
+          row.push(['d', price, note, tot]);
+        }
+      }
+      p.it.push(row);
+    }
     return p;
   }
 
-  function packet(raw, comp, stored, sig) {
+  function packet(comp, stored, sig) {
     const a = [0x52, 0xb2, comp, stored.length >> 8, stored.length & 255];
     for (const x of stored) a.push(x);
     for (const x of sig) a.push(x);
@@ -8182,14 +8253,15 @@ const Art = (() => {
     const c0 = rsEncode(data.slice(0, K0), NSYM), c1 = rsEncode(data.slice(K0, K0 + K1), NSYM);
     const out = [];
     for (let i = 0; i < c0.length; i++) { out.push(c0[i]); if (i < c1.length) out.push(c1[i]); }
+    while (out.length < BYTES) out.push(0);
     return out;
   }
 
   function deinterleave(arr) {
     const c0 = [], c1 = [];
-    const n0 = K0 + NSYM;
+    const n0 = K0 + NSYM, n1 = K1 + NSYM;
     let p = 0;
-    for (let i = 0; i < n0; i++) { c0.push(arr[p++]); if (i < K1 + NSYM) c1.push(arr[p++]); }
+    for (let i = 0; i < n0; i++) { c0.push(arr[p++]); if (i < n1) c1.push(arr[p++]); }
     return [c0, c1];
   }
 
@@ -8201,21 +8273,55 @@ const Art = (() => {
 
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
-  function procedural() {
-    const base = [];
-    const BAY = 8;
-    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-      const lx = ((c + 4) % BAY) - (BAY - 1) / 2;
-      const ry = (r + 3) % 10;
-      const row = Math.floor((r + 3) / 10);
-      const v = 196 - r * 0.7 + (row % 2) * 3;
-      let col = [v, v - 5, v - 16];
-      const dist = Math.hypot(lx, ry - 5);
-      if (ry <= 5 && Math.abs(dist - 3.3) < 0.75) col = [168 - r * 0.5, 142 - r * 0.5, 96 - r * 0.4];
-      else if (ry <= 5 && dist < 3.3) col = [v - 22, v - 22, v - 26];
-      else if (Math.abs(lx) > BAY / 2 - 1) col = [v + 14, v + 11, v + 4];
-      base.push(col.map(x => clamp(x, 0, 255)));
+  function guilloche() {
+    const GW = 560, GH = 420;
+    const c = document.createElement('canvas');
+    c.width = GW; c.height = GH;
+    const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, GW, GH);
+    g.addColorStop(0, '#ece6d4');
+    g.addColorStop(0.5, '#dfe5d6');
+    g.addColorStop(1, '#e8dcc2');
+    x.fillStyle = g;
+    x.fillRect(0, 0, GW, GH);
+    x.lineJoin = 'round';
+    const roset = (cx, cy, R, r, dd, turns, col, lw, rot) => {
+      x.strokeStyle = col; x.lineWidth = lw; x.beginPath();
+      const steps = 1600, k = (R - r) / r;
+      for (let i = 0; i <= steps; i++) {
+        const t = (i / steps) * Math.PI * 2 * turns;
+        const px = (R - r) * Math.cos(t) + dd * Math.cos(k * t);
+        const py = (R - r) * Math.sin(t) - dd * Math.sin(k * t);
+        const rx = px * Math.cos(rot) - py * Math.sin(rot) + cx, ry = px * Math.sin(rot) + py * Math.cos(rot) + cy;
+        if (i) x.lineTo(rx, ry); else x.moveTo(rx, ry);
+      }
+      x.stroke();
+    };
+    const teal = 'rgba(36,88,100,0.62)', brass = 'rgba(160,122,52,0.6)', navy = 'rgba(40,52,92,0.45)';
+    for (let i = 0; i < 5; i++) roset(GW / 2, GH / 2, 170, 50, 44 + i * 14, 5, i % 2 ? brass : teal, 3, i * 0.26);
+    for (let i = 0; i < 3; i++) roset(GW * 0.2, GH * 0.5, 100, 40, 26 + i * 16, 2, i % 2 ? navy : teal, 2.6, i * 0.5);
+    for (let i = 0; i < 3; i++) roset(GW * 0.8, GH * 0.5, 100, 40, 26 + i * 16, 2, i % 2 ? navy : brass, 2.6, i * 0.5);
+    for (const y0 of [32, GH - 32]) for (let b = 0; b < 5; b++) {
+      x.strokeStyle = b % 2 ? teal : brass; x.lineWidth = 2.4; x.beginPath();
+      for (let px = 0; px <= GW; px += 4) {
+        const py = y0 + 14 * Math.sin(px * 0.045 + b * 0.55) + (b - 2) * 7;
+        if (px) x.lineTo(px, py); else x.moveTo(px, py);
+      }
+      x.stroke();
     }
+    return c;
+  }
+
+  function mosaicBase(canvas) {
+    const mk = (cw, ch) => { const k = document.createElement('canvas'); k.width = cw; k.height = ch; return k; };
+    const a = mk(224, 168), ax = a.getContext('2d');
+    ax.imageSmoothingQuality = 'high';
+    ax.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 224, 168);
+    const b = mk(COLS, ROWS), bx = b.getContext('2d');
+    bx.imageSmoothingQuality = 'high';
+    bx.drawImage(a, 0, 0, COLS, ROWS);
+    const d = bx.getImageData(0, 0, COLS, ROWS).data, base = [];
+    for (let i = 0; i < COLS * ROWS; i++) base.push([d[i * 4], d[i * 4 + 1], d[i * 4 + 2]]);
     return base;
   }
 
@@ -8225,149 +8331,246 @@ const Art = (() => {
     let sw = w, sh = w / ar;
     if (sh > h) { sh = h; sw = h * ar; }
     const sx = (w - sw) / 2, sy = (h - sh) / 2;
-    const mk = (cw, ch) => { const c = document.createElement('canvas'); c.width = cw; c.height = ch; return c; };
-    const a = mk(224, 168), ax = a.getContext('2d');
-    ax.imageSmoothingQuality = 'high';
-    ax.drawImage(img, sx, sy, sw, sh, 0, 0, 224, 168);
-    const b = mk(COLS, ROWS), bx = b.getContext('2d');
-    bx.imageSmoothingQuality = 'high';
-    bx.drawImage(a, 0, 0, COLS, ROWS);
-    const d = bx.getImageData(0, 0, COLS, ROWS).data, base = [];
-    for (let i = 0; i < COLS * ROWS; i++) base.push([d[i * 4], d[i * 4 + 1], d[i * 4 + 2]]);
-    return base;
+    const c = document.createElement('canvas');
+    c.width = 560; c.height = 420;
+    c.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, 560, 420);
+    return mosaicBase(c);
   }
 
   function loadImg(src) {
     return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
   }
 
-  async function make(p, photo) {
-    const raw = pack(p);
+  function qrMatrix(label) {
+    const QR = LocalQR.req('index');
+    const q = new QR(0, 1);
+    q.addData(String(label).padEnd(20, '.').slice(0, 20));
+    q.make();
+    if (q.getModuleCount() !== QMOD) throw new Error('QR size');
+    return q;
+  }
+
+  const blockOrigin = k => [(k % 2) * (W - BLK * T), (k >> 1) * (H - BLK * T)];
+  const FIND = [[3.5, 3.5], [QMOD - 3.5, 3.5], [3.5, QMOD - 3.5]];
+  const qrOff = (BLK * T - QMOD * MOD) / 2;
+
+  function cardPoints(k) {
+    const [ox, oy] = blockOrigin(k);
+    return FIND.map(f => [(ox + qrOff + f[0] * MOD) / T, (oy + qrOff + f[1] * MOD) / T]);
+  }
+
+  function drawCornerQrs(x, label) {
+    const q = qrMatrix(label);
+    for (let k = 0; k < 4; k++) {
+      const [ox, oy] = blockOrigin(k);
+      x.fillStyle = '#fff';
+      x.fillRect(ox, oy, BLK * T, BLK * T);
+      x.fillStyle = '#111';
+      for (let r = 0; r < QMOD; r++) for (let c = 0; c < QMOD; c++) if (q.isDark(r, c)) x.fillRect(ox + qrOff + c * MOD, oy + qrOff + r * MOD, MOD, MOD);
+    }
+  }
+
+  async function build(p, photo, withDetail) {
+    const q = { v: p.v, i: p.i, d: p.d, c: p.c, cp: p.cp, s: p.s, n: p.n, t: p.t };
+    Object.keys(q).forEach(k => { if (q[k] === undefined) delete q[k]; });
+    q.it = (p.it || []).map(x => (withDetail ? x : x.slice(0, 4)));
+    const raw = pack(q);
     const sig = await Rcpt.signBytes(raw);
     const z = await Rcpt.deflate(raw);
     const stored = z || raw, comp = z ? 1 : 0;
-    const pk = packet(raw, comp, stored, sig);
-    if (pk.length > CAP) throw new Error(`Too much data for the art card (${pk.length} of ${CAP} bytes). Shorten product names or remove lines.`);
-    const data = pk.slice();
+    const pk = packet(comp, stored, sig);
+    return { raw, sig, stored, comp, pk, q };
+  }
+
+  async function make(p, photo) {
+    let b = await build(p, photo, true), trimmed = false;
+    if (b.pk.length > CAP && (p.it || []).some(x => x[4])) { b = await build(p, photo, false); trimmed = true; }
+    if (b.pk.length > CAP) throw new Error(`Too much data for the art card (${b.pk.length} of ${CAP} bytes). Shorten product names or remove lines. The QR code can hold more.`);
+    const data = b.pk.slice();
     while (data.length < CAP) data.push(0);
     const slots = bitsOf(interleave(data));
     let base = null;
     if (photo) { const im = await loadImg(photo); if (im) base = fromPhoto(im); }
-    if (!base) base = procedural();
+    if (!base) base = mosaicBase(guilloche());
     const tiles = base.map(x => x.slice());
     for (let k = 0; k < PAIRS; k++) {
-      const r = 1 + Math.floor(k / ((COLS - 2) / 2)), c = 1 + 2 * (k % ((COLS - 2) / 2));
-      const a = r * COLS + c, b = a + 1;
+      const [c, r] = PAIR_LIST[k];
+      const a = r * COLS + c, bb = a + 1;
       for (let ch = 0; ch < 3; ch++) {
-        const avg = clamp((base[a][ch] + base[b][ch]) / 2, D + 8, 247 - D);
+        const avg = clamp((base[a][ch] + base[bb][ch]) / 2, D + 8, 247 - D);
         const s = slots[k * 3 + ch] ? 1 : -1;
         tiles[a][ch] = avg + s * D;
-        tiles[b][ch] = avg - s * D;
+        tiles[bb][ch] = avg - s * D;
       }
     }
     const cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
     const x = cv.getContext('2d');
     for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-      const edge = r === 0 || c === 0 || r === ROWS - 1 || c === COLS - 1;
-      const t = edge ? RING : tiles[r * COLS + c];
+      const t = tiles[r * COLS + c];
       const px = c * T, py = r * T;
       x.fillStyle = `rgb(${Math.round(t[0])},${Math.round(t[1])},${Math.round(t[2])})`;
       x.fillRect(px, py, T, T);
-      x.fillStyle = 'rgba(255,255,255,0.16)';
+      const al = (c + r) % 2 ? 0.2 : 0.11;
+      x.fillStyle = `rgba(255,255,255,${al})`;
       x.fillRect(px, py, T, 3);
       x.fillRect(px, py, 3, T);
-      x.fillStyle = 'rgba(0,0,0,0.16)';
+      x.fillStyle = `rgba(0,0,0,${al})`;
       x.fillRect(px, py + T - 3, T, 3);
       x.fillRect(px + T - 3, py, 3, T);
     }
-    const body = new Uint8Array(1 + stored.length);
-    body[0] = comp;
-    body.set(stored, 1);
-    return { url: cv.toDataURL('image/png'), text: `GSB1.${Rcpt.b64u(body)}.${Rcpt.b64u(sig)}`, payload: p, used: pk.length, cap: CAP };
+    drawCornerQrs(x, 'GSA2:' + String(p.i || '').replace(/[^\w-]/g, ''));
+    const body = new Uint8Array(1 + b.stored.length);
+    body[0] = b.comp;
+    body.set(b.stored, 1);
+    return { url: cv.toDataURL('image/png'), text: `GSB2.${Rcpt.b64u(body)}.${Rcpt.b64u(b.sig)}`, payload: p, used: b.pk.length, cap: CAP, trimmed };
   }
 
-  function homography(dst) {
-    const src = [[0, 0], [W, 0], [W, H], [0, H]];
-    const A = [];
-    for (let i = 0; i < 4; i++) {
-      const [u, v] = src[i], [x, y] = dst[i];
-      A.push([u, v, 1, 0, 0, 0, -u * x, -v * x, x]);
-      A.push([0, 0, 0, u, v, 1, -u * y, -v * y, y]);
+  function lsqHomography(pairs) {
+    const AtA = Array.from({ length: 8 }, () => new Array(9).fill(0));
+    for (const [u, v, x, y] of pairs) {
+      const rows = [[[u, v, 1, 0, 0, 0, -u * x, -v * x], x], [[0, 0, 0, u, v, 1, -u * y, -v * y], y]];
+      for (const [r, b] of rows) for (let i = 0; i < 8; i++) { for (let j = 0; j < 8; j++) AtA[i][j] += r[i] * r[j]; AtA[i][8] += r[i] * b; }
     }
     for (let c = 0; c < 8; c++) {
       let m = c;
-      for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[m][c])) m = r;
-      const t = A[c]; A[c] = A[m]; A[m] = t;
-      if (Math.abs(A[c][c]) < 1e-9) return null;
+      for (let r = c + 1; r < 8; r++) if (Math.abs(AtA[r][c]) > Math.abs(AtA[m][c])) m = r;
+      const t = AtA[c]; AtA[c] = AtA[m]; AtA[m] = t;
+      if (Math.abs(AtA[c][c]) < 1e-12) return null;
       for (let r = 0; r < 8; r++) {
         if (r === c) continue;
-        const f = A[r][c] / A[c][c];
-        for (let k = c; k < 9; k++) A[r][k] -= f * A[c][k];
+        const f = AtA[r][c] / AtA[c][c];
+        for (let k = c; k < 9; k++) AtA[r][k] -= f * AtA[c][k];
       }
     }
-    return A.map((row, i) => row[8] / row[i]);
+    return AtA.map((row, i) => row[8] / row[i]);
   }
 
-  function locate(img, cw, ch) {
-    const step = Math.max(1, Math.ceil(Math.max(cw, ch) / 480));
-    const gw = Math.floor(cw / step), gh = Math.floor(ch / step);
-    const d = img.data, mask = new Uint8Array(gw * gh);
-    for (let gy = 0; gy < gh; gy++) for (let gx = 0; gx < gw; gx++) {
-      const o = ((gy * step + (step >> 1)) * cw + gx * step + (step >> 1)) * 4;
-      const r = d[o], g = d[o + 1], b = d[o + 2];
-      if (r > 175 && g < 105 && b > 50 && b < 195 && r - g > 105) mask[gy * gw + gx] = 1;
+  const applyH = (Hm, u, v) => {
+    const q = Hm[6] * u + Hm[7] * v + 1;
+    return [(Hm[0] * u + Hm[1] * v + Hm[2]) / q, (Hm[3] * u + Hm[4] * v + Hm[5]) / q];
+  };
+
+  function binarize(img, cw, ch) {
+    const d = img.data, g = new Uint8Array(cw * ch);
+    for (let i = 0, o = 0; i < g.length; i++, o += 4) g[i] = (d[o] * 77 + d[o + 1] * 150 + d[o + 2] * 29) >> 8;
+    const iw = cw + 1, I = new Float64Array(iw * (ch + 1));
+    for (let y = 0; y < ch; y++) {
+      let row = 0;
+      for (let x = 0; x < cw; x++) { row += g[y * cw + x]; I[(y + 1) * iw + x + 1] = I[y * iw + x + 1] + row; }
     }
-    const lab = new Int32Array(gw * gh);
-    let best = null, bestN = 0, id = 0;
-    for (let s = 0; s < mask.length; s++) {
-      if (!mask[s] || lab[s]) continue;
-      id++;
-      const st = [s], cells = [];
-      lab[s] = id;
-      while (st.length) {
-        const p = st.pop();
-        cells.push(p);
-        const px = p % gw, py = (p / gw) | 0;
-        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
-          const nx = px + dx, ny = py + dy;
-          if (nx < 0 || ny < 0 || nx >= gw || ny >= gh) continue;
-          const q = ny * gw + nx;
-          if (mask[q] && !lab[q]) { lab[q] = id; st.push(q); }
-        }
+    const rr = Math.max(6, Math.round(Math.max(cw, ch) / 70));
+    const bin = new Uint8Array(cw * ch);
+    for (let y = 0; y < ch; y++) {
+      const y0 = Math.max(0, y - rr), y1 = Math.min(ch, y + rr + 1);
+      for (let x = 0; x < cw; x++) {
+        const x0 = Math.max(0, x - rr), x1 = Math.min(cw, x + rr + 1);
+        const s = I[y1 * iw + x1] - I[y0 * iw + x1] - I[y1 * iw + x0] + I[y0 * iw + x0];
+        const mean = s / ((x1 - x0) * (y1 - y0));
+        bin[y * cw + x] = g[y * cw + x] < mean - 10 ? 1 : 0;
       }
-      if (cells.length > bestN) { bestN = cells.length; best = cells; }
     }
-    if (!best || bestN < 60) return null;
-    let tl = null, tr = null, br = null, bl = null;
-    for (const p of best) {
-      const x = p % gw, y = (p / gw) | 0;
-      if (!tl || x + y < tl[0] + tl[1]) tl = [x, y];
-      if (!br || x + y > br[0] + br[1]) br = [x, y];
-      if (!tr || x - y > tr[0] - tr[1]) tr = [x, y];
-      if (!bl || x - y < bl[0] - bl[1]) bl = [x, y];
-    }
-    const h = step / 2;
-    const f = (p, sx, sy) => [p[0] * step + h + sx * h, p[1] * step + h + sy * h];
-    return [f(tl, -1, -1), f(tr, 1, -1), f(br, 1, 1), f(bl, -1, 1)];
+    return bin;
   }
 
-  function sampleDecode(img, cw, ch, corners) {
-    const Hm = homography(corners);
-    if (!Hm) return null;
-    const wTop = Math.hypot(corners[1][0] - corners[0][0], corners[1][1] - corners[0][1]);
-    const hLeft = Math.hypot(corners[3][0] - corners[0][0], corners[3][1] - corners[0][1]);
-    if (!(hLeft > 0) || Math.abs(wTop / hLeft - W / H) > 0.18 * (W / H)) return null;
-    const tilePx = wTop / COLS;
-    if (tilePx < 2.2) return null;
+  function runsH(bin, cw, y) {
+    const runs = [];
+    let cur = bin[y * cw], st = 0;
+    for (let x = 1; x <= cw; x++) {
+      const v = x < cw ? bin[y * cw + x] : -1;
+      if (v !== cur) { runs.push([cur, st, x - st]); cur = v; st = x; }
+    }
+    return runs;
+  }
+
+  const ratioOk = (a, m) => a[0] > m * 0.45 && a[0] < m * 1.6 && a[1] > m * 0.45 && a[1] < m * 1.6 && a[2] > m * 1.8 && a[2] < m * 4.4 && a[3] > m * 0.45 && a[3] < m * 1.6 && a[4] > m * 0.45 && a[4] < m * 1.6;
+
+  function vertCheck(bin, cw, ch, x, y) {
+    if (!bin[y * cw + x]) return null;
+    let u = y; while (u > 0 && bin[(u - 1) * cw + x]) u--;
+    let dn = y; while (dn < ch - 1 && bin[(dn + 1) * cw + x]) dn++;
+    const c = dn - u + 1;
+    let a1 = u - 1, l1 = 0; while (a1 >= 0 && !bin[a1 * cw + x]) { a1--; l1++; }
+    let d1 = 0, b1 = dn + 1; while (b1 < ch && !bin[b1 * cw + x]) { b1++; d1++; }
+    let o1 = 0; while (a1 >= 0 && bin[a1 * cw + x]) { a1--; o1++; }
+    let o2 = 0; while (b1 < ch && bin[b1 * cw + x]) { b1++; o2++; }
+    const arr = [o1, l1, c, d1, o2];
+    const tot = o1 + l1 + c + d1 + o2;
+    const m = tot / 7;
+    if (!ratioOk(arr, m)) return null;
+    return { cy: u - l1 - o1 + tot / 2, tot };
+  }
+
+  function findFinders(bin, cw, ch) {
+    const hits = [];
+    for (let y = 0; y < ch; y++) {
+      const runs = runsH(bin, cw, y);
+      for (let i = 0; i + 4 < runs.length; i++) {
+        if (runs[i][0] !== 1) continue;
+        const a = [runs[i][2], runs[i + 1][2], runs[i + 2][2], runs[i + 3][2], runs[i + 4][2]];
+        const tot = a[0] + a[1] + a[2] + a[3] + a[4];
+        if (tot < 14 || !ratioOk(a, tot / 7)) continue;
+        const cx = Math.round(runs[i][1] + tot / 2);
+        const vc = vertCheck(bin, cw, ch, cx, y);
+        if (!vc || Math.abs(vc.tot - tot) > tot * 0.45) continue;
+        hits.push([runs[i][1] + tot / 2, vc.cy, (tot + vc.tot) / 14]);
+      }
+    }
+    const cl = [];
+    for (const h of hits) {
+      let f = null;
+      for (const c of cl) if (Math.hypot(c.x - h[0], c.y - h[1]) < c.m * 2.5) { f = c; break; }
+      if (f) { f.x = (f.x * f.n + h[0]) / (f.n + 1); f.y = (f.y * f.n + h[1]) / (f.n + 1); f.m = (f.m * f.n + h[2]) / (f.n + 1); f.n++; }
+      else cl.push({ x: h[0], y: h[1], m: h[2], n: 1 });
+    }
+    return cl.filter(c => c.n >= 3);
+  }
+
+  function findQrs(F) {
+    const out = [], used = new Set();
+    const cand = [];
+    for (let a = 0; a < F.length; a++) for (let b = 0; b < F.length; b++) for (let c = b + 1; c < F.length; c++) {
+      if (a === b || a === c) continue;
+      let [B, C] = [F[b], F[c]];
+      const A = F[a];
+      let v1 = [B.x - A.x, B.y - A.y], v2 = [C.x - A.x, C.y - A.y];
+      let cross = v1[0] * v2[1] - v1[1] * v2[0];
+      let ib = b, ic = c;
+      if (cross < 0) { [B, C] = [C, B]; [v1, v2] = [v2, v1]; ib = c; ic = b; cross = -cross; }
+      const l1 = Math.hypot(v1[0], v1[1]), l2 = Math.hypot(v2[0], v2[1]);
+      const m = (A.m + B.m + C.m) / 3;
+      if (Math.abs(l1 - l2) > 0.3 * Math.max(l1, l2)) continue;
+      if (Math.abs(cross) < 0.8 * l1 * l2) continue;
+      const mods = (l1 + l2) / 2 / m;
+      if (mods < 13 || mods > 23) continue;
+      if (Math.max(A.m, B.m, C.m) > 1.6 * Math.min(A.m, B.m, C.m)) continue;
+      cand.push({ idx: [a, ib, ic], score: Math.abs(mods - 18) + Math.abs(l1 - l2) / m, m });
+    }
+    cand.sort((p, q) => p.score - q.score);
+    for (const c of cand) {
+      if (c.idx.some(i => used.has(i))) continue;
+      c.idx.forEach(i => used.add(i));
+      out.push({ pts: c.idx.map(i => [F[i].x, F[i].y]), m: c.m });
+      if (out.length === 4) break;
+    }
+    return out;
+  }
+
+  function permutations(n, k) {
+    const res = [];
+    const rec = (cur, left) => { if (cur.length === k) { res.push(cur.slice()); return; } for (const x of left) rec(cur.concat([x]), left.filter(y => y !== x)); };
+    rec([], Array.from({ length: n }, (_, i) => i));
+    return res;
+  }
+
+  function sampleDecode(img, cw, ch, Hm) {
+    const p0 = applyH(Hm, 0, 0), p1 = applyH(Hm, 1, 0), p2 = applyH(Hm, 0, 1);
+    const tilePx = Math.min(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]), Math.hypot(p2[0] - p0[0], p2[1] - p0[1]));
+    if (!(tilePx >= 2.2)) return null;
     const rad = Math.max(1, Math.floor(tilePx * 0.2));
     const d = img.data;
-    const map = (u, v) => {
-      const q = Hm[6] * u + Hm[7] * v + 1;
-      return [(Hm[0] * u + Hm[1] * v + Hm[2]) / q, (Hm[3] * u + Hm[4] * v + Hm[5]) / q];
-    };
     const mean = (c, r) => {
-      const [x, y] = map((c + 0.5) * T, (r + 0.5) * T);
+      const [x, y] = applyH(Hm, c + 0.5, r + 0.5);
       const xi = Math.round(x), yi = Math.round(y);
       let R = 0, G = 0, B = 0, n = 0;
       for (let yy = yi - rad; yy <= yi + rad; yy++) for (let xx = xi - rad; xx <= xi + rad; xx++) {
@@ -8378,9 +8581,8 @@ const Art = (() => {
       return n ? [R / n, G / n, B / n] : [0, 0, 0];
     };
     const slots = new Uint8Array(SLOTS);
-    const per = (COLS - 2) / 2;
     for (let k = 0; k < PAIRS; k++) {
-      const r = 1 + Math.floor(k / per), c = 1 + 2 * (k % per);
+      const [c, r] = PAIR_LIST[k];
       const a = mean(c, r), b = mean(c + 1, r);
       for (let ch2 = 0; ch2 < 3; ch2++) slots[k * 3 + ch2] = a[ch2] > b[ch2] ? 1 : 0;
     }
@@ -8404,7 +8606,7 @@ const Art = (() => {
     const body = new Uint8Array(1 + stored.length);
     body[0] = pk[2];
     body.set(stored, 1);
-    return `GSB1.${Rcpt.b64u(body)}.${Rcpt.b64u(sig)}`;
+    return `GSB2.${Rcpt.b64u(body)}.${Rcpt.b64u(sig)}`;
   }
 
   async function decode(src, w, h) {
@@ -8416,13 +8618,30 @@ const Art = (() => {
     const x = cv.getContext('2d', { willReadFrequently: true });
     x.drawImage(src, 0, 0, cw, ch);
     const img = x.getImageData(0, 0, cw, ch);
-    const tries = [];
-    const loc = locate(img, cw, ch);
-    if (loc) tries.push(loc);
-    if (Math.abs(cw / ch - W / H) < 0.2 * (W / H)) tries.push([[0, 0], [cw, 0], [cw, ch], [0, ch]]);
-    for (const c of tries) {
+    const homs = [];
+    try {
+      const F = findFinders(binarize(img, cw, ch), cw, ch);
+      const Q = findQrs(F);
+      if (Q.length >= 2) {
+        const scored = [];
+        for (const perm of permutations(4, Q.length)) {
+          const pairs = [];
+          Q.forEach((q, qi) => cardPoints(perm[qi]).forEach((cp, i) => pairs.push([cp[0], cp[1], q.pts[i][0], q.pts[i][1]])));
+          const Hm = lsqHomography(pairs);
+          if (!Hm) continue;
+          let err = 0;
+          for (const [u, v, px, py] of pairs) { const [ax, ay] = applyH(Hm, u, v); err += Math.hypot(ax - px, ay - py); }
+          scored.push([err / pairs.length / (Q[0].m || 1), Hm]);
+        }
+        scored.sort((a, b) => a[0] - b[0]);
+        scored.slice(0, 4).forEach(s => { if (s[0] < 1.2) homs.push(s[1]); });
+      }
+    } catch (e) {}
+    if (Math.abs(cw / ch - W / H) < 0.2 * (W / H)) homs.push(lsqHomography([[0, 0, 0, 0], [COLS, 0, cw, 0], [COLS, ROWS, cw, ch], [0, ROWS, 0, ch]]));
+    for (const Hm of homs) {
+      if (!Hm) continue;
       let t = null;
-      try { t = sampleDecode(img, cw, ch, c); } catch (e) {}
+      try { t = sampleDecode(img, cw, ch, Hm); } catch (e) {}
       if (t) return t;
     }
     return '';
